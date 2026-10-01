@@ -2,7 +2,7 @@
 
 import {
   LayoutDashboard, Building2, CalendarRange, BookOpen, Clock, Settings, GraduationCap, ArrowUpCircle, School, CalendarDays, AlertTriangle,
-  Users, BarChart3, Printer, type LucideIcon,
+  Users, BarChart3, Printer, PenLine, Table2, CalendarOff, Plane, HeartPulse, UserCheck, ClipboardCheck, ClipboardList, FileBarChart, Banknote, Layers, FilePlus2, HandCoins, Award, SlidersHorizontal, type LucideIcon,
 } from "lucide-react";
 import { AppSidebar, type SideSection } from "@/components/local/AppSidebar";
 import { stationById } from "@/lib/school/stations";
@@ -38,6 +38,50 @@ const NAV: Partial<Record<Id, SideSection[]>> = {
       it("/classes/conflicts", "التعارضات", "مدرس أو قاعة في مكانين", AlertTriangle),
     ] },
     { title: "النظام", items: [it("/classes/settings", "الإعدادات", "النسخ الاحتياطي والمظهر", Settings)] },
+  ],
+  results: [
+    { title: "النتائج", items: [
+      it("/results", "إدخال الدرجات", "درجات كل مادة وفصل", PenLine, true),
+      it("/results/sheet", "كشف النتائج", "المعدل والرتبة والنجاح", Table2),
+    ] },
+    { title: "الشهادات", items: [it("/results/certificates", "الشهادات", "طباعة لطالب أو لمجموعة", Award)] },
+    { title: "النظام", items: [
+      it("/results/rules", "قواعد التقويم", "الدرجات والنجاح والتقديرات", SlidersHorizontal),
+      it("/results/settings", "الإعدادات", "النسخ الاحتياطي والمظهر", Settings),
+    ] },
+  ],
+  leaves: [
+    { title: "العطل والإجازات", items: [
+      it("/leaves", "تقويم العطل", "الرسمية والمدرسية", CalendarOff, true),
+      it("/leaves/staff", "إجازات الكادر", "الأرصدة والموافقات", Plane),
+      it("/leaves/students", "إجازات الطلاب", "المرضية والغياب بعذر", HeartPulse),
+    ] },
+    { title: "النظام", items: [it("/leaves/settings", "الإعدادات", "النسخ الاحتياطي والمظهر", Settings)] },
+  ],
+  attendance: [
+    { title: "الحضور", items: [
+      it("/attendance", "تحضير الشعبة", "يوم بيوم", ClipboardCheck, true),
+      it("/attendance/staff", "حضور الكادر", "الدوام اليومي", UserCheck),
+      it("/attendance/report", "تقرير الغياب", "شهري وإنذارات", BarChart3),
+    ] },
+    { title: "النظام", items: [it("/attendance/settings", "الإعدادات", "النسخ الاحتياطي والمظهر", Settings)] },
+  ],
+  plan: [
+    { title: "الخطط السنوية", items: [
+      it("/plan", "الخطط", "لكل مدرس ومادة وصف", ClipboardList, true),
+      it("/plan/view", "محرّر الخطة", "الوحدات والأسابيع والإنجاز", PenLine),
+      it("/plan/report", "تقرير التنفيذ", "المنجز مقابل المتوقع", FileBarChart),
+    ] },
+    { title: "النظام", items: [it("/plan/settings", "الإعدادات", "النسخ الاحتياطي والمظهر", Settings)] },
+  ],
+  fees: [
+    { title: "الأقساط", items: [
+      it("/fees", "نظرة عامة", "المستحق والمقبوض والمتأخرون", Banknote, true),
+      it("/fees/pay", "تسجيل الدفعات", "كشف حساب ووصل قبض", HandCoins),
+      it("/fees/charges", "مستحقات الشهر", "إنشاء القسط الشهري", FilePlus2),
+      it("/fees/plans", "قسط الصفوف والخصومات", "الأسعار والتخفيضات", Layers),
+    ] },
+    { title: "النظام", items: [it("/fees/settings", "الإعدادات", "النسخ الاحتياطي والمظهر", Settings)] },
   ],
   teachers: [
     { title: "الكادر التدريسي", items: [

@@ -19,11 +19,11 @@ const ROUTES = [
   "/students", "/students/promote", "/students/settings",
   "/classes", "/classes/timetable", "/classes/print", "/classes/conflicts", "/classes/settings",
   "/teachers", "/teachers/schedule", "/teachers/load", "/teachers/settings",
-  "/results", "/results/settings",
-  "/leaves", "/leaves/settings",
-  "/plan", "/plan/settings",
-  "/attendance", "/attendance/settings",
-  "/fees", "/fees/settings",
+  "/results", "/results/sheet", "/results/certificates", "/results/rules", "/results/settings",
+  "/leaves", "/leaves/staff", "/leaves/students", "/leaves/settings",
+  "/plan", "/plan/view", "/plan/report", "/plan/settings",
+  "/attendance", "/attendance/staff", "/attendance/report", "/attendance/settings",
+  "/fees", "/fees/pay", "/fees/charges", "/fees/plans", "/fees/settings",
   "/sync", "/sync/file", "/sync/auto", "/sync/log", "/sync/settings",
 ];
 // Pages with an id in the URL are client pages: one saved copy serves every id.

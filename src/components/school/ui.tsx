@@ -26,17 +26,17 @@ export function Field({ label, children, className = "" }: { label: string; chil
 }
 
 /** A centered dialog. */
-export function Modal({ title, onClose, children, wide }: { title: string; onClose: () => void; children: ReactNode; wide?: boolean }) {
+export function Modal({ title, onClose, children, wide, printable }: { title: string; onClose: () => void; children: ReactNode; wide?: boolean; printable?: boolean }) {
   useEffect(() => {
     const k = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", k);
     return () => window.removeEventListener("keydown", k);
   }, [onClose]);
   return (
-    <div className="no-print fixed inset-0 z-[90] grid place-items-center bg-slate-900/40 p-4 backdrop-blur-[2px]" onMouseDown={onClose}>
+    <div className={`${printable ? "print:static print:block print:bg-transparent print:p-0" : "no-print"} fixed inset-0 z-[90] grid place-items-center bg-slate-900/40 p-4 backdrop-blur-[2px]`} onMouseDown={onClose}>
       <div role="dialog" aria-label={title} onMouseDown={(e) => e.stopPropagation()}
-        className={`max-h-[90vh] w-full overflow-auto rounded-2xl border border-line bg-surface p-5 shadow-[var(--shadow-pop)] ${wide ? "max-w-3xl" : "max-w-xl"}`}>
-        <div className="mb-4 flex items-center justify-between">
+        className={`max-h-[90vh] w-full overflow-auto rounded-2xl border border-line bg-surface p-5 shadow-[var(--shadow-pop)] print:max-h-none print:max-w-none print:overflow-visible print:border-0 print:p-0 print:shadow-none ${wide ? "max-w-3xl" : "max-w-xl"}`}>
+        <div className="mb-4 flex items-center justify-between print:hidden">
           <h2 className="text-lg font-bold">{title}</h2>
           <button onClick={onClose} aria-label="إغلاق" className="grid size-8 place-items-center rounded-lg hover:bg-canvas"><X className="size-4" /></button>
         </div>

@@ -39,10 +39,11 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) fails++
 
   await go('/students'); await page.getByRole('button', { name: /طالب جديد/ }).click();
   await page.getByRole('dialog').locator('input').first().fill('زينب علي حسن');
+  await page.getByRole('dialog').locator('select').nth(1).selectOption({ index: 1 });
   await page.getByRole('button', { name: 'إضافة الطالب' }).click();
   ok(await vis(page.getByText('زينب علي حسن')), 'student created');
 
-  await go('/classes/timetable');
+  await go('/classes/timetable'); if (process.env.SHOTS) await page.screenshot({ path: process.env.SHOTS + '/tt.png' });
   await page.locator('td.cursor-pointer').first().click();
   await page.getByRole('dialog').getByRole('button', { name: /^حفظ/ }).click();
   await page.waitForTimeout(300);
@@ -50,6 +51,36 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) fails++
   await go('/teachers/schedule'); ok(await vis(page.getByRole('heading', { name: 'جدول المدرس' })), 'teacher schedule renders');
   await go('/classes/conflicts'); ok(await vis(page.getByRole('heading', { name: /التعارضات/ })), 'conflicts page renders');
   await go('/setup'); ok(await vis(page.getByText(/اكتمل \d من 7/)), 'setup overview renders');
+
+  // Results: enter marks, see the sheet, print certificates.
+  await go('/results');
+  const inputs = page.locator('tbody input');
+  await inputs.nth(0).fill('80'); await inputs.nth(1).fill('70'); await inputs.nth(2).fill('90');
+  await page.waitForTimeout(300);
+  ok(await vis(page.getByText('84')), 'term score computed (80*.2+70*.2+90*.6 = 84)');
+  await go('/results/sheet'); ok(await vis(page.getByText('84').first()), 'sheet shows the saved subject mark');
+  await go('/results/certificates'); ok(await vis(page.getByRole('heading', { name: 'شهادة نجاح' })), 'certificate preview renders');
+  if (process.env.SHOTS) await page.screenshot({ path: process.env.SHOTS + '/cert.png' });
+  await page.getByRole('button', { name: /طباعة 1 شهادة/ }).click(); await page.waitForTimeout(600);
+  ok(await vis(page.getByText(/^2\d{3}\/0001$/)), 'certificate serial logged');
+  // Leaves + attendance.
+  await go('/leaves'); await page.getByRole('button', { name: /العطل الرسمية الثابتة/ }).click();
+  ok(await vis(page.getByText('عيد العمال')), 'fixed holidays added');
+  await go('/attendance'); await page.getByRole('button', { name: /الكل حاضر/ }).click(); await page.waitForTimeout(300);
+  ok(await vis(page.getByText('حاضر: 1')), 'roll marks all present');
+  // Plan.
+  await go('/plan'); await page.getByRole('button', { name: /خطة جديدة/ }).click();
+  await page.getByRole('dialog').locator('textarea').fill('الوحدة الأولى | 8\nالوحدة الثانية | 8');
+  await page.getByRole('button', { name: /إنشاء وتوزيع/ }).click();
+  ok(await vis(page.getByText('2 وحدة')), 'annual plan created');
+  // Fees need a private school.
+  await go('/setup/school'); await page.getByRole('button', { name: /أهلية/ }).click();
+  await go('/fees/plans'); await page.locator('input[dir="ltr"]').first().fill('50000'); await page.waitForTimeout(300);
+  await go('/fees/charges'); await page.getByRole('button', { name: /إنشاء مستحقات/ }).click();
+  ok(await vis(page.getByText('القسط الشهري').first()), 'monthly charge generated');
+  await go('/fees/pay'); await page.getByPlaceholder(/اسم الطالب/).fill('زينب'); await page.getByRole('button', { name: /زينب علي حسن/ }).click();
+  await page.getByPlaceholder(/المبلغ/).fill('20000'); await page.getByRole('button', { name: /تسجيل وطباعة الوصل/ }).click();
+  ok(await vis(page.getByText(/وصل قبض رقم/)), 'receipt issued');
   ok(errors.length === 0, 'no page errors ' + errors.join(' | '));
   await page.screenshot({ path: process.env.SHOT || '/tmp/school.png' });
   await browser.close();
