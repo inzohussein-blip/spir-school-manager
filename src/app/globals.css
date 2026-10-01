@@ -1,0 +1,299 @@
+@import "tailwindcss";
+
+/* ── Lab design tokens (medical teal) ──────────────────────────────────────
+   Non-inline @theme so utilities reference the CSS variables, letting a
+   [data-theme="dark"] override re-theme the whole UI at runtime. */
+@theme {
+  --color-brand: #0d9488; /* teal-600 */
+  --color-brand-dark: #0f766e; /* teal-700 */
+  --color-brand-light: #f0fdfa; /* teal-50  */
+  --color-ink: #0f172a; /* slate-900 */
+  --color-muted: #64748b; /* slate-500 */
+  --color-line: #e2e8f0; /* slate-200 */
+  --color-surface: #ffffff;
+  --color-canvas: #f8fafc; /* slate-50 */
+  --color-high: #dc2626; /* H flag red */
+  --color-low: #2563eb; /* L flag blue */
+  --color-brand-fg: #ffffff; /* text on brand */
+  --font-sans: "IBM Plex Sans Arabic", ui-sans-serif, system-ui, "Segoe UI",
+    Tahoma, "Noto Sans Arabic", sans-serif;
+  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06);
+  --shadow-pop: 0 10px 30px rgba(15, 23, 42, 0.12);
+}
+
+/* Dark theme — steps chosen against the dark surface, not an automatic flip. */
+:root[data-theme="dark"] {
+  --color-brand: #2dd4bf; /* teal-400 (lifts on dark) */
+  --color-brand-dark: #14b8a6; /* teal-500 */
+  --color-brand-light: #0b3b36; /* deep teal tint */
+  --color-ink: #e2e8f0; /* slate-200 */
+  --color-muted: #94a3b8; /* slate-400 */
+  --color-line: #1e293b; /* slate-800 */
+  --color-surface: #111c30; /* elevated slate */
+  --color-canvas: #0b1220; /* near-black navy */
+  --color-high: #f87171; /* red-400 */
+  --color-low: #60a5fa; /* blue-400 */
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-pop: 0 10px 30px rgba(0, 0, 0, 0.55);
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Consistent focus ring + smoother interactions */
+* {
+  outline-color: var(--color-brand);
+}
+a,
+button,
+input,
+select,
+textarea {
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    color 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+/* Skeleton shimmer for loading states */
+@keyframes lab-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--color-line) 60%, transparent) 25%,
+    color-mix(in oklab, var(--color-line) 30%, transparent) 37%,
+    color-mix(in oklab, var(--color-line) 60%, transparent) 63%
+  );
+  background-size: 200% 100%;
+  animation: lab-shimmer 1.4s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+/* Subtle page-enter animation — opacity only (no transform) so navigating
+ * between data-heavy tables stays smooth and doesn't repaint on every move. */
+@keyframes lab-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+main > * {
+  animation: lab-fade-in 0.15s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  main > * { animation: none; }
+}
+
+/* ── Local stations interactions (scoped to .station / .training / .qc / .roster — admin/purchasing untouched) ── */
+:is(.station, .store, .training, .qc, .roster, .about, .sync) button:not(:disabled),
+:is(.station, .store, .training, .qc, .roster, .about, .sync) a[href] {
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease,
+    box-shadow 0.15s ease, transform 0.1s ease;
+}
+/* Tactile press feedback */
+:is(.station, .store, .training, .qc, .roster, .about, .sync) button:not(:disabled):active {
+  transform: scale(0.96);
+}
+:is(.station, .store, .training, .qc, .roster, .about, .sync) button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+/* Primary buttons lift slightly on hover */
+:is(.station, .store, .training, .qc, .roster, .about, .sync) button.bg-brand:not(:disabled):hover {
+  box-shadow: 0 4px 12px color-mix(in oklab, var(--color-brand) 35%, transparent);
+}
+/* Keyboard focus ring for buttons/links */
+:is(.station, .store, .training, .qc, .roster, .about, .sync) button:focus-visible,
+:is(.station, .store, .training, .qc, .roster, .about, .sync) a:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+/* Soft glow around focused fields */
+:is(.station, .store, .training, .qc, .roster, .about, .sync) input:focus,
+:is(.station, .store, .training, .qc, .roster, .about, .sync) select:focus,
+:is(.station, .store, .training, .qc, .roster, .about, .sync) textarea:focus {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-brand) 18%, transparent);
+}
+/* Dark theme: the brand teal is bright, so text sitting on it goes dark for contrast */
+:root[data-theme="dark"] :is(.station, .store, .training, .qc, .roster, .about, .sync) :is(.bg-brand, .from-brand).text-white {
+  color: #042f2e;
+}
+/* Training station — its own accent (indigo) so it reads as a separate app */
+.training {
+  --color-brand: #4f46e5;
+  --color-brand-dark: #4338ca;
+  --color-brand-light: #eef2ff;
+}
+:root[data-theme="dark"] .training {
+  --color-brand: #818cf8;
+  --color-brand-dark: #6366f1;
+  --color-brand-light: #1e1b4b;
+}
+:root[data-theme="dark"] .training :is(.bg-brand, .from-brand).text-white {
+  color: #1e1b4b;
+}
+/* Presentation slides stay light (projector friendly) whatever the theme */
+.training .slide-light,
+:root[data-theme="dark"] .training .slide-light {
+  --color-brand: #4f46e5;
+  --color-brand-dark: #4338ca;
+  --color-brand-light: #eef2ff;
+}
+:root[data-theme="dark"] .training .slide-light :is(.bg-brand, .from-brand).text-white {
+  color: #fff;
+}
+/* Purchasing station — its amber accents, readable in dark mode (screen only: print stays as is) */
+@media screen {
+  :root[data-theme="dark"] .store .bg-amber-100 { background-color: rgb(245 158 11 / 0.18); }
+  :root[data-theme="dark"] .store .bg-amber-50 { background-color: rgb(245 158 11 / 0.1); }
+  :root[data-theme="dark"] .store .text-amber-800 { color: #fcd34d; }
+  :root[data-theme="dark"] .store .text-amber-700 { color: #fbbf24; }
+}
+/* Quality & devices station — rose accent */
+.qc {
+  --color-brand: #e11d48;
+  --color-brand-dark: #be123c;
+  --color-brand-light: #fff1f2;
+}
+:root[data-theme="dark"] .qc {
+  --color-brand: #fb7185;
+  --color-brand-dark: #f43f5e;
+  --color-brand-light: #4c0519;
+}
+/* Staff & shifts station — sky accent */
+.roster {
+  --color-brand: #0284c7;
+  --color-brand-dark: #0369a1;
+  --color-brand-light: #f0f9ff;
+}
+:root[data-theme="dark"] .roster {
+  --color-brand: #38bdf8;
+  --color-brand-dark: #0ea5e9;
+  --color-brand-light: #082f49;
+}
+:root[data-theme="dark"] :is(.store, .qc, .roster, .about, .sync) :is(.bg-brand, .from-brand).text-white {
+  color: #0f172a;
+}
+/* Store & purchasing — amber accent */
+.store {
+  --color-brand: #d97706;
+  --color-brand-dark: #b45309;
+  --color-brand-light: #fffbeb;
+}
+:root[data-theme="dark"] .store {
+  --color-brand: #fbbf24;
+  --color-brand-dark: #f59e0b;
+  --color-brand-light: #451a03;
+}
+/* One page-title look in every station: the page's icon in a tile of the station's colour
+   (screen only; the page's own markup and behaviour are unchanged). */
+@media screen {
+  :is(.station, .store, .training, .qc, .roster, .about, .sync) main h1:has(> svg:first-child) { gap: 0.75rem; }
+  :is(.station, .store, .training, .qc, .roster, .about, .sync) main h1 > svg:first-child {
+    box-sizing: content-box;
+    width: 22px;
+    height: 22px;
+    padding: 11px;
+    flex-shrink: 0;
+    border-radius: 1rem;
+    color: #fff;
+    background: linear-gradient(135deg, var(--color-brand), var(--color-brand-dark));
+    box-shadow: 0 6px 16px -6px color-mix(in oklab, var(--color-brand) 70%, transparent);
+  }
+  :root[data-theme="dark"] :is(.station, .store, .training, .qc, .roster, .about, .sync) main h1 > svg:first-child { color: #0f172a; }
+}
+/* Sync station — violet accent */
+.sync {
+  --color-brand: #7c3aed;
+  --color-brand-dark: #6d28d9;
+  --color-brand-light: #f5f3ff;
+}
+:root[data-theme="dark"] .sync {
+  --color-brand: #a78bfa;
+  --color-brand-dark: #8b5cf6;
+  --color-brand-light: #2e1065;
+}
+/* About the app — purple accent */
+.about {
+  --color-brand: #9333ea;
+  --color-brand-dark: #7e22ce;
+  --color-brand-light: #faf5ff;
+}
+:root[data-theme="dark"] .about {
+  --color-brand: #c084fc;
+  --color-brand-dark: #a855f7;
+  --color-brand-light: #3b0764;
+}
+/* Toast slide-in */
+@keyframes station-toast-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.station-toast {
+  animation: station-toast-in 0.18s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(.station, .store, .training, .qc, .roster, .about, .sync) button:not(:disabled):active { transform: none; }
+  .station-toast { animation: none; }
+}
+
+/* Print: hide chrome, force the report onto white regardless of theme */
+@media print {
+  /* Drop the browser's default header/footer (URL, date, page number). */
+  @page {
+    margin: 0;
+  }
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+  }
+  /* Ensure brand colours (letterhead bars, watermark) render on paper. */
+  #report-sheet,
+  #report-sheet * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+/* Professional data tables (opt-in via .data-table on the scroll wrapper) */
+.data-table {
+  overflow-x: auto;
+}
+.data-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.data-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--color-surface);
+}
+.data-table tbody tr:nth-child(even) {
+  background: color-mix(in oklab, var(--color-canvas) 60%, transparent);
+}
+.data-table tbody tr:hover {
+  background: var(--color-brand-light);
+}
+
+/* Result flag chips */
+.flag-H {
+  color: var(--color-high);
+  font-weight: 700;
+}
+.flag-L {
+  color: var(--color-low);
+  font-weight: 700;
+}

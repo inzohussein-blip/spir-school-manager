@@ -1,0 +1,10 @@
+node_modules
+.next
+.env
+.env.local
+*.tsbuildinfo
+next-env.d.ts
+.pglite-data/
+
+# Test image created by CI / the browser tests (tests/e2e/training.images.cjs)
+public/lab-images/test/
