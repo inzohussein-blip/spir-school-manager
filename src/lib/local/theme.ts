@@ -1,11 +1,15 @@
 /** Per-station appearance (plain module: used by the server layouts and by client code).
  *  Each station keeps its own choice under its own key; nothing is shared. */
 export const THEME_KEYS = {
-  station: "station.theme.v1",
-  store: "purchasing.theme.v1",
-  training: "training.theme.v1",
-  qc: "qc.theme.v1",
-  roster: "roster.theme.v1",
+  setup: "setup.theme.v1",
+  students: "students.theme.v1",
+  classes: "classes.theme.v1",
+  teachers: "teachers.theme.v1",
+  results: "results.theme.v1",
+  leaves: "leaves.theme.v1",
+  plan: "plan.theme.v1",
+  attendance: "attendance.theme.v1",
+  fees: "fees.theme.v1",
   sync: "sync.theme.v1",
   about: "about.theme.v1",
 } as const;

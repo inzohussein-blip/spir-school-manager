@@ -1,14 +1,11 @@
 import type { ReactNode } from "react";
-import { Beaker, ShoppingCart, GraduationCap, ShieldCheck, Users, type LucideIcon } from "lucide-react";
+import { Settings2, type LucideIcon } from "lucide-react";
+import { SCHOOL_STATIONS } from "@/lib/school/stations";
 
 /** The stations the sync carries, with their look (the same colours as on the welcome page). */
-export const STATION_META: Record<string, { label: string; icon: LucideIcon; color: string }> = {
-  station: { label: "محطة المختبر", icon: Beaker, color: "#0d9488" },
-  purchasing: { label: "المخزن والمشتريات", icon: ShoppingCart, color: "#d97706" },
-  training: { label: "التدريب والمعلومات", icon: GraduationCap, color: "#4f46e5" },
-  qc: { label: "الجودة والأجهزة", icon: ShieldCheck, color: "#e11d48" },
-  roster: { label: "الكادر والدوام", icon: Users, color: "#0284c7" },
-};
+export const STATION_META: Record<string, { label: string; icon: LucideIcon; color: string }> = Object.fromEntries(
+  SCHOOL_STATIONS.map((m) => [m.id === "setup" ? "school" : m.id, { label: m.label, icon: m.icon, color: m.color }]),
+);
 
 /** A page title with its icon and a line under it. */
 export function PageHead({ icon, title, sub, children }: { icon: ReactNode; title: string; sub: string; children?: ReactNode }) {
@@ -29,7 +26,7 @@ export function PageHead({ icon, title, sub, children }: { icon: ReactNode; titl
 /** One station's number (records, or what a file holds). */
 export function StationTile({ id, n, note }: { id: string; n: number; note?: string }) {
   const m = STATION_META[id];
-  const Icon = m?.icon ?? Beaker;
+  const Icon = m?.icon ?? Settings2;
   return (
     <li className="flex items-center gap-3 rounded-xl border border-line bg-canvas px-3 py-2.5">
       <span className="grid size-9 shrink-0 place-items-center rounded-lg text-white" style={{ background: m?.color ?? "#64748b" }}><Icon className="size-4" /></span>

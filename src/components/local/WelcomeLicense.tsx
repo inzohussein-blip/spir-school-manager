@@ -34,7 +34,7 @@ export function AdminPanelCard() {
           <LayoutDashboard className="size-6" />
         </span>
         <div className="mt-4 text-lg font-bold">لوحة الإدارة الكاملة</div>
-        <p className="mt-1 flex-1 text-sm text-muted">إدارة كاملة للمرضى والطلبات والنتائج والفواتير والمخزون والتقارير — تتطلّب تسجيل دخول وقاعدة بيانات.</p>
+        <p className="mt-1 flex-1 text-sm text-muted">إدارة كاملة للطلاب والكادر والنتائج والأقساط والتقارير على الإنترنت — تتطلّب تسجيل دخول وقاعدة بيانات.</p>
         <span className="mt-5 inline-flex items-center justify-center gap-1.5 rounded-lg bg-violet-600 px-4 py-2.5 text-sm font-semibold text-white group-hover:bg-violet-700">
           الدخول <ArrowLeft className="size-4" />
         </span>
@@ -50,7 +50,7 @@ export function AdminPanelCard() {
         <Lock className="size-6" />
       </span>
       <div className="mt-4 text-lg font-bold">لوحة الإدارة الكاملة</div>
-      <p className="mt-1 flex-1 text-sm text-muted">النسخة المدفوعة: إدارة كاملة للمرضى والطلبات والنتائج والفواتير والمخزون والتقارير — تتطلّب تسجيل دخول وقاعدة بيانات.</p>
+      <p className="mt-1 flex-1 text-sm text-muted">النسخة المدفوعة: إدارة كاملة للطلاب والكادر والنتائج والأقساط والتقارير على الإنترنت — تتطلّب تسجيل دخول وقاعدة بيانات.</p>
       <button disabled className="mt-5 inline-flex items-center justify-center gap-1.5 rounded-lg border border-line px-4 py-2.5 text-sm font-semibold text-muted">
         <Lock className="size-4" /> {state?.kind === "off" || !state ? "قريباً" : "غير مفعّلة"}
       </button>

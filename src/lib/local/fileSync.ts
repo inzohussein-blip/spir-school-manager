@@ -169,16 +169,13 @@ export interface ImportResult { ok: boolean; added: number; updated: number; rem
 /** Patients, stock items and tests entered separately on two computers under the same name (after
  *  a first sync each keeps its own): listed so they can be merged by hand — nothing is merged
  *  automatically, since visits and stock point at each one. */
-export function sameNameRecords(): { patients: string[]; stock: string[]; tests: string[] } {
-  const dupes = (k: string, field: "name" | "name_ar") => {
-    const seen = new Map<string, number>();
-    for (const r of readJson<Record<string, unknown>[]>(k, [])) {
-      const n = String(r?.[field] ?? "").trim().toLowerCase().replace(/\s+/g, " ");
-      if (n) seen.set(n, (seen.get(n) ?? 0) + 1);
-    }
-    return [...seen].filter(([, c]) => c > 1).map(([n]) => n);
-  };
-  return { patients: dupes("station.patients.v1", "name"), stock: dupes("station.stock.v1", "name"), tests: dupes("station.tests.v1", "name_ar") };
+export function sameNameRecords(): { students: string[] } {
+  const seen = new Map<string, number>();
+  for (const r of readJson<Record<string, unknown>[]>("students.list.v1", [])) {
+    const n = String(r?.name ?? "").trim().toLowerCase().replace(/\s+/g, " ");
+    if (n) seen.set(n, (seen.get(n) ?? 0) + 1);
+  }
+  return { students: [...seen].filter(([, c]) => c > 1).map(([n]) => n) };
 }
 
 /** Bring another computer's sync file in (see the top of this file for the rule). */

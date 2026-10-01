@@ -1,17 +1,21 @@
-/** What a lab code can switch on (shared by the server, the stations and the code manager). */
+/** What a school code can switch on (shared by the server, the stations and the code manager). */
 export const LICENSE_MODULES = [
-  { id: "station", label: "محطة المختبر", path: "/station" },
-  { id: "purchasing", label: "المخزن والمشتريات", path: "/store" },
-  { id: "training", label: "محطة التدريب والمعلومات", path: "/training" },
-  { id: "qc", label: "محطة الجودة والأجهزة", path: "/qc" },
-  { id: "roster", label: "محطة الكادر والدوام", path: "/roster" },
+  { id: "setup", label: "الإعداد والعام الدراسي", path: "/setup" },
+  { id: "students", label: "الطلاب والتسجيل", path: "/students" },
+  { id: "classes", label: "الصفوف والفصول والجداول", path: "/classes" },
+  { id: "teachers", label: "الكادر التدريسي وجدول المدرسين", path: "/teachers" },
+  { id: "results", label: "النتائج والشهادات", path: "/results" },
+  { id: "leaves", label: "الإجازات والعطل", path: "/leaves" },
+  { id: "plan", label: "الخطة السنوية", path: "/plan" },
+  { id: "attendance", label: "الحضور والغياب", path: "/attendance" },
+  { id: "fees", label: "الأقساط الشهرية (الأهلية)", path: "/fees" },
   { id: "admin", label: "لوحة الإدارة الكاملة", path: "/" },
 ] as const;
 
 export type LicenseModule = (typeof LICENSE_MODULES)[number]["id"];
 export const MODULE_IDS = LICENSE_MODULES.map((m) => m.id) as LicenseModule[];
-/** A new code gets the local stations; the full admin panel is switched on per code. */
-export const DEFAULT_MODULES: LicenseModule[] = ["station", "purchasing", "training", "qc", "roster"];
+/** A new code gets the school stations; the full admin panel is switched on per code. */
+export const DEFAULT_MODULES: LicenseModule[] = ["setup", "students", "classes", "teachers", "results", "leaves", "plan", "attendance", "fees"];
 export const moduleLabel = (id: string) => LICENSE_MODULES.find((m) => m.id === id)?.label ?? id;
 export const cleanModules = (v: unknown): LicenseModule[] =>
   Array.isArray(v) ? MODULE_IDS.filter((id) => v.includes(id)) : [...DEFAULT_MODULES];

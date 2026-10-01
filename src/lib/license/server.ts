@@ -103,7 +103,7 @@ export interface LicenseRow {
 export interface PinOp { id: string; hash: string | null; scope: LicenseModule | "all"; at: number }
 /** Same hash as the stations (lib/local/pin): sha256 of a fixed prefix and the digits. */
 /** The stations a PIN can guard (lib/local/pin PinStation): the local stations, sync and about. */
-export const PIN_STATIONS = ["station", "purchasing", "training", "qc", "roster", "sync", "about"] as const;
+export const PIN_STATIONS = ["setup", "students", "classes", "teachers", "results", "leaves", "plan", "attendance", "fees", "sync", "about"] as const;
 export type PinStation = (typeof PIN_STATIONS)[number];
 export interface PinEntry { hash: string; label: string }
 /** The owner's «رموز الدخول» for a code: the feature hidden or shown, and per station its PINs

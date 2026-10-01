@@ -1,21 +1,18 @@
 "use client";
 
 import {
-  Beaker, ShoppingCart, GraduationCap, ShieldCheck, Users, LayoutDashboard, RefreshCw, Info, ExternalLink, Lock, Globe, KeyRound,
+  LayoutDashboard, RefreshCw, Info, ExternalLink, Lock, Globe, KeyRound,
   type LucideIcon,
 } from "lucide-react";
 import { LICENSE_MODULES, type LicenseModule } from "@/lib/license/modules";
+import { SCHOOL_STATIONS } from "@/lib/school/stations";
 
 /** «المحطات» in the code manager: every station of the system, how each is switched on, and how
  *  many codes use it (the stations switched on per code, plus the ones every code or everyone has). */
 
 export const MODULE_META: Record<LicenseModule, { icon: LucideIcon; color: string; desc: string }> = {
-  station: { icon: Beaker, color: "#0d9488", desc: "إدخال النتائج وطباعتها وإرسالها بواتساب، الاستمارات، الزيارات وسجل المراجعين." },
-  purchasing: { icon: ShoppingCart, color: "#d97706", desc: "المشتريات والموردون والمخزن والجرد، ويُحسم منه ما يُستعمل في الفحوص والسيطرة." },
-  training: { icon: GraduationCap, color: "#4f46e5", desc: "«الدليل» من الصفر (قابل للتعديل والطباعة بشعار المختبر)، مكتبة الفحوصات، الاختبارات، المتدربون والشهادات." },
-  qc: { icon: ShieldCheck, color: "#e11d48", desc: "السيطرة النوعية ومخطط Levey-Jennings وقواعد Westgard، الحرارة، صيانة الأجهزة." },
-  roster: { icon: Users, color: "#0284c7", desc: "المناوبات والحضور والإجازات والسلف وكشف الرواتب." },
-  admin: { icon: LayoutDashboard, color: "#7c3aed", desc: "النسخة الكاملة على الإنترنت: المرضى والطلبات والفواتير، بقاعدة بيانات لكل مختبر." },
+  ...(Object.fromEntries(SCHOOL_STATIONS.map((m) => [m.id, { icon: m.icon, color: m.color, desc: m.desc }])) as Record<Exclude<LicenseModule, "admin">, { icon: LucideIcon; color: string; desc: string }>),
+  admin: { icon: LayoutDashboard, color: "#7c3aed", desc: "النسخة الكاملة على الإنترنت: الطلاب والمدرسون والنتائج والأقساط، بقاعدة بيانات لكل مدرسة." },
 };
 
 /** Stations that are not switched on per code. */

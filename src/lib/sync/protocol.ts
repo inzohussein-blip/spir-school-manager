@@ -26,8 +26,8 @@ export const COMPANY_SYNC_KEY = "lab-company-sync";
  *  chosen in «محطة المزامنة ← الإعدادات». */
 export const SYNC_EXCLUDE_KEY = "lab-sync-exclude";
 export const SYNC_STATIONS: [string, string][] = [
-  ["station.", "محطة المختبر"], ["purchasing.", "المخزن والمشتريات"], ["training.", "التدريب والمعلومات"],
-  ["qc.", "الجودة والأجهزة"], ["roster.", "الكادر والدوام"],
+  ["school.", "الإعداد والعام الدراسي"], ["students.", "الطلاب والتسجيل"], ["classes.", "الصفوف والفصول"], ["teachers.", "الكادر التدريسي"],
+  ["results.", "النتائج والشهادات"], ["leaves.", "الإجازات والعطل"], ["plan.", "الخطة السنوية"], ["attendance.", "الحضور والغياب"], ["fees.", "الأقساط الشهرية"],
 ];
 export function syncExcluded(): string[] {
   try { const v = JSON.parse(localStorage.getItem(SYNC_EXCLUDE_KEY) || "[]"); return Array.isArray(v) ? v.filter((x) => typeof x === "string") : []; } catch { return []; }

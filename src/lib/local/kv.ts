@@ -19,7 +19,7 @@
 
 const DB_NAME = "lab-local";
 const STORE = "kv";
-const PREFIXES = ["station.", "purchasing.", "training.", "qc.", "roster."];
+const PREFIXES = ["school.", "students.", "classes.", "teachers.", "results.", "leaves.", "plan.", "attendance.", "fees."];
 /** Kept in localStorage: read by the inline script that sets the theme before the page paints. */
 const isTheme = (k: string) => k.endsWith(".theme.v1");
 const isData = (k: string) => PREFIXES.some((p) => k.startsWith(p)) && !isTheme(k);

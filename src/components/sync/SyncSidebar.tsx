@@ -18,7 +18,7 @@ const SECTIONS: SideSection[] = [
 
 function badges(): SideBadges {
   const d = sameNameRecords();
-  return { "/sync": { n: d.patients.length + d.stock.length + d.tests.length, tone: "warn" } };
+  return { "/sync": { n: d.students.length, tone: "warn" } };
 }
 
 export function SyncSidebar() {

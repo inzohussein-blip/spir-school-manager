@@ -12,9 +12,9 @@ const inp = "w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm o
 /** The lab station's letterhead on this device, if it has one (read only when asked to copy it). */
 function labStationLetterhead(): Partial<LetterheadValue> | null {
   try {
-    const s = JSON.parse(kvGet("station.settings.v1") ?? "null") as { labName?: string; labSubtitle?: string; footer?: string; logo?: string } | null;
-    if (!s?.labName?.trim()) return null;
-    return { title: s.labName.trim(), subtitle: s.labSubtitle ?? "", footer: s.footer ?? "", logo: s.logo?.startsWith("data:image/") ? s.logo : "" };
+    const s = JSON.parse(kvGet("school.settings.v1") ?? "null") as { name?: string; subtitle?: string; footer?: string; logo?: string } | null;
+    if (!s?.name?.trim()) return null;
+    return { title: s.name.trim(), subtitle: s.subtitle ?? "", footer: s.footer ?? "", logo: s.logo?.startsWith("data:image/") ? s.logo : "" };
   } catch {
     return null;
   }

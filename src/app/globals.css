@@ -94,112 +94,67 @@ main > * {
   main > * { animation: none; }
 }
 
-/* ── Local stations interactions (scoped to .station / .training / .qc / .roster — admin/purchasing untouched) ── */
-:is(.station, .store, .training, .qc, .roster, .about, .sync) button:not(:disabled),
-:is(.station, .store, .training, .qc, .roster, .about, .sync) a[href] {
+/* ── Local stations interactions (scoped to .school-st) ── */
+:is(.school-st, .about, .sync) button:not(:disabled),
+:is(.school-st, .about, .sync) a[href] {
   transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease,
     box-shadow 0.15s ease, transform 0.1s ease;
 }
 /* Tactile press feedback */
-:is(.station, .store, .training, .qc, .roster, .about, .sync) button:not(:disabled):active {
+:is(.school-st, .about, .sync) button:not(:disabled):active {
   transform: scale(0.96);
 }
-:is(.station, .store, .training, .qc, .roster, .about, .sync) button:disabled {
+:is(.school-st, .about, .sync) button:disabled {
   cursor: not-allowed;
   opacity: 0.5;
 }
 /* Primary buttons lift slightly on hover */
-:is(.station, .store, .training, .qc, .roster, .about, .sync) button.bg-brand:not(:disabled):hover {
+:is(.school-st, .about, .sync) button.bg-brand:not(:disabled):hover {
   box-shadow: 0 4px 12px color-mix(in oklab, var(--color-brand) 35%, transparent);
 }
 /* Keyboard focus ring for buttons/links */
-:is(.station, .store, .training, .qc, .roster, .about, .sync) button:focus-visible,
-:is(.station, .store, .training, .qc, .roster, .about, .sync) a:focus-visible {
+:is(.school-st, .about, .sync) button:focus-visible,
+:is(.school-st, .about, .sync) a:focus-visible {
   outline: 2px solid var(--color-brand);
   outline-offset: 2px;
 }
 /* Soft glow around focused fields */
-:is(.station, .store, .training, .qc, .roster, .about, .sync) input:focus,
-:is(.station, .store, .training, .qc, .roster, .about, .sync) select:focus,
-:is(.station, .store, .training, .qc, .roster, .about, .sync) textarea:focus {
+:is(.school-st, .about, .sync) input:focus,
+:is(.school-st, .about, .sync) select:focus,
+:is(.school-st, .about, .sync) textarea:focus {
   box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-brand) 18%, transparent);
 }
 /* Dark theme: the brand teal is bright, so text sitting on it goes dark for contrast */
-:root[data-theme="dark"] :is(.station, .store, .training, .qc, .roster, .about, .sync) :is(.bg-brand, .from-brand).text-white {
+:root[data-theme="dark"] :is(.school-st, .about, .sync) :is(.bg-brand, .from-brand).text-white {
   color: #042f2e;
 }
-/* Training station — its own accent (indigo) so it reads as a separate app */
-.training {
-  --color-brand: #4f46e5;
-  --color-brand-dark: #4338ca;
-  --color-brand-light: #eef2ff;
-}
-:root[data-theme="dark"] .training {
-  --color-brand: #818cf8;
-  --color-brand-dark: #6366f1;
-  --color-brand-light: #1e1b4b;
-}
-:root[data-theme="dark"] .training :is(.bg-brand, .from-brand).text-white {
-  color: #1e1b4b;
-}
-/* Presentation slides stay light (projector friendly) whatever the theme */
-.training .slide-light,
-:root[data-theme="dark"] .training .slide-light {
-  --color-brand: #4f46e5;
-  --color-brand-dark: #4338ca;
-  --color-brand-light: #eef2ff;
-}
-:root[data-theme="dark"] .training .slide-light :is(.bg-brand, .from-brand).text-white {
-  color: #fff;
-}
-/* Purchasing station — its amber accents, readable in dark mode (screen only: print stays as is) */
-@media screen {
-  :root[data-theme="dark"] .store .bg-amber-100 { background-color: rgb(245 158 11 / 0.18); }
-  :root[data-theme="dark"] .store .bg-amber-50 { background-color: rgb(245 158 11 / 0.1); }
-  :root[data-theme="dark"] .store .text-amber-800 { color: #fcd34d; }
-  :root[data-theme="dark"] .store .text-amber-700 { color: #fbbf24; }
-}
-/* Quality & devices station — rose accent */
-.qc {
-  --color-brand: #e11d48;
-  --color-brand-dark: #be123c;
-  --color-brand-light: #fff1f2;
-}
-:root[data-theme="dark"] .qc {
-  --color-brand: #fb7185;
-  --color-brand-dark: #f43f5e;
-  --color-brand-light: #4c0519;
-}
-/* Staff & shifts station — sky accent */
-.roster {
-  --color-brand: #0284c7;
-  --color-brand-dark: #0369a1;
-  --color-brand-light: #f0f9ff;
-}
-:root[data-theme="dark"] .roster {
-  --color-brand: #38bdf8;
-  --color-brand-dark: #0ea5e9;
-  --color-brand-light: #082f49;
-}
-:root[data-theme="dark"] :is(.store, .qc, .roster, .about, .sync) :is(.bg-brand, .from-brand).text-white {
+/* School stations — each its own accent (class "school-st st-<id>") */
+.st-setup { --color-brand: #0d9488; --color-brand-dark: #0f766e; --color-brand-light: #f0fdfa; }
+:root[data-theme="dark"] .st-setup { --color-brand: #2dd4bf; --color-brand-dark: #14b8a6; --color-brand-light: #0b3b36; }
+.st-students { --color-brand: #2563eb; --color-brand-dark: #1d4ed8; --color-brand-light: #eff6ff; }
+:root[data-theme="dark"] .st-students { --color-brand: #60a5fa; --color-brand-dark: #3b82f6; --color-brand-light: #172554; }
+.st-classes { --color-brand: #d97706; --color-brand-dark: #b45309; --color-brand-light: #fffbeb; }
+:root[data-theme="dark"] .st-classes { --color-brand: #fbbf24; --color-brand-dark: #f59e0b; --color-brand-light: #451a03; }
+.st-teachers { --color-brand: #0284c7; --color-brand-dark: #0369a1; --color-brand-light: #f0f9ff; }
+:root[data-theme="dark"] .st-teachers { --color-brand: #38bdf8; --color-brand-dark: #0ea5e9; --color-brand-light: #082f49; }
+.st-results { --color-brand: #059669; --color-brand-dark: #047857; --color-brand-light: #ecfdf5; }
+:root[data-theme="dark"] .st-results { --color-brand: #34d399; --color-brand-dark: #10b981; --color-brand-light: #022c22; }
+.st-leaves { --color-brand: #e11d48; --color-brand-dark: #be123c; --color-brand-light: #fff1f2; }
+:root[data-theme="dark"] .st-leaves { --color-brand: #fb7185; --color-brand-dark: #f43f5e; --color-brand-light: #4c0519; }
+.st-plan { --color-brand: #4f46e5; --color-brand-dark: #4338ca; --color-brand-light: #eef2ff; }
+:root[data-theme="dark"] .st-plan { --color-brand: #818cf8; --color-brand-dark: #6366f1; --color-brand-light: #1e1b4b; }
+.st-attendance { --color-brand: #ea580c; --color-brand-dark: #c2410c; --color-brand-light: #fff7ed; }
+:root[data-theme="dark"] .st-attendance { --color-brand: #fb923c; --color-brand-dark: #f97316; --color-brand-light: #431407; }
+.st-fees { --color-brand: #65a30d; --color-brand-dark: #4d7c0f; --color-brand-light: #f7fee7; }
+:root[data-theme="dark"] .st-fees { --color-brand: #a3e635; --color-brand-dark: #84cc16; --color-brand-light: #1a2e05; }
+:root[data-theme="dark"] :is(.school-st, .about, .sync) :is(.bg-brand, .from-brand).text-white {
   color: #0f172a;
-}
-/* Store & purchasing — amber accent */
-.store {
-  --color-brand: #d97706;
-  --color-brand-dark: #b45309;
-  --color-brand-light: #fffbeb;
-}
-:root[data-theme="dark"] .store {
-  --color-brand: #fbbf24;
-  --color-brand-dark: #f59e0b;
-  --color-brand-light: #451a03;
 }
 /* One page-title look in every station: the page's icon in a tile of the station's colour
    (screen only; the page's own markup and behaviour are unchanged). */
 @media screen {
-  :is(.station, .store, .training, .qc, .roster, .about, .sync) main h1:has(> svg:first-child) { gap: 0.75rem; }
-  :is(.station, .store, .training, .qc, .roster, .about, .sync) main h1 > svg:first-child {
+  :is(.school-st, .about, .sync) main h1:has(> svg:first-child) { gap: 0.75rem; }
+  :is(.school-st, .about, .sync) main h1 > svg:first-child {
     box-sizing: content-box;
     width: 22px;
     height: 22px;
@@ -210,7 +165,7 @@ main > * {
     background: linear-gradient(135deg, var(--color-brand), var(--color-brand-dark));
     box-shadow: 0 6px 16px -6px color-mix(in oklab, var(--color-brand) 70%, transparent);
   }
-  :root[data-theme="dark"] :is(.station, .store, .training, .qc, .roster, .about, .sync) main h1 > svg:first-child { color: #0f172a; }
+  :root[data-theme="dark"] :is(.school-st, .about, .sync) main h1 > svg:first-child { color: #0f172a; }
 }
 /* Sync station — violet accent */
 .sync {
@@ -243,7 +198,7 @@ main > * {
   animation: station-toast-in 0.18s ease-out;
 }
 @media (prefers-reduced-motion: reduce) {
-  :is(.station, .store, .training, .qc, .roster, .about, .sync) button:not(:disabled):active { transform: none; }
+  :is(.school-st, .about, .sync) button:not(:disabled):active { transform: none; }
   .station-toast { animation: none; }
 }
 

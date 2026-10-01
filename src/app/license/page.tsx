@@ -10,6 +10,7 @@ import {
 import { StationsOverview, ALWAYS_STATIONS } from "./stations";
 import { PinSection, type PinPolicyView } from "./pins";
 import { LICENSE_MODULES, DEFAULT_MODULES, moduleLabel, type LicenseModule } from "@/lib/license/modules";
+import { SCHOOL_STATIONS } from "@/lib/school/stations";
 import { STATION_SYNC, SUPABASE_SQL } from "@/lib/sync/protocol";
 import { SYNC_ERRORS } from "@/components/local/SyncPanel";
 import { adminDbError } from "@/lib/db/labErrors";
@@ -139,11 +140,7 @@ function status(r: Row, now: number, soonMs?: number) {
 }
 /** Each station in the colour it has on the welcome page. */
 const MOD_TONE: Record<LicenseModule, string> = {
-  station: "border-teal-300 bg-teal-50 text-teal-800",
-  purchasing: "border-amber-300 bg-amber-50 text-amber-800",
-  training: "border-indigo-300 bg-indigo-50 text-indigo-700",
-  qc: "border-rose-300 bg-rose-50 text-rose-700",
-  roster: "border-sky-300 bg-sky-50 text-sky-700",
+  ...(Object.fromEntries(SCHOOL_STATIONS.map((m) => [m.id, m.tone])) as Record<Exclude<LicenseModule, "admin">, string>),
   admin: "border-violet-300 bg-violet-50 text-violet-700",
 };
 /** Filter tiles: a dot in their colour, filled with it when chosen. */

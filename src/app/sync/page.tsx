@@ -29,7 +29,7 @@ export default function SyncOverview() {
   const last = [lastIn?.at, lastOut?.at].filter((x): x is number => !!x).sort((a, b) => b - a)[0];
   // No sync by file for a week and no automatic sync: remind.
   const stale = !auto && (!last || daysSince(last) >= 7);
-  const anyDupes = dupes.patients.length > 0 || dupes.stock.length > 0 || dupes.tests.length > 0;
+  const anyDupes = dupes.students.length > 0;
   const excludedOf = (id: string) => SYNC_STATIONS.some(([p]) => p === `${id}.` && excluded.includes(p));
 
   const state = auto
@@ -121,9 +121,7 @@ export default function SyncOverview() {
         <section className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900" data-testid="sync-dupes">
           <div className="mb-1 flex items-center gap-2 font-bold"><AlertTriangle className="size-4" /> سجلات بالاسم نفسه</div>
           <p className="mb-2 text-xs">أُدخلت في حاسوبين كلٌّ على حدة قبل المزامنة، فبقيت نسختان. وحّدها يدوياً: احذف إحداهما (المراجعون من «سجل المراجعين»، أصناف المخزن من «المخزن» في المشتريات، الفحوصات من «إدارة الفحوصات») بعد نقل ما يلزم إلى الأخرى.</p>
-          {dupes.patients.length > 0 && <div>المراجعون: <b>{dupes.patients.join("، ")}</b></div>}
-          {dupes.stock.length > 0 && <div>أصناف المخزن: <b>{dupes.stock.join("، ")}</b></div>}
-          {dupes.tests.length > 0 && <div>الفحوصات: <b>{dupes.tests.join("، ")}</b></div>}
+          {dupes.students.length > 0 && <div>الطلاب: <b>{dupes.students.join("، ")}</b></div>}
         </section>
       )}
 
