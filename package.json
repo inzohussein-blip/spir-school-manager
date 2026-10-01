@@ -1,8 +1,8 @@
 {
-  "name": "spir-lab-manager",
+  "name": "spir-school-manager",
   "version": "0.1.0",
   "private": true,
-  "description": "Professional laboratory management app (patients, results, reagent inventory, staff shifts). Next.js 16 + Postgres (PGlite/Supabase), twinned with Spir-Margin.",
+  "description": "Arabic school management platform for Iraqi government and private schools (students, timetables, teachers, results, leaves, plans, fees). Next.js 16, local-first stations.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

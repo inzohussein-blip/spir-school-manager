@@ -1,5 +1,4 @@
-/* Offline service worker for the LOCAL stations only (welcome portal, lab station,
-   purchasing, training, quality, staff). The admin panel keeps its own /sw.js.
+/* Offline service worker for the LOCAL stations only (welcome portal and the school stations). The admin panel keeps its own /sw.js.
 
    - Registered once per station scope; every registration shares one versioned cache,
      so the app is downloaded once.
@@ -13,22 +12,23 @@
 
 const META_CACHE = "local-meta";
 const PREFIX = "local-app-";
-const BASES = ["/welcome", "/station", "/store", "/training", "/qc", "/roster", "/sync", "/about"];
+const BASES = ["/welcome", "/setup", "/students", "/classes", "/teachers", "/results", "/leaves", "/plan", "/attendance", "/fees", "/sync"];
 const ROUTES = [
   "/welcome",
-  "/station", "/station/inventory", "/station/records", "/station/settings", "/station/tests", "/station/visits", "/station/trash", "/station/page/_",
-  "/store", "/store/inventory", "/store/items", "/store/count", "/store/moves", "/store/report", "/store/settings", "/store/suppliers",
-  "/training", "/training/cards", "/training/edit", "/training/exam", "/training/guide", "/training/manual", "/training/map", "/training/media",
-  "/training/quiz", "/training/settings", "/training/tools", "/training/trainees", "/training/tubes", "/training/test/_",
-  "/qc", "/qc/analytes", "/qc/chart", "/qc/devices", "/qc/entry", "/qc/settings", "/qc/temps",
-  "/roster", "/roster/attendance", "/roster/leaves", "/roster/payroll", "/roster/schedule", "/roster/settings", "/roster/staff",
+  "/setup", "/setup/school", "/setup/years", "/setup/curriculum", "/setup/periods", "/setup/settings",
+  "/students", "/students/promote", "/students/settings",
+  "/classes", "/classes/timetable", "/classes/print", "/classes/conflicts", "/classes/settings",
+  "/teachers", "/teachers/schedule", "/teachers/load", "/teachers/settings",
+  "/results", "/results/settings",
+  "/leaves", "/leaves/settings",
+  "/plan", "/plan/settings",
+  "/attendance", "/attendance/settings",
+  "/fees", "/fees/settings",
   "/sync", "/sync/file", "/sync/auto", "/sync/log", "/sync/settings",
-  "/about", "/about/start", "/about/station", "/about/report", "/about/store", "/about/training", "/about/qc", "/about/roster",
-  "/about/sync", "/about/admin", "/about/data", "/about/tips", "/about/faq", "/about/support", "/about/settings",
 ];
 // Pages with an id in the URL are client pages: one saved copy serves every id.
-const TEMPLATES = [["/training/test/", "/training/test/_"], ["/station/page/", "/station/page/_"]];
-const EXTRA = ["/lab-logo.png", "/icon.svg", "/icon-192.png", "/icon-512.png", "/manifest.webmanifest"];
+const TEMPLATES = [];
+const EXTRA = ["/icon.svg", "/icon-192.png", "/icon-512.png", "/manifest.webmanifest"];
 
 self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", (event) => event.waitUntil(self.clients.claim()));

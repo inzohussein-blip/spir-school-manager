@@ -23,7 +23,7 @@ export function Letterhead({ title, subtitle, right, color, logo }: { title: str
     <div className="flex items-center justify-between gap-4 border-b-2 pb-3" style={{ borderColor: color }}>
       <div className="flex items-center gap-3">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={logo || "/lab-logo.png"} alt="" className="size-14 object-contain" />
+        {logo && <img src={logo} alt="" className="size-14 object-contain" />}
         <div>
           <div className="text-lg font-extrabold" style={{ color }}>{title}</div>
           {subtitle && <div className="text-xs text-gray-600">{subtitle}</div>}
