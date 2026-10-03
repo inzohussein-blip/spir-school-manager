@@ -17,7 +17,7 @@ const FACTS = [
 export default function SyncAutoPage() {
   return (
     <div className="flex max-w-4xl flex-col gap-5">
-      <PageHead icon={<Network />} title="المزامنة التلقائية" sub="حواسيب المختبر تتبادل تعديلاتها وحدها، عبر الإنترنت أو عبر شبكة المختبر المحلية." />
+      <PageHead icon={<Network />} title="المزامنة التلقائية" sub="حواسيب المدرسة تتبادل تعديلاتها وحدها، عبر الإنترنت أو عبر شبكة المدرسة المحلية." />
       <ul className="grid gap-2 sm:grid-cols-3">
         {FACTS.map((f) => (
           <li key={f.t} className="flex items-center gap-2.5 rounded-2xl border border-line bg-surface px-3 py-2.5 text-sm shadow-[var(--shadow-card)]">

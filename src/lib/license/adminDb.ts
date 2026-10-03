@@ -43,7 +43,7 @@ export function cleanFirstAdmin(v: unknown): FirstAdmin | null | "bad" {
   if (!a || typeof a !== "object" || (!a.username && !a.password)) return null;
   const username = String(a.username ?? "").trim(), password = String(a.password ?? "");
   if (!/^[\p{L}\p{N}._-]{2,40}$/u.test(username) || password.length < 6 || password.length > 200) return "bad";
-  return { username, password, full_name: String(a.full_name ?? "").trim().slice(0, 80) || "مدير المختبر" };
+  return { username, password, full_name: String(a.full_name ?? "").trim().slice(0, 80) || "مدير المدرسة" };
 }
 
 /** Check the code's saved database and keep the result for the owner's list. */
@@ -110,11 +110,11 @@ export async function linkAdminDb(id: string, conn: string | null, by: "owner" |
 
 /** Readable names for the panel's tables on the export's sheets (others keep their own name). */
 const TABLE_AR: Record<string, string> = {
-  patients: "المرضى", test_orders: "الطلبات", test_order_items: "فحوص الطلبات", test_results: "النتائج", test_catalog: "كتالوج الفحوصات",
+  patients: "الطلاب", test_orders: "الطلبات", test_order_items: "فحوص الطلبات", test_results: "النتائج", test_catalog: "كتالوج الفحوصات",
   invoices: "الفواتير", invoice_items: "بنود الفواتير", payments: "الدفعات", products: "المخزون", stock_movements: "حركة المخزون",
   suppliers: "الموردون", purchase_orders: "أوامر الشراء", purchase_order_items: "بنود الشراء", expenses: "المصروفات", staff: "الكادر",
   shifts: "المناوبات", cover_shifts: "البدلاء", referrers: "الأطباء المحيلون", appointments: "المواعيد", reports: "التقارير",
-  qc_runs: "السيطرة النوعية", app_users: "المستخدمون", audit_log: "سجل التدقيق", lab_settings: "إعدادات المختبر", whatsapp_log: "سجل الرسائل",
+  qc_runs: "السيطرة النوعية", app_users: "المستخدمون", audit_log: "سجل التدقيق", lab_settings: "إعدادات المدرسة", whatsapp_log: "سجل الرسائل",
 };
 
 /** The owner's export of a lab's admin-panel data as an Excel workbook (a sheet per table; account
@@ -130,7 +130,7 @@ export async function exportLabData(id: string): Promise<{ ok: true; file: strin
     let rows = 0;
     const sheets: Sheet[] = [{
       name: "معلومات",
-      rows: [["المختبر", lab], ["تاريخ التصدير", date], ["المصدر", "conn" in t.where ? "قاعدة المختبر الخاصة" : "قسمه في قاعدة الموقع"], [],
+      rows: [["المدرسة", lab], ["تاريخ التصدير", date], ["المصدر", "conn" in t.where ? "قاعدة المدرسة الخاصة" : "قسمه في قاعدة الموقع"], [],
         ["الجدول", "عدد السجلات", "ملاحظة"],
         ...tables.map((x) => [TABLE_AR[x.name] ?? x.name, x.rows.length, x.cut ? "أول 50000 سجل فقط" : ""])],
     }];

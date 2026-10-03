@@ -101,7 +101,7 @@ function currentLink(): Link | null {
   return companySyncOn() ? { kind: "company", source: "company" } : null;
 }
 const fingerprint = (l: Link) => l.kind === "company" ? "company" : l.kind === "postgres" ? `pg|${l.host}` : `sb|${l.cfg.url}|${l.cfg.email}`;
-const info = (l: Link): LinkInfo => l.kind === "company" ? { kind: "company", where: "مكان المختبر على الخادم", source: "company" } : l.kind === "postgres"
+const info = (l: Link): LinkInfo => l.kind === "company" ? { kind: "company", where: "مكان المدرسة على الخادم", source: "company" } : l.kind === "postgres"
   ? { kind: "postgres", where: l.host, source: l.source }
   : { kind: "supabase", where: (() => { try { return new URL(l.cfg.url).host; } catch { return l.cfg.url; } })(), source: l.source, email: l.cfg.email };
 const newNode = () => (typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`);

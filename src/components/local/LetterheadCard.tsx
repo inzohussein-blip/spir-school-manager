@@ -22,7 +22,7 @@ function labStationLetterhead(): Partial<LetterheadValue> | null {
 
 /**
  * A station's printed letterhead (procurement, staff, quality): name, sub-title, footer line and
- * logo. Each field saves when you leave it. «نسخ من محطة المختبر» fills them once from the lab
+ * logo. Each field saves when you leave it. «نسخ من بيانات المدرسة» fills them once from the lab
  * station on this device; the stations stay separate afterwards.
  */
 export function LetterheadCard({ heading, value, onSave, nameLabel = "اسم الجهة", children }: {
@@ -51,9 +51,9 @@ export function LetterheadCard({ heading, value, onSave, nameLabel = "اسم ا�
       <div className="mb-1 flex flex-wrap items-center gap-2 text-sm font-semibold">
         <FileText className="size-4" /> {heading}
         {lab && (
-          <button type="button" onClick={() => { const next = { ...v, ...lab } as LetterheadValue; setV(next); onSave(lab); setMsg("نُسخت ترويسة محطة المختبر."); }}
+          <button type="button" onClick={() => { const next = { ...v, ...lab } as LetterheadValue; setV(next); onSave(lab); setMsg("نُسخت ترويسة محطة المدرسة."); }}
             className="ms-auto inline-flex items-center gap-1 rounded-lg border border-line px-2.5 py-1 text-xs font-normal hover:bg-canvas">
-            <Copy className="size-3.5" /> نسخ من محطة المختبر
+            <Copy className="size-3.5" /> نسخ من بيانات المدرسة
           </button>
         )}
       </div>
@@ -66,7 +66,7 @@ export function LetterheadCard({ heading, value, onSave, nameLabel = "اسم ا�
         <div className="text-sm font-medium sm:col-span-2">الشعار
           <div className="mt-1 flex flex-wrap items-center gap-3">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={v.logo || "/lab-logo.png"} alt="الشعار" className="size-14 rounded-lg border border-line bg-white object-contain p-1" data-testid="letterhead-logo" />
+            <img src={v.logo || "/icon.svg"} alt="الشعار" className="size-14 rounded-lg border border-line bg-white object-contain p-1" data-testid="letterhead-logo" />
             <input ref={file} type="file" accept="image/png,image/jpeg,image/webp" aria-label="ملف الشعار" className="hidden"
               onChange={async (e) => {
                 const f = e.target.files?.[0]; e.target.value = "";

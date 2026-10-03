@@ -12,7 +12,7 @@ export const SYNC_ERRORS: Record<string, string> = {
   no_table: "الجدول غير موجود في قاعدة البيانات — نفّذ سكربت الإعداد في SQL Editor أولاً.",
   unreachable: "تعذّر الوصول إلى قاعدة البيانات — تحقّق من العنوان والاتصال.",
   db: "رفضت قاعدة البيانات الطلب.",
-  no_code: "PostgreSQL يحتاج أن يكون هذا الجهاز مفعّلاً برمز مختبر.",
+  no_code: "PostgreSQL يحتاج أن يكون هذا الجهاز مفعّلاً برمز مدرسة.",
   offline: "لا يوجد اتصال بالإنترنت — تُكمل المزامنة وحدها عند عودته.",
   private_host: "عنوان قاعدة البيانات داخلي — استخدم عنواناً يصل إليه الإنترنت.",
   bad_url: "رابط الاتصال غير صحيح.",
@@ -24,7 +24,7 @@ export const SYNC_ERRORS: Record<string, string> = {
 const t = (n?: number) => (n ? new Date(n).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) : "—");
 const input = "w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm outline-none focus:border-brand";
 
-/** «قاعدة بيانات المختبر»: link this device to the lab's database and follow the sync. */
+/** «قاعدة بيانات المدرسة»: link this device to the lab's database and follow the sync. */
 /** The lab database window in a station's settings — only when station sync is switched on. */
 export function SyncPanel() {
   return STATION_SYNC ? <SyncPanelInner /> : null;
@@ -68,8 +68,8 @@ function SyncPanelInner() {
   );
   const join = (mode: JoinMode) => {
     const warn = mode === "replace"
-      ? "ستُستبدل بيانات هذا الجهاز ببيانات المختبر. تُحفظ نسخة من بيانات الجهاز الحالية ويمكن استرجاعها من هنا. متابعة؟"
-      : "ستُضاف بيانات هذا الجهاز إلى بيانات المختبر (وحيث يوجد السجل نفسه في الاثنين تُعتمد نسخة المختبر). قد تتكرر القوائم الافتراضية (الفحوص، الورديات…) إن أُنشئت على كل جهاز. متابعة؟";
+      ? "ستُستبدل بيانات هذا الجهاز ببيانات المدرسة. تُحفظ نسخة من بيانات الجهاز الحالية ويمكن استرجاعها من هنا. متابعة؟"
+      : "ستُضاف بيانات هذا الجهاز إلى بيانات المدرسة (وحيث يوجد السجل نفسه في الاثنين تُعتمد نسخة المدرسة). قد تتكرر القوائم الافتراضية (الفحوص، الورديات…) إن أُنشئت على كل جهاز. متابعة؟";
     if (!confirm(warn)) return;
     void run(() => m!.join(mode), () => "تم الربط ✓");
   };
@@ -80,10 +80,10 @@ function SyncPanelInner() {
 
   return (
     <div id="lab-db" data-testid="sync-panel" className="mt-4 rounded-2xl border border-line bg-surface p-5 shadow-[var(--shadow-card)]">
-      <div className="mb-1 flex items-center gap-2 text-sm font-semibold"><Database className="size-4" /> قاعدة بيانات المختبر (مزامنة الأجهزة)</div>
+      <div className="mb-1 flex items-center gap-2 text-sm font-semibold"><Database className="size-4" /> قاعدة بيانات المدرسة (مزامنة الأجهزة)</div>
       <p className="mb-3 text-xs text-muted">
-        يبقى كل جهاز يعمل ويحفظ على نفسه حتى بدون إنترنت، ويتبادل التعديلات مع أجهزة المختبر الأخرى عبر قاعدة بيانات خاصة بالمختبر (Supabase أو أي PostgreSQL).
-        تُزامَن النصوص فقط — الصور (كشعار المختبر المرفوع) تبقى على الجهاز الذي أُضيفت فيه.
+        يبقى كل جهاز يعمل ويحفظ على نفسه حتى بدون إنترنت، ويتبادل التعديلات مع أجهزة المدرسة الأخرى عبر قاعدة بيانات خاصة بالمدرسة (Supabase أو أي PostgreSQL).
+        تُزامَن النصوص فقط — الصور (كشعار المدرسة المرفوع) تبقى على الجهاز الذي أُضيفت فيه.
       </p>
 
       {st.state === "unsupported" && <p className="text-sm text-amber-700">المزامنة غير متاحة في هذا المتصفح (نافذة خاصة أو تخزين محظور).</p>}
@@ -95,7 +95,7 @@ function SyncPanelInner() {
             <span className="font-medium">{st.link!.kind === "postgres" ? "PostgreSQL" : "Supabase"}</span>
             <span dir="ltr" className="font-mono text-xs text-muted">{st.link!.where}</span>
             {st.link!.email && <span dir="ltr" className="text-xs text-muted">({st.link!.email})</span>}
-            <span className="rounded-full bg-canvas px-2 py-0.5 text-[11px] text-muted">{st.link!.source === "code" ? "من صفحة الرموز / رمز المختبر" : "من هذا الجهاز"}</span>
+            <span className="rounded-full bg-canvas px-2 py-0.5 text-[11px] text-muted">{st.link!.source === "code" ? "من صفحة الرموز / رمز المدرسة" : "من هذا الجهاز"}</span>
           </div>
           <p className="text-xs text-muted" data-testid="sync-state">
             {st.state === "syncing" ? "جارٍ المزامنة…" : st.state === "needs_join" ? "بانتظار اختيارك (بالأسفل)." : st.state === "error" ? <span className="text-red-700">{err(st.error)}</span> : <>آخر مزامنة: <span dir="ltr">{t(st.lastSync)}</span></>}
@@ -110,10 +110,10 @@ function SyncPanelInner() {
 
           {st.state === "needs_join" && (
             <div className="rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900" data-testid="sync-join">
-              <p className="mb-2">في قاعدة بيانات المختبر <b dir="ltr">{st.remoteRecords ?? 0}</b> سجلاً من أجهزة أخرى. كيف يُربط هذا الجهاز؟</p>
+              <p className="mb-2">في قاعدة بيانات المدرسة <b dir="ltr">{st.remoteRecords ?? 0}</b> سجلاً من أجهزة أخرى. كيف يُربط هذا الجهاز؟</p>
               {st.error && st.error !== "offline" && <p className="mb-2 text-xs text-red-700">{err(st.error)}</p>}
               <div className="flex flex-wrap gap-2">
-                <button disabled={busy} onClick={() => join("replace")} className="rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-700 disabled:opacity-50">استخدام بيانات المختبر (لجهاز جديد)</button>
+                <button disabled={busy} onClick={() => join("replace")} className="rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-700 disabled:opacity-50">استخدام بيانات المدرسة (لجهاز جديد)</button>
                 <button disabled={busy} onClick={() => join("merge")} className="rounded-lg border border-amber-400 px-3 py-1.5 text-xs font-semibold hover:bg-amber-100 disabled:opacity-50">دمج بيانات هذا الجهاز معها</button>
               </div>
             </div>
@@ -132,7 +132,7 @@ function SyncPanelInner() {
       )}
 
       {st.hasSnapshot && (
-        <button disabled={busy} onClick={() => { if (confirm("إرجاع بيانات هذا الجهاز كما كانت قبل استبدالها ببيانات المختبر، وإلغاء الربط؟")) void run(async () => ({ ok: await m!.restoreSnapshot() }), () => "أُعيدت بيانات الجهاز السابقة."); }} className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-line px-3 py-1.5 text-xs hover:bg-canvas disabled:opacity-50">
+        <button disabled={busy} onClick={() => { if (confirm("إرجاع بيانات هذا الجهاز كما كانت قبل استبدالها ببيانات المدرسة، وإلغاء الربط؟")) void run(async () => ({ ok: await m!.restoreSnapshot() }), () => "أُعيدت بيانات الجهاز السابقة."); }} className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-line px-3 py-1.5 text-xs hover:bg-canvas disabled:opacity-50">
           <RotateCcw className="size-3.5" /> استرجاع بيانات الجهاز قبل الربط
         </button>
       )}
@@ -148,9 +148,9 @@ function SyncPanelInner() {
           {kind === "supabase" ? (
             <div className="space-y-2">
               <ol className="list-inside list-decimal space-y-0.5 text-xs text-muted">
-                <li>أنشئ مشروعاً في Supabase خاصاً بالمختبر.</li>
+                <li>أنشئ مشروعاً في Supabase خاصاً بالمدرسة.</li>
                 <li>من SQL Editor الصق سكربت الإعداد ونفّذه مرة واحدة.</li>
-                <li>من Authentication → Users أضف مستخدماً للمختبر (بريد وكلمة مرور).</li>
+                <li>من Authentication → Users أضف مستخدماً للمدرسة (بريد وكلمة مرور).</li>
                 <li>من Project Settings → API انسخ Project URL و anon key.</li>
               </ol>
               <button type="button" onClick={() => { void navigator.clipboard?.writeText(SUPABASE_SQL).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); }); }} className="inline-flex items-center gap-1.5 rounded-lg border border-line px-3 py-1.5 text-xs hover:bg-canvas">
@@ -159,15 +159,15 @@ function SyncPanelInner() {
               <div className="grid gap-2 sm:grid-cols-2">
                 <input dir="ltr" aria-label="Project URL" placeholder="https://xxxx.supabase.co" value={f.url} onChange={(e) => setF({ ...f, url: e.target.value })} className={input} />
                 <input dir="ltr" aria-label="anon key" placeholder="anon key" value={f.anonKey} onChange={(e) => setF({ ...f, anonKey: e.target.value })} className={input} />
-                <input dir="ltr" aria-label="بريد مستخدم المختبر" placeholder="lab@example.com" value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} className={input} />
-                <input dir="ltr" type="password" aria-label="كلمة مرور مستخدم المختبر" placeholder="••••••••" value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} className={input} />
+                <input dir="ltr" aria-label="بريد مستخدم المدرسة" placeholder="lab@example.com" value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} className={input} />
+                <input dir="ltr" type="password" aria-label="كلمة مرور مستخدم المدرسة" placeholder="••••••••" value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} className={input} />
               </div>
-              <p className="text-[11px] text-muted">تُحفظ هذه البيانات على هذا الجهاز فقط. لربط كل أجهزة المختبر مرة واحدة يضبطها صاحب الرموز من صفحة الرموز.</p>
+              <p className="text-[11px] text-muted">تُحفظ هذه البيانات على هذا الجهاز فقط. لربط كل أجهزة المدرسة مرة واحدة يضبطها صاحب الرموز من صفحة الرموز.</p>
             </div>
           ) : (
             <div className="space-y-2">
               <input dir="ltr" aria-label="رابط الاتصال" placeholder="postgresql://user:password@host:5432/db" value={f.conn} onChange={(e) => setF({ ...f, conn: e.target.value })} className={input} />
-              <p className="text-[11px] text-muted">أي PostgreSQL (Neon أو Supabase أو Railway أو خادمك). يُحفظ الرابط مشفّراً على الخادم ولا يعود إلى الجهاز، وينشئ الخادم الجدول بنفسه. يحتاج أن يكون الجهاز مفعّلاً برمز مختبر.</p>
+              <p className="text-[11px] text-muted">أي PostgreSQL (Neon أو Supabase أو Railway أو خادمك). يُحفظ الرابط مشفّراً على الخادم ولا يعود إلى الجهاز، وينشئ الخادم الجدول بنفسه. يحتاج أن يكون الجهاز مفعّلاً برمز مدرسة.</p>
             </div>
           )}
           <button data-testid="sync-link-btn" disabled={busy || !valid || !m} onClick={link} className="inline-flex items-center gap-1.5 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-50">

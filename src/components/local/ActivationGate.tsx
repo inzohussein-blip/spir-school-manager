@@ -67,7 +67,7 @@ function CodeForm({ onDone, cta = "تفعيل" }: { onDone: () => void; cta?: st
   return (
     <form onSubmit={submit}>
       <input ref={ref} value={code} onChange={(e) => { setCode(e.target.value.toUpperCase()); setErr(""); }}
-        autoComplete="off" spellCheck={false} dir="ltr" placeholder="XXXX-XXXX-XXXX" aria-label="رمز المختبر"
+        autoComplete="off" spellCheck={false} dir="ltr" placeholder="XXXX-XXXX-XXXX" aria-label="رمز المدرسة"
         className={`w-full rounded-lg border bg-surface px-3 py-2.5 text-center font-mono text-base tracking-widest outline-none focus:border-brand ${err ? "border-red-400" : "border-line"}`} />
       <button disabled={busy || !code.trim()}
         className="mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60">
@@ -76,7 +76,7 @@ function CodeForm({ onDone, cta = "تفعيل" }: { onDone: () => void; cta?: st
       {err && <p className="mt-2 text-xs text-red-600">{err}</p>}
       {cta === "تفعيل" && cachedSignup() && (
         <a href="/signup" data-testid="signup-link" className="mt-3 block text-center text-xs font-semibold text-brand-dark hover:underline">
-          ليس لديك رمز؟ سجّل مختبرك وجرّب مجاناً
+          ليس لديك رمز؟ سجّل مدرستك وجرّب مجاناً
         </a>
       )}
     </form>
@@ -119,7 +119,7 @@ export function ActivationGate({ module }: { module?: LicenseModule }) {
 
   if (state.kind === "need") return (
     <Screen icon={<Lock className="size-6" />} title="تفعيل المحطات">
-      <p className="mb-4 mt-1 text-sm text-muted">أدخل رمز مختبرك لتفعيل المحطات على هذا الجهاز. يُطلب مرة واحدة ويحتاج اتصالاً بالإنترنت.</p>
+      <p className="mb-4 mt-1 text-sm text-muted">أدخل رمز مدرستك لتفعيل المحطات على هذا الجهاز. يُطلب مرة واحدة ويحتاج اتصالاً بالإنترنت.</p>
       <CodeForm onDone={done} />
       {!navigator.onLine && <p className="mt-2 inline-flex items-center gap-1 text-xs text-amber-700"><WifiOff className="size-3.5" /> لا يوجد اتصال بالإنترنت الآن.</p>}
     </Screen>
@@ -136,7 +136,7 @@ export function ActivationGate({ module }: { module?: LicenseModule }) {
     return (
       <Screen icon={state.reason === "clock" ? <Clock className="size-6" /> : <Lock className="size-6" />} title="المحطات مقفلة">
         <p className="mb-1 mt-1 text-sm text-muted">{msg}</p>
-        <p className="mb-4 text-xs text-muted">بيانات المختبر محفوظة على هذا الجهاز وتعود كاملة بعد التجديد.</p>
+        <p className="mb-4 text-xs text-muted">بيانات المدرسة محفوظة على هذا الجهاز وتعود كاملة بعد التجديد.</p>
         {state.reason !== "clock" && <CodeForm onDone={done} cta="تفعيل رمز جديد" />}
         <button onClick={checkNow} disabled={checking} className="mt-2 inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-line px-4 py-2 text-sm hover:bg-canvas disabled:opacity-60">
           <RefreshCw className={`size-4 ${checking ? "animate-spin" : ""}`} /> تحقق الآن (بعد التمديد)
@@ -161,7 +161,7 @@ export function ActivationGate({ module }: { module?: LicenseModule }) {
   // eslint-disable-next-line react-hooks/purity
   const left = state.kind === "grace" || state.kind === "ok" ? Math.ceil((state.until - Date.now()) / DAY) : 0;
   const notice =
-    state.kind === "grace" ? `هذا الجهاز يعمل بالتفعيل السابق حتى ${fmt(state.until)} (${left} يوم) — أدخل رمز مختبرك قبل ذلك.`
+    state.kind === "grace" ? `هذا الجهاز يعمل بالتفعيل السابق حتى ${fmt(state.until)} (${left} يوم) — أدخل رمز مدرستك قبل ذلك.`
     : state.kind === "ok" && left <= WARN_DAYS ? `ينتهي رمز «${state.lab}» خلال ${left} يوم (${fmt(state.until)}) — تواصل مع المزوّد للتجديد.`
     : "";
   return (
@@ -188,8 +188,8 @@ export function ActivationGate({ module }: { module?: LicenseModule }) {
         </div>
       )}
       {openForm && (
-        <Screen icon={<KeyRound className="size-6" />} title="رمز المختبر">
-          <p className="mb-4 mt-1 text-sm text-muted">أدخل الرمز الذي وصلك لمختبرك.</p>
+        <Screen icon={<KeyRound className="size-6" />} title="رمز المدرسة">
+          <p className="mb-4 mt-1 text-sm text-muted">أدخل الرمز الذي وصلك لمدرستك.</p>
           <CodeForm onDone={done} />
           <button onClick={() => setOpenForm(false)} className="mt-2 w-full rounded-lg border border-line px-4 py-2 text-sm hover:bg-canvas">لاحقاً</button>
         </Screen>

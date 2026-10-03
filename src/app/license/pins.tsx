@@ -64,13 +64,13 @@ export function PinSection({ rows, focus, onFocused, change }: { rows: PinRow[];
         <Stat label="الخاصية مخفية" value={hidden} warn={hidden > 0} />
       </div>
       <p className="mb-4 rounded-xl bg-surface px-4 py-3 text-xs leading-relaxed text-muted ring-1 ring-line">
-        لكل محطة رمزها الخاص. يستطيع المختبر تفعيل رمز واحد لكل محطة من إعداداتها، أما <b className="text-ink">عدة رموز للمحطة نفسها</b> (مثلاً رمز لكل موظف) فمن هنا فقط.
-        «إخفاء الخاصية» يوقف طلب الرمز في كل محطات المختبر ويخفي بطاقته من الإعدادات، و«إظهار» يعيدها كما كانت. يُطبَّق كل تغيير عند اتصال الجهاز التالي بالإنترنت، أو فوراً بـ«نسيت الرمز؟ ← تحديث من المزوّد».
+        لكل محطة رمزها الخاص. يستطيع المدرسة تفعيل رمز واحد لكل محطة من إعداداتها، أما <b className="text-ink">عدة رموز للمحطة نفسها</b> (مثلاً رمز لكل موظف) فمن هنا فقط.
+        «إخفاء الخاصية» يوقف طلب الرمز في كل محطات المدرسة ويخفي بطاقته من الإعدادات، و«إظهار» يعيدها كما كانت. يُطبَّق كل تغيير عند اتصال الجهاز التالي بالإنترنت، أو فوراً بـ«نسيت الرمز؟ ← تحديث من المزوّد».
         لا يُحفظ الرمز نفسه، بل بصمته فقط — فلا يمكن عرضه بعد الحفظ.
       </p>
       <label className="relative mb-3 block">
         <Search className="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted" />
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="بحث باسم المختبر أو الملاحظة…" aria-label="بحث في رموز الدخول" className={`${inp} ps-9`} />
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="بحث باسم المدرسة أو الملاحظة…" aria-label="بحث في رموز الدخول" className={`${inp} ps-9`} />
       </label>
       <div className="mb-2 text-xs text-muted">المعروض: {list.length} من {rows.length}</div>
       <div className="flex flex-col gap-3">
@@ -177,7 +177,7 @@ function PinStationBox({ r, st, change }: { r: PinRow; st: ReturnType<typeof sta
             {cur ? (
               <>{cur.pins ? `${pins.length} ${pins.length === 1 ? "رمز" : "رموز"}` : "أُزيل الرمز"} — {fmtDateTime(cur.at)} — {seen >= cur.at
                 ? <span className="text-brand-dark">وصل الجهاز</span> : <span className="text-amber-700">بانتظار اتصال الجهاز</span>}</>
-            ) : "لم يُعيَّن من هنا — للمختبر أن يفعّل رمزه من إعدادات المحطة"}
+            ) : "لم يُعيَّن من هنا — للمدرسة أن يفعّل رمزه من إعدادات المحطة"}
           </div>
         </div>
         {pins.length > 0 && (

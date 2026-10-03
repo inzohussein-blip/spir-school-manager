@@ -25,7 +25,7 @@ export const PROVIDERS: Provider[] = [
     site: "https://console.neon.tech",
     siteLabel: "console.neon.tech",
     steps: [
-      "ادخل إلى console.neon.tech وأنشئ مشروعاً جديداً (Create project) باسم المختبر، واختر أقرب منطقة (Region).",
+      "ادخل إلى console.neon.tech وأنشئ مشروعاً جديداً (Create project) باسم المدرسة، واختر أقرب منطقة (Region).",
       "من لوحة المشروع اضغط Connect.",
       "فعّل Connection pooling (يظهر ‎-pooler‎ في العنوان).",
       "انسخ الرابط الكامل الذي يبدأ بـ postgresql://‎ (فيه اسم المستخدم وكلمة المرور) والصقه هنا.",
@@ -39,7 +39,7 @@ export const PROVIDERS: Provider[] = [
     site: "https://supabase.com/dashboard",
     siteLabel: "supabase.com/dashboard",
     steps: [
-      "ادخل إلى supabase.com/dashboard وأنشئ مشروعاً جديداً (New project) للمختبر، واحفظ كلمة مرور قاعدة البيانات التي تكتبها.",
+      "ادخل إلى supabase.com/dashboard وأنشئ مشروعاً جديداً (New project) للمدرسة، واحفظ كلمة مرور قاعدة البيانات التي تكتبها.",
       "اضغط Connect أعلى صفحة المشروع.",
       "اختر Transaction pooler (المنفذ 6543) — الاتصال المباشر db.xxxx.supabase.co لا يعمل غالباً من Vercel.",
       "انسخ الرابط، وضع كلمة مرور القاعدة مكان [YOUR-PASSWORD]، ثم الصقه هنا.",
@@ -67,7 +67,7 @@ export const PROVIDERS: Provider[] = [
     site: "",
     siteLabel: "",
     steps: [
-      "أنشئ قاعدة بيانات فارغة للمختبر ومستخدماً له صلاحية إنشاء الجداول.",
+      "أنشئ قاعدة بيانات فارغة للمدرسة ومستخدماً له صلاحية إنشاء الجداول.",
       "تأكّد أن الخادم يقبل الاتصال من الإنترنت (العناوين الداخلية مرفوضة).",
       "الصق رابط الاتصال، أو املأ الحقول ليُكتب الرابط تلقائياً.",
       "لخادم بشهادة TLS ذاتية اختر «بدون تحقق من الشهادة».",

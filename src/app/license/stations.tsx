@@ -19,7 +19,7 @@ export const MODULE_META: Record<LicenseModule, { icon: LucideIcon; color: strin
 export const ALWAYS_STATIONS: { id: string; label: string; short: string; note: string; path: string; icon: LucideIcon; color: string; desc: string; scope: "code" | "all" }[] = [
   {
     id: "sync", label: "محطة المزامنة", short: "مع كل رمز", note: "تعمل على كل حاسوب مفعّل برمز", path: "/sync", icon: RefreshCw, color: "#7c3aed", scope: "code",
-    desc: "نقل البيانات بين حواسيب المختبر نفسه: بملف، أو تلقائياً عبر الإنترنت أو الشبكة المحلية.",
+    desc: "نقل البيانات بين حواسيب المدرسة نفسه: بملف، أو تلقائياً عبر الإنترنت أو الشبكة المحلية.",
   },
   {
     id: "about", label: "عن التطبيق", short: "للجميع", note: "مفتوحة بلا رمز — شرح فقط ولا تحفظ بيانات", path: "/about", icon: Info, color: "#9333ea", scope: "all",

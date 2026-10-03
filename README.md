@@ -38,4 +38,4 @@ BASE=http://localhost:3000 node tests/e2e/school.flow.cjs   # اختبار ال�
 - `src/lib/school/store.ts` — «الملف المدرسي» المشترك (العام، الصفوف، المواد، الحصص، الطلاب، الشعب، الجدول، المدرسون) وكشف التعارض والنسخ الاحتياطي.
 - `src/components/school/` — إطار المحطة (`StationFrame`: الترخيص والرمز السري والمظهر)، القائمة الجانبية، عناصر الواجهة، الطباعة والجدول.
 - إضافة محطة: سجّلها في `stations.ts` و`lib/license/modules.ts` و`SchoolSidebar.tsx`، ثم أضف `src/app/<id>/layout.tsx` بـ `StationFrame`.
-- بقايا من مشروع المختبرات تحتاج مراجعة لاحقاً: واجهات `/api/license` وملفات `supabase/migrations` و`docs/PROJECT_REFERENCE.md` ونصوص `/license` والمزامنة وصفحة الشروط (`WelcomeFooter`)؛ وصفحة «عن التطبيق» حُذفت وستُعاد كتابتها.
+- بقايا من مشروع المختبرات تحتاج مراجعة لاحقاً: واجهات `/api/license` وملفات `supabase/migrations` و`docs/PROJECT_REFERENCE.md` ونصوص `/license` والمزامنة وصفحة الشروط (`WelcomeFooter`)؛ وملاحظة: ما زالت لوحة إدارة الإنترنت (المرحلة 8) غير مبنية، وجداول `lib/license/adminDb.ts` بأسماء المختبرات.

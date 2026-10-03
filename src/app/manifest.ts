@@ -2,13 +2,13 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Spir Lab Manager — إدارة المختبر",
-    short_name: "المختبر",
-    description: "إدارة مختبر التحاليل الطبية",
+    name: "سبير — إدارة المدارس",
+    short_name: "سبير",
+    description: "إدارة المدارس الحكومية والأهلية",
     start_url: "/",
     display: "standalone",
     background_color: "#f8fafc",
-    theme_color: "#0d9488",
+    theme_color: "#1d4ed8",
     dir: "rtl",
     lang: "ar",
     icons: [

@@ -49,7 +49,7 @@ export default function SyncOverview() {
         <div className="relative flex flex-wrap items-center gap-4">
           <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-white/20">{state.icon}</span>
           <div className="min-w-0 flex-1">
-            <div className="text-xs font-medium opacity-80">محطة المزامنة — بين حواسيب مختبرك</div>
+            <div className="text-xs font-medium opacity-80">محطة المزامنة — بين حواسيب مدرستك</div>
             <h1 className="text-2xl font-extrabold">{state.title}</h1>
             <p className="mt-0.5 text-sm opacity-90">{state.sub}</p>
           </div>

@@ -55,14 +55,14 @@ export function LocalDataGate({ children }: { children: ReactNode }) {
       {arrived > 0 && (
         <div role="status" data-testid="sync-arrived" className="no-print fixed bottom-4 right-4 z-[80] flex max-w-sm items-center gap-2 rounded-xl border border-line bg-surface px-3 py-2 text-sm shadow-[var(--shadow-pop)]">
           <RefreshCw className="size-4 shrink-0 text-brand" />
-          <span className="flex-1">وصلت تحديثات من أجهزة المختبر الأخرى</span>
+          <span className="flex-1">وصلت تحديثات من أجهزة المدرسة الأخرى</span>
           <button onClick={() => { setArrived(0); setView((v) => v + 1); }} className="rounded-md bg-brand px-2.5 py-1 text-xs font-semibold text-white hover:bg-brand-dark">عرضها</button>
         </div>
       )}
       {needsJoin && !location.pathname.endsWith("/settings") && (
         <div role="status" data-testid="sync-needs-join" className="no-print fixed bottom-4 left-4 z-[80] flex max-w-sm items-center gap-2 rounded-xl border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900 shadow-[var(--shadow-pop)]">
           <Database className="size-4 shrink-0" />
-          <span className="flex-1">قاعدة بيانات المختبر جاهزة — اختر كيف يُربط هذا الجهاز بها.</span>
+          <span className="flex-1">قاعدة بيانات المدرسة جاهزة — اختر كيف يُربط هذا الجهاز بها.</span>
           <a href={settings} className="rounded-md bg-amber-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-amber-700">الإعدادات</a>
         </div>
       )}

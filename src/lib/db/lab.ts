@@ -310,7 +310,7 @@ export async function resetLabAdmin(w: Where, username: string, password: string
     const store = await storeOf(w);
     const r = await store.query(
       `insert into app_users (username, password_hash, full_name, role, is_active)
-       values ($1, crypt($2, gen_salt('bf')), 'مدير المختبر', 'admin', true)
+       values ($1, crypt($2, gen_salt('bf')), 'مدير المدرسة', 'admin', true)
        on conflict (username) do update set password_hash = excluded.password_hash, role = 'admin', is_active = true
        returning (xmax = 0) as created`,
       [username, password]

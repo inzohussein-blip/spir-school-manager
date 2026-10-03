@@ -22,6 +22,6 @@ function badges(): SideBadges {
 }
 
 export function SyncSidebar() {
-  return <AppSidebar appName="محطة المزامنة" appTag="بين حواسيب المختبر" icon={RefreshCw} sections={SECTIONS} getBadges={badges}
-    footerNote="تجمع بيانات المحطات (عدا ما تختاره للحاسوب وحده) بين حواسيب المختبر نفسه فقط." />;
+  return <AppSidebar appName="محطة المزامنة" appTag="بين حواسيب المدرسة" icon={RefreshCw} sections={SECTIONS} getBadges={badges}
+    footerNote="تجمع بيانات المحطات (عدا ما تختاره للحاسوب وحده) بين حواسيب المدرسة نفسه فقط." />;
 }

@@ -52,7 +52,7 @@ export default function SyncSettings() {
           badge: excluded.length ? `${excluded.length} على الحاسوب وحده` : undefined,
           content: (
             <section className={card} data-testid="sync-stations">
-              <div className="mb-1 font-bold">ما يُشارك مع حواسيب المختبر</div>
+              <div className="mb-1 font-bold">ما يُشارك مع حواسيب المدرسة</div>
               <p className="mb-3 text-xs text-muted">المحطة غير المختارة تبقى على هذا الحاسوب وحده: لا تُرسل بياناتها ولا تُستقبل، لا بالمزامنة التلقائية ولا بملف المزامنة.</p>
               <div className="grid gap-2 sm:grid-cols-2">
                 {SYNC_STATIONS.map(([prefix, label]) => {
@@ -64,7 +64,7 @@ export default function SyncSettings() {
                       {Icon && <span className="grid size-8 shrink-0 place-items-center rounded-lg text-white" style={{ background: m.color, opacity: on ? 1 : 0.45 }}><Icon className="size-4" /></span>}
                       <span className="min-w-0 flex-1">
                         <span className="block">{label}</span>
-                        <span className="block text-[11px] text-muted">{on ? "تُشارك مع حواسيب المختبر" : "على هذا الحاسوب وحده"}</span>
+                        <span className="block text-[11px] text-muted">{on ? "تُشارك مع حواسيب المدرسة" : "على هذا الحاسوب وحده"}</span>
                       </span>
                       <input type="checkbox" checked={on} onChange={(e) => toggle(prefix, e.target.checked)} aria-label={`مشاركة ${label}`} className="size-4 accent-[var(--color-brand)]" />
                     </label>

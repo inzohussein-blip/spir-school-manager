@@ -76,8 +76,8 @@ export function WelcomeAccount() {
           className="absolute left-0 top-full mt-2 w-80 rounded-2xl border border-line bg-surface p-4 text-sm shadow-[var(--shadow-pop)]">
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
-              <div className="text-[11px] text-muted">المختبر</div>
-              <div className="truncate font-bold">{lab || "تفعيل سابق (بلا رمز مختبر)"}</div>
+              <div className="text-[11px] text-muted">المدرسة</div>
+              <div className="truncate font-bold">{lab || "تفعيل سابق (بلا رمز مدرسة)"}</div>
             </div>
             <span className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold ${toneCls}`}>{status}</span>
           </div>
@@ -115,7 +115,7 @@ export function WelcomeAccount() {
           {(tone !== "teal") && (
             <p className="mt-3 flex items-start gap-1.5 rounded-lg bg-amber-50 px-2.5 py-2 text-xs text-amber-800">
               <ShieldAlert className="mt-0.5 size-3.5 shrink-0" />
-              <span>{state.kind === "grace" ? "أدخل رمز مختبرك قبل انتهاء التفعيل السابق." : "للتجديد تواصل مع المزوّد."}{info.contact ? ` ${info.contact}` : ""}</span>
+              <span>{state.kind === "grace" ? "أدخل رمز مدرستك قبل انتهاء التفعيل السابق." : "للتجديد تواصل مع المزوّد."}{info.contact ? ` ${info.contact}` : ""}</span>
             </p>
           )}
 

@@ -86,7 +86,7 @@ const amount = (p: string) => { const n = Number(p.replace(/[^\d.]/g, "")); retu
 const EVENT_LABEL: Record<string, string> = {
   created: "إنشاء الرمز", activated: "تفعيل على جهاز", moved: "تفعيل على جهاز جديد", extended: "تمديد", stopped: "إيقاف",
   resumed: "إعادة تفعيل", device_reset: "فك ربط الجهاز", modules: "تغيير المحطات", renamed: "تعديل الاسم",
-  paid: "تسجيل الدفع", unpaid: "إلغاء الدفع", message: "رسالة للمختبر", new_code: "رمز جديد", sync: "قاعدة بيانات المختبر",
+  paid: "تسجيل الدفع", unpaid: "إلغاء الدفع", message: "رسالة للمدرسة", new_code: "رمز جديد", sync: "قاعدة بيانات المدرسة",
   admin_db: "قاعدة لوحة الإدارة", device_added: "جهاز إضافي", device_removed: "إزالة جهاز", max_devices: "عدد الأجهزة",
   data_export: "تصدير البيانات", pin: "رموز الدخول",
 };
@@ -95,7 +95,7 @@ const eventDetail = (e: Ev) => (e.kind === "modules" ? e.detail.split(",").filte
 type Section = "codes" | "new" | "stations" | "pin" | "databases" | "settings" | "errors" | "security" | "backup" | "system";
 const SECTIONS: { title: string; items: { id: Section; label: string; hint: string; icon: LucideIcon }[] }[] = [
   { title: "الرموز", items: [
-    { id: "codes", label: "الرموز", hint: "المختبرات وأجهزتها", icon: KeyRound },
+    { id: "codes", label: "الرموز", hint: "المدارس وأجهزتها", icon: KeyRound },
     { id: "new", label: "رمز جديد", hint: "إنشاء رمز أو رمز تجريبي", icon: Plus },
     { id: "stations", label: "المحطات", hint: "كل المحطات واستعمالها", icon: LayoutGrid },
     { id: "pin", label: "رموز الدخول (PIN)", hint: "إخفاء وإظهار وتعيين لكل عميل", icon: Lock },
@@ -163,15 +163,15 @@ const fmtShort = (ms: number | null) => {
 
 function activationMessage(r: Row, code: string, origin: string) {
   return [
-    "رمز تفعيل منظومة مختبر التحليلات المرضية",
-    `المختبر: ${r.lab_name}`,
+    "رمز تفعيل منظومة إدارة المدارس",
+    `المدرسة: ${r.lab_name}`,
     `الرمز: ${code}`,
     `المدة: ${r.duration_days} يوم تبدأ من يوم التفعيل${r.is_trial ? " (تجريبي)" : ""}`,
     `المحطات: ${r.modules.map(moduleLabel).join("، ")}`,
     `ومع كل رمز: ${ALWAYS_STATIONS.map((x) => x.label).join("، ")}`,
     "",
     "طريقة التفعيل:",
-    `1. افتح ${origin}/welcome على حاسوب المختبر مع اتصال بالإنترنت.`,
+    `1. افتح ${origin}/welcome على حاسوب المدرسة مع اتصال بالإنترنت.`,
     "2. اكتب الرمز في نافذة «تفعيل المحطات» واضغط «تفعيل».",
     "الرمز يعمل على جهاز واحد فقط، والتفعيل يحتاج الإنترنت مرة واحدة.",
     "",
@@ -181,7 +181,7 @@ function activationMessage(r: Row, code: string, origin: string) {
 function statusMessage(r: Row, now: number) {
   const left = r.expires_at ? Math.ceil((r.expires_at - now) / DAY) : null;
   return [
-    `اشتراك ${r.lab_name} — منظومة مختبر التحليلات المرضية`,
+    `اشتراك ${r.lab_name} — منظومة إدارة المدارس`,
     r.activated_at ? `فعّال من ${fmt(r.activated_at)} حتى ${fmt(r.expires_at)}${left != null ? (left > 0 ? ` (باقٍ ${left} يوم)` : " (منتهٍ)") : ""}` : `لم يُفعّل بعد — المدة ${r.duration_days} يوم تبدأ من التفعيل`,
     `المحطات: ${r.modules.map(moduleLabel).join("، ")}`,
     `للتجديد والدعم: ${OWNER_PHONE}`,
@@ -192,7 +192,7 @@ function copyText(t: string, done: () => void) { navigator.clipboard?.writeText(
 
 function exportCsv(rows: Row[], now: number, soonMs?: number, needsOwn = true) {
   const cell = (v: unknown) => `"${String(v ?? "").replace(/"/g, '""')}"`;
-  const head = ["المختبر", "ملاحظة", "آخر 4 خانات", "الحالة", "تجريبي", "المدة (يوم)", "التفعيل", "الانتهاء", "الجهاز", "آخر اتصال", "الإصدار", "المحطات", "المبلغ", "مدفوع", "تاريخ الدفع", "رسالة للمختبر", "أُنشئ", "قاعدة لوحة الإدارة", ...(STATION_SYNC ? ["قاعدة المزامنة", "آخر مزامنة"] : [])];
+  const head = ["المدرسة", "ملاحظة", "آخر 4 خانات", "الحالة", "تجريبي", "المدة (يوم)", "التفعيل", "الانتهاء", "الجهاز", "آخر اتصال", "الإصدار", "المحطات", "المبلغ", "مدفوع", "تاريخ الدفع", "رسالة للمدرسة", "أُنشئ", "قاعدة لوحة الإدارة", ...(STATION_SYNC ? ["قاعدة المزامنة", "آخر مزامنة"] : [])];
   const lines = [head.map(cell).join(",")];
   for (const r of rows) {
     lines.push([r.lab_name, r.note, r.code_hint, status(r, now, soonMs).t, r.is_trial ? "نعم" : "", r.duration_days, fmt(r.activated_at), fmt(r.expires_at), deviceOf(r),
@@ -280,7 +280,7 @@ export default function LicensesPage() {
   }
   async function create(trial: boolean) {
     const days = trial ? prefs.trialDays : f.days === -1 ? Number(f.custom) : f.days;
-    if (!f.lab.trim() || !days || days < 1) { setErr(f.lab.trim() ? "حدّد المدة." : "اكتب اسم المختبر."); return; }
+    if (!f.lab.trim() || !days || days < 1) { setErr(f.lab.trim() ? "حدّد المدة." : "اكتب اسم المدرسة."); return; }
     setErr("");
     const d = await post({ op: "create", lab: f.lab, days, note: f.note, modules: f.modules, trial, maxDevices: prefs.multiDevice ? f.maxDevices : 1 });
     if (d.ok) { setShown({ row: d.row, code: d.code }); setF({ lab: "", days: prefs.defaultDays, custom: "", note: "", modules: [...prefs.defaultModules], maxDevices: 1 }); load(); }
@@ -349,7 +349,7 @@ export default function LicensesPage() {
       <ShieldAlert className="mx-auto size-8 text-amber-600" />
       <div className="mt-2 text-lg font-bold">منظومة الرموز غير مفعّلة</div>
       {data.needsDb ? (
-        <p className="mt-2 text-sm text-muted">كلمة المرور مضبوطة، لكن لا توجد قاعدة بيانات دائمة لحفظ الرموز. في Vercel افتح Storage ← Create Database ← Neon واربطها بالمشروع بالبادئة <b dir="ltr">LICENSE</b>، ثم أعد النشر. (بقيت المنظومة مطفأة حتى لا تُقفل أجهزة المختبرات.)</p>
+        <p className="mt-2 text-sm text-muted">كلمة المرور مضبوطة، لكن لا توجد قاعدة بيانات دائمة لحفظ الرموز. في Vercel افتح Storage ← Create Database ← Neon واربطها بالمشروع بالبادئة <b dir="ltr">LICENSE</b>، ثم أعد النشر. (بقيت المنظومة مطفأة حتى لا تُقفل أجهزة المدارس.)</p>
       ) : (
         <p className="mt-2 text-sm text-muted">لتفعيلها أضف المتغير <b dir="ltr">LICENSE_ADMIN_PASSWORD</b> (كلمة مرور هذه الصفحة) في إعدادات Vercel ثم أعد النشر.</p>
       )}
@@ -398,14 +398,14 @@ export default function LicensesPage() {
             </button>
             <button onClick={() => setShown(null)} className="rounded-lg border border-line px-4 py-2 text-sm hover:bg-surface">تم</button>
           </div>
-          <p className="mt-2 text-xs text-amber-700">احفظه الآن وأرسله للمختبر — لا يُعرض مرة أخرى (يُحفظ مشفّراً). إن ضاع أنشئ «رمزاً جديداً» لنفس المختبر.</p>
+          <p className="mt-2 text-xs text-amber-700">احفظه الآن وأرسله للمدرسة — لا يُعرض مرة أخرى (يُحفظ مشفّراً). إن ضاع أنشئ «رمزاً جديداً» لنفس المدرسة.</p>
         </div>
       )}
 
 
       {section === "codes" && (
         <>
-          <SectionTitle icon={<KeyRound className="size-6" />} title="إدارة الرموز" desc="رمز لكل مختبر، يعمل على جهاز واحد، وتبدأ مدته من يوم التفعيل." />
+          <SectionTitle icon={<KeyRound className="size-6" />} title="إدارة الرموز" desc="رمز لكل مدرسة، يعمل على جهاز واحد، وتبدأ مدته من يوم التفعيل." />
           <div className="mb-5 grid grid-cols-2 gap-3 lg:grid-cols-4" data-testid="codes-kpis">
             <Kpi icon={<KeyRound className="size-5" />} tone="from-teal-500 to-teal-700" label="رموز فعّالة" value={counts.active} sub={`من ${counts.all} رمز`} />
             <Kpi icon={<Wifi className="size-5" />} tone="from-sky-500 to-sky-700" label="اتصلت اليوم" value={online} sub="آخر 24 ساعة" />
@@ -440,7 +440,7 @@ export default function LicensesPage() {
       <div className="mb-3 flex flex-wrap items-center gap-2">
         <label className="relative min-w-56 flex-1">
           <Search className="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted" />
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="بحث باسم المختبر أو الملاحظة أو الجهاز أو آخر 4 خانات…" aria-label="بحث" className={`${inp} ps-9`} />
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="بحث باسم المدرسة أو الملاحظة أو الجهاز أو آخر 4 خانات…" aria-label="بحث" className={`${inp} ps-9`} />
         </label>
         <select value={sort} onChange={(e) => setSort(e.target.value as Sort)} aria-label="الترتيب" className="rounded-lg border border-line bg-surface px-2 py-2 text-sm">
           <option value="expiry">الأقرب انتهاءً</option>
@@ -478,7 +478,7 @@ export default function LicensesPage() {
                     {r.price.trim() && <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${r.paid ? "bg-teal-50 text-brand-dark" : "bg-amber-50 text-amber-700"}`}>{r.paid ? "مدفوع" : "غير مدفوع"} · <span className="tabular-nums">{r.price}</span></span>}
                     {r.message && <span title={r.message} className="inline-flex items-center gap-1 rounded-full bg-sky-50 px-2 py-0.5 text-xs text-sky-700"><MessageSquare className="size-3" /> رسالة</span>}
                     {r.pinPolicy?.hidden
-                      ? <span data-testid="pin-badge" title="خاصية رمز الدخول مخفية عن هذا المختبر" className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-500 line-through"><Lock className="size-3" /> PIN</span>
+                      ? <span data-testid="pin-badge" title="خاصية رمز الدخول مخفية عن هذا المدرسة" className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-500 line-through"><Lock className="size-3" /> PIN</span>
                       : (r.pin?.hash || Object.values(r.pinPolicy?.stations ?? {}).some((x) => x?.pins?.length)) && <span data-testid="pin-badge" title="عيّنتَ رموز دخول للمحطات" className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-700"><Lock className="size-3" /> PIN</span>}
                   </div>
                   {r.note && <div className="mt-0.5 text-xs text-muted">{r.note}</div>}
@@ -490,15 +490,15 @@ export default function LicensesPage() {
                     <option value="" disabled>+ تمديد</option>
                     {PERIODS.map((p) => <option key={p.d} value={p.d}>+ {p.l}</option>)}
                   </select>
-                  <button onClick={() => copyText(statusMessage(r, now), () => flash(r.id))} title="نسخ رسالة الحالة (المدة والمحطات) لإرسالها للمختبر" className={small}>
+                  <button onClick={() => copyText(statusMessage(r, now), () => flash(r.id))} title="نسخ رسالة الحالة (المدة والمحطات) لإرسالها للمدرسة" className={small}>
                     {copied === r.id ? <Check className="size-3.5" /> : <Copy className="size-3.5" />} رسالة الحالة
                   </button>
                   {/* Less frequent actions: one size of square icon buttons, named by their tooltip */}
-                  {r.device_id && <IconBtn label="نقل لجهاز جديد" onClick={() => change(r, { action: "reset_device" }, "فك ربط الجهاز؟ يستطيع المختبر بعدها إدخال نفس الرمز على جهاز جديد، والمدة تستمر كما هي.")}><MonitorSmartphone className="size-4" /></IconBtn>}
-                  {STATION_SYNC && <IconBtn label="قاعدة بيانات المختبر" onClick={() => setDbFor(r)}><Database className="size-4" /></IconBtn>}
+                  {r.device_id && <IconBtn label="نقل لجهاز جديد" onClick={() => change(r, { action: "reset_device" }, "فك ربط الجهاز؟ يستطيع المدرسة بعدها إدخال نفس الرمز على جهاز جديد، والمدة تستمر كما هي.")}><MonitorSmartphone className="size-4" /></IconBtn>}
+                  {STATION_SYNC && <IconBtn label="قاعدة بيانات المدرسة" onClick={() => setDbFor(r)}><Database className="size-4" /></IconBtn>}
                   <IconBtn label="رموز الدخول (PIN)" onClick={() => { setPinFocus(r.id); go("pin"); }}><Lock className="size-4" /></IconBtn>
-                  <IconBtn label="رمز جديد" onClick={() => change(r, { action: "new_code" }, "إنشاء رمز جديد لهذا المختبر؟ الرمز القديم لا يعمل بعدها لتفعيل جهاز، والجهاز الحالي يستمر.")}><KeyRound className="size-4" /></IconBtn>
-                  <IconBtn label="تعديل الاسم" onClick={() => { const lab = window.prompt("اسم المختبر:", r.lab_name); if (lab == null) return; const note = window.prompt("ملاحظة:", r.note) ?? r.note; change(r, { action: "rename", lab, note }); }}><Pencil className="size-4" /></IconBtn>
+                  <IconBtn label="رمز جديد" onClick={() => change(r, { action: "new_code" }, "إنشاء رمز جديد لهذا المدرسة؟ الرمز القديم لا يعمل بعدها لتفعيل جهاز، والجهاز الحالي يستمر.")}><KeyRound className="size-4" /></IconBtn>
+                  <IconBtn label="تعديل الاسم" onClick={() => { const lab = window.prompt("اسم المدرسة:", r.lab_name); if (lab == null) return; const note = window.prompt("ملاحظة:", r.note) ?? r.note; change(r, { action: "rename", lab, note }); }}><Pencil className="size-4" /></IconBtn>
                   {r.status === "active"
                     ? <IconBtn label="إيقاف" danger onClick={() => change(r, { action: "stop" }, `إيقاف رمز «${r.lab_name}»؟ تُقفل محطاته عند أول اتصال بالإنترنت.`)}><Ban className="size-4" /></IconBtn>
                     : <IconBtn label="إعادة تفعيل" onClick={() => change(r, { action: "resume" })}><Play className="size-4" /></IconBtn>}
@@ -524,7 +524,7 @@ export default function LicensesPage() {
                   <div data-testid="admin-db" className="min-w-0">
                     <div className="text-[10px] text-muted">قاعدة البيانات</div>
                     <button onClick={() => setAdminDbFor({ row: r })} aria-label="قاعدة لوحة الإدارة" className="block max-w-full truncate text-start font-medium hover:underline" title={r.admin_db ? r.admin_db.host : PLACE_LABEL[placeOf(r, prefs.adminNeedsOwnDb)]}>
-                      {r.admin_db ? <>قاعدة خاصة{r.admin_db.by === "lab" ? " (من المختبر)" : ""}</>
+                      {r.admin_db ? <>قاعدة خاصة{r.admin_db.by === "lab" ? " (من المدرسة)" : ""}</>
                         : placeOf(r, prefs.adminNeedsOwnDb) === "waiting" ? <span className="text-amber-700">بانتظار قاعدة خاصة</span>
                         : <span className="text-muted">قسم في قاعدة الموقع</span>}
                     </button>
@@ -568,11 +568,11 @@ export default function LicensesPage() {
 
       {section === "new" && (
         <>
-          <SectionTitle icon={<Plus className="size-6" />} title="رمز جديد" desc="اسم المختبر والمدة والمحطات المفعّلة. يظهر الرمز مرة واحدة بعد الإنشاء لتنسخه وترسله للمختبر." />
+          <SectionTitle icon={<Plus className="size-6" />} title="رمز جديد" desc="اسم المدرسة والمدة والمحطات المفعّلة. يظهر الرمز مرة واحدة بعد الإنشاء لتنسخه وترسله للمدرسة." />
       <form onSubmit={(e) => { e.preventDefault(); create(false); }} className="mb-5 rounded-2xl border border-line bg-surface p-5 shadow-[var(--shadow-card)]">
         <div className="mb-3 flex items-center gap-2 text-sm font-semibold"><Plus className="size-4" /> رمز جديد</div>
         <div className="grid gap-3 sm:grid-cols-2">
-          <label className="text-sm font-medium">اسم المختبر *<input value={f.lab} onChange={(e) => { setF({ ...f, lab: e.target.value }); setErr(""); }} className={`mt-1 ${inp}`} /></label>
+          <label className="text-sm font-medium">اسم المدرسة *<input value={f.lab} onChange={(e) => { setF({ ...f, lab: e.target.value }); setErr(""); }} className={`mt-1 ${inp}`} /></label>
           <label className="text-sm font-medium">المدة (تبدأ من يوم التفعيل)
             <div className="mt-1 flex gap-2">
               <select value={f.days} onChange={(e) => setF({ ...f, days: Number(e.target.value) })} className={inp}>
@@ -676,7 +676,7 @@ export default function LicensesPage() {
 
       {section === "settings" && (
         <>
-          <SectionTitle icon={<Settings className="size-6" />} title="الإعدادات العامة" desc="القيم التي يبدأ بها كل رمز جديد، والتنبيه قبل الانتهاء، وسطر التواصل الذي تراه المختبرات." />
+          <SectionTitle icon={<Settings className="size-6" />} title="الإعدادات العامة" desc="القيم التي يبدأ بها كل رمز جديد، والتنبيه قبل الانتهاء، وسطر التواصل الذي تراه المدارس." />
           <PrefsCard prefs={prefs} onSaved={load} />
       {/* Contact line */}
       <Panel tone="amber" icon={<Phone className="size-5" />} title="سطر التواصل"
@@ -691,7 +691,7 @@ export default function LicensesPage() {
 
       {section === "errors" && (
         <>
-          <SectionTitle icon={<Bug className="size-6" />} title="سجل الأخطاء" desc="الأخطاء التي ظهرت في الموقع والمحطات ولوحة الإدارة، مع المختبر والصفحة. يُحفظ آخر 2000 خطأ فقط أثناء تشغيل الخاصية." />
+          <SectionTitle icon={<Bug className="size-6" />} title="سجل الأخطاء" desc="الأخطاء التي ظهرت في الموقع والمحطات ولوحة الإدارة، مع المدرسة والصفحة. يُحفظ آخر 2000 خطأ فقط أثناء تشغيل الخاصية." />
           <ErrorsLog on={prefs.errorLog} />
         </>
       )}
@@ -729,7 +729,7 @@ function PinOwner({ r, onPins }: { r: Row; onPins: () => void }) {
     <div className="md:col-span-2" data-testid="pin-owner">
       <div className="mb-1 flex items-center gap-1 text-xs font-semibold"><Lock className="size-3.5" /> رموز الدخول (PIN)</div>
       <div className="flex flex-wrap items-center gap-2 text-xs">
-        <span className="text-muted">{r.pinPolicy?.hidden ? "الخاصية مخفية عن هذا المختبر" : n ? `${n} ${n === 1 ? "رمز" : "رموز"} عيّنتها لمحطاته` : "لم تُعيَّن رموز من هنا"}</span>
+        <span className="text-muted">{r.pinPolicy?.hidden ? "الخاصية مخفية عن هذا المدرسة" : n ? `${n} ${n === 1 ? "رمز" : "رموز"} عيّنتها لمحطاته` : "لم تُعيَّن رموز من هنا"}</span>
         <button onClick={onPins} className="rounded-lg border border-line px-3 py-1.5 font-semibold text-brand-dark hover:bg-surface">فتح رموز الدخول</button>
       </div>
     </div>
@@ -767,7 +767,7 @@ function Details({ r, evs, multi, onChange, onPins }: { r: Row; evs: Ev[]; multi
       </div>
       {multi && (
         <div className="md:col-span-2" data-testid="devices">
-          <div className="mb-1 flex items-center gap-1 text-xs font-semibold"><MonitorSmartphone className="size-3.5" /> أجهزة المختبر على هذا الرمز</div>
+          <div className="mb-1 flex items-center gap-1 text-xs font-semibold"><MonitorSmartphone className="size-3.5" /> أجهزة المدرسة على هذا الرمز</div>
           <div className="flex flex-wrap items-center gap-2 text-xs">
             <span>عدد الأجهزة المسموحة</span>
             <input type="number" min={1} max={50} value={maxDev} onChange={(e) => setMaxDev(Math.max(1, Number(e.target.value) || 1))} aria-label="عدد الأجهزة المسموحة" className={`${inp} w-20`} />
@@ -782,14 +782,14 @@ function Details({ r, evs, multi, onChange, onPins }: { r: Row; evs: Ev[]; multi
                 </li>
               ))}
             </ul>
-          ) : <p className="mt-1 text-[11px] text-muted">لا أجهزة إضافية بعد — تُضاف عند إدخال الرمز نفسه على جهاز آخر للمختبر.</p>}
+          ) : <p className="mt-1 text-[11px] text-muted">لا أجهزة إضافية بعد — تُضاف عند إدخال الرمز نفسه على جهاز آخر للمدرسة.</p>}
         </div>
       )}
       <div className="md:col-span-2">
-        <div className="mb-1 flex items-center gap-1 text-xs font-semibold"><MessageSquare className="size-3.5" /> رسالة للمختبر</div>
+        <div className="mb-1 flex items-center gap-1 text-xs font-semibold"><MessageSquare className="size-3.5" /> رسالة للمدرسة</div>
         <p className="mb-1 text-[11px] text-muted">تظهر على محطاته عند أول اتصال بالإنترنت، حتى يضغط «تم». الرسالة الجديدة تظهر من جديد.</p>
         <div className="flex gap-2">
-          <input value={msg} onChange={(e) => setMsg(e.target.value)} maxLength={300} placeholder="مثلاً: يرجى تجديد الاشتراك قبل نهاية الشهر" aria-label="رسالة للمختبر" className={inp} />
+          <input value={msg} onChange={(e) => setMsg(e.target.value)} maxLength={300} placeholder="مثلاً: يرجى تجديد الاشتراك قبل نهاية الشهر" aria-label="رسالة للمدرسة" className={inp} />
           <button onClick={() => onChange({ action: "message", text: msg })} disabled={msg === r.message} className="rounded-lg bg-brand px-3 py-1.5 text-xs font-semibold text-white hover:bg-brand-dark disabled:opacity-40">إرسال</button>
           {r.message && <button onClick={() => onChange({ action: "message", text: "" })} className="rounded-lg border border-line px-3 py-1.5 text-xs hover:bg-surface">إزالة</button>}
         </div>
@@ -927,7 +927,7 @@ function Kpi({ icon, tone, label, value, sub, onClick }: { icon: React.ReactNode
   return onClick ? <button type="button" onClick={onClick} className={`${cls} transition-colors hover:border-slate-300`}>{body}</button> : <div className={cls}>{body}</div>;
 }
 
-const initials = (name: string) => name.trim().split(/\s+/).filter((w) => !["مختبر", "مختبرات", "ال"].includes(w)).slice(0, 2).map((w) => w.replace(/^ال/, "")[0] ?? "").join("") || "م";
+const initials = (name: string) => name.trim().split(/\s+/).filter((w) => !["مدرسة", "مدارس", "ال"].includes(w)).slice(0, 2).map((w) => w.replace(/^ال/, "")[0] ?? "").join("") || "م";
 
 /** A settings card: a large coloured icon, a clear title and what the card is for. */
 const PANEL_TONE = {
@@ -1026,7 +1026,7 @@ function TwoFactorCard({ tf, reload }: { tf?: TwoFactor; reload: () => void }) {
   );
 }
 
-/** «قاعدة بيانات المختبر» for one code: the lab's own Supabase or PostgreSQL, sent to its device. */
+/** «قاعدة بيانات المدرسة» for one code: the lab's own Supabase or PostgreSQL, sent to its device. */
 function DbModal({ row, rows, onClose, onSaved }: { row: Row; rows: Row[]; onClose: () => void; onSaved: () => void }) {
   const [kind, setKind] = useState<"none" | "supabase" | "postgres">(row.sync?.kind ?? "none");
   const [f, setF] = useState({ url: "", anonKey: "", email: "", password: "", conn: "" });
@@ -1064,11 +1064,11 @@ function DbModal({ row, rows, onClose, onSaved }: { row: Row; rows: Row[]; onClo
   const canTry = kind === "supabase" ? f.url && f.anonKey && f.email && (f.password || savedKind === "supabase") : kind === "postgres" && (f.conn.trim() || (savedKind === "postgres" && savedHost));
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-slate-900/40 p-4" onClick={onClose}>
-      <div role="dialog" aria-label="قاعدة بيانات المختبر" data-testid="db-modal" onClick={(e) => e.stopPropagation()} className="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-2xl border border-line bg-surface p-5 shadow-[var(--shadow-pop)]">
-        <h2 className="flex items-center gap-2 text-lg font-bold"><Database className="size-5 text-brand" /> قاعدة بيانات المختبر — {row.lab_name}</h2>
+      <div role="dialog" aria-label="قاعدة بيانات المدرسة" data-testid="db-modal" onClick={(e) => e.stopPropagation()} className="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-2xl border border-line bg-surface p-5 shadow-[var(--shadow-pop)]">
+        <h2 className="flex items-center gap-2 text-lg font-bold"><Database className="size-5 text-brand" /> قاعدة بيانات المدرسة — {row.lab_name}</h2>
         <p className="mt-1 text-xs leading-relaxed text-muted">
-          يبقى جهاز المختبر يعمل ويحفظ على نفسه حتى بدون إنترنت، ويزامن بياناته مع قاعدة بيانات خاصة بالمختبر.
-          اربط كل رموز المختبر الواحد (كل أجهزته) بالقاعدة نفسها لتتشارك الزيارات والمراجعين. يصل الربط للجهاز عند اتصاله بالإنترنت.
+          يبقى جهاز المدرسة يعمل ويحفظ على نفسه حتى بدون إنترنت، ويزامن بياناته مع قاعدة بيانات خاصة بالمدرسة.
+          اربط كل رموز المدرسة الواحد (كل أجهزته) بالقاعدة نفسها لتتشارك الطلاب والنتائج. يصل الربط للجهاز عند اتصاله بالإنترنت.
           تُزامَن النصوص فقط (الصور تبقى على كل جهاز). تُحفظ بيانات الاتصال مشفّرة بـ AUTH_SECRET.
         </p>
         <div className="mt-3 inline-flex rounded-lg border border-line p-0.5 text-xs">
@@ -1079,8 +1079,8 @@ function DbModal({ row, rows, onClose, onSaved }: { row: Row; rows: Row[]; onClo
         {kind === "supabase" && (
           <div className="mt-3 space-y-2">
             <ol className="list-inside list-decimal space-y-0.5 text-xs text-muted">
-              <li>مشروع Supabase خاص بالمختبر ← SQL Editor ← الصق سكربت الإعداد ونفّذه.</li>
-              <li>Authentication ← Users ← أضف مستخدماً للمختبر (بريد وكلمة مرور).</li>
+              <li>مشروع Supabase خاص بالمدرسة ← SQL Editor ← الصق سكربت الإعداد ونفّذه.</li>
+              <li>Authentication ← Users ← أضف مستخدماً للمدرسة (بريد وكلمة مرور).</li>
               <li>Project Settings ← API: Project URL و anon key.</li>
             </ol>
             <button type="button" onClick={() => copyText(SUPABASE_SQL, () => { setCopied(true); setTimeout(() => setCopied(false), 2000); })} className={small}>
@@ -1089,8 +1089,8 @@ function DbModal({ row, rows, onClose, onSaved }: { row: Row; rows: Row[]; onClo
             <div className="grid gap-2 sm:grid-cols-2">
               <input dir="ltr" aria-label="Project URL" placeholder="https://xxxx.supabase.co" value={f.url} onChange={(e) => setF({ ...f, url: e.target.value })} className={inp} />
               <input dir="ltr" aria-label="anon key" placeholder="anon key" value={f.anonKey} onChange={(e) => setF({ ...f, anonKey: e.target.value })} className={inp} />
-              <input dir="ltr" aria-label="بريد مستخدم المختبر" placeholder="lab@example.com" value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} className={inp} />
-              <input dir="ltr" type="password" aria-label="كلمة مرور مستخدم المختبر" placeholder={savedKind === "supabase" ? "(محفوظة — اتركها فارغة للإبقاء)" : "كلمة المرور"} value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} className={inp} />
+              <input dir="ltr" aria-label="بريد مستخدم المدرسة" placeholder="lab@example.com" value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} className={inp} />
+              <input dir="ltr" type="password" aria-label="كلمة مرور مستخدم المدرسة" placeholder={savedKind === "supabase" ? "(محفوظة — اتركها فارغة للإبقاء)" : "كلمة المرور"} value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} className={inp} />
             </div>
           </div>
         )}
@@ -1100,11 +1100,11 @@ function DbModal({ row, rows, onClose, onSaved }: { row: Row; rows: Row[]; onClo
             <p className="text-[11px] text-muted">أي PostgreSQL: Neon أو Supabase (Connection string) أو Railway أو خادم خاص. يتصل الخادم بالقاعدة وينشئ الجدول بنفسه، ولا يصل الرابط إلى الجهاز.</p>
           </div>
         )}
-        {kind === "none" && <p className="mt-3 text-sm text-muted">{hasSaved ? "الحفظ يلغي ربط هذا الرمز بقاعدته — تبقى البيانات على الجهاز وفي القاعدة كما هي." : "بيانات هذا المختبر على جهازه فقط."}</p>}
+        {kind === "none" && <p className="mt-3 text-sm text-muted">{hasSaved ? "الحفظ يلغي ربط هذا الرمز بقاعدته — تبقى البيانات على الجهاز وفي القاعدة كما هي." : "بيانات هذا المدرسة على جهازه فقط."}</p>}
 
         {others.length > 0 && (
           <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-line pt-3 text-xs">
-            <span className="text-muted">أو استخدم قاعدة رمز آخر (جهاز آخر للمختبر نفسه):</span>
+            <span className="text-muted">أو استخدم قاعدة رمز آخر (جهاز آخر للمدرسة نفسه):</span>
             <select value={from} onChange={(e) => setFrom(e.target.value)} aria-label="نسخ من رمز" className="rounded-lg border border-line bg-surface px-2 py-1">
               <option value="">— اختر —</option>
               {others.map((o) => <option key={o.id} value={o.id}>{o.lab_name}{o.device_name ? ` — ${o.device_name}` : ""} ({o.sync!.kind === "postgres" ? "PostgreSQL" : "Supabase"})</option>)}
@@ -1194,7 +1194,7 @@ function Databases({ rows, now, needsOwn, onOpen, onReset, onChecked, onExport }
       : <span className="text-red-700">✗ لا تستجيب ({adminDbError(s.error)}) — {fmtShort(s.at)}</span>;
   };
   async function importShared(r: Row) {
-    if (!window.confirm(`نقل بيانات لوحة الإدارة القديمة المشتركة (من قبل فصل المختبرات) إلى «${r.lab_name}»؟\nاستخدمه للمختبر الذي كان يعمل عليها فقط — تُنسخ كلها، والسجلات الموجودة تبقى كما هي.`)) return;
+    if (!window.confirm(`نقل بيانات لوحة الإدارة القديمة المشتركة (من قبل فصل المدارس) إلى «${r.lab_name}»؟\nاستخدمه للمدرسة الذي كان يعمل عليها فقط — تُنسخ كلها، والسجلات الموجودة تبقى كما هي.`)) return;
     setChecks((c) => ({ ...c, [r.id]: { busy: true } }));
     const d = await post({ op: "admin_db_import_shared", id: r.id });
     setChecks((c) => ({ ...c, [r.id]: d.ok ? { ok: true, text: `✓ نُقلت البيانات القديمة: ${d.copied?.rows ?? 0} سجلاً` } : { ok: false, text: adminDbError(d.error) } }));
@@ -1243,7 +1243,7 @@ function Databases({ rows, now, needsOwn, onOpen, onReset, onChecked, onExport }
       <div className="mb-3 flex flex-wrap items-center gap-2">
         <div className="relative min-w-52 flex-1">
           <Search className="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted" />
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="بحث باسم المختبر أو الجهاز أو الخادم" aria-label="بحث في قواعد البيانات" className={`${inp} ps-9`} />
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="بحث باسم المدرسة أو الجهاز أو الخادم" aria-label="بحث في قواعد البيانات" className={`${inp} ps-9`} />
         </div>
         <button disabled={checkingAll || !own.length} onClick={() => checkMany(own)} className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-surface px-3 py-2 text-sm hover:bg-canvas disabled:opacity-50">
           <RefreshCw className={`size-4 ${checkingAll ? "animate-spin" : ""}`} /> فحص كل القواعد
@@ -1269,7 +1269,7 @@ function Databases({ rows, now, needsOwn, onOpen, onReset, onChecked, onExport }
                   </div>
                   <div className="mt-0.5 text-xs text-muted" data-testid="db-state">
                     {r.admin_db && p
-                      ? <>{providerById(p).name}: <span dir="ltr" className="font-mono">{r.admin_db.host}</span> · {r.admin_db.by === "lab" ? "ضبطها المختبر" : "ضبطتها أنت"} · {fmt(r.admin_db.at)}</>
+                      ? <>{providerById(p).name}: <span dir="ltr" className="font-mono">{r.admin_db.host}</span> · {r.admin_db.by === "lab" ? "ضبطها المدرسة" : "ضبطتها أنت"} · {fmt(r.admin_db.at)}</>
                       : placeOf(r, needsOwn) === "waiting"
                         ? <span className="text-amber-700">بانتظار قاعدة خاصة — لوحة الإدارة مقفلة حتى الربط</span>
                         : placeOf(r, needsOwn) === "none"
@@ -1287,7 +1287,7 @@ function Databases({ rows, now, needsOwn, onOpen, onReset, onChecked, onExport }
                   {placeOf(r, needsOwn) !== "waiting" && placeOf(r, needsOwn) !== "none" && (
                     <>
                       <button onClick={() => onReset(r)} className={small}><KeyRound className="size-3.5" /> كلمة مرور المدير</button>
-                      <button onClick={() => importShared(r)} className={small} title="بيانات لوحة الإدارة المشتركة من قبل فصل المختبرات"><Download className="size-3.5" /> البيانات القديمة</button>
+                      <button onClick={() => importShared(r)} className={small} title="بيانات لوحة الإدارة المشتركة من قبل فصل المدارس"><Download className="size-3.5" /> البيانات القديمة</button>
                       {onExport && <button onClick={() => onExport(r)} className={small} data-testid="export-btn"><FileSpreadsheet className="size-3.5" /> تصدير Excel</button>}
                     </>
                   )}
@@ -1315,15 +1315,15 @@ function ResetAdminModal({ row, onClose }: { row: Row; onClose: () => void }) {
     const d = await post({ op: "admin_db_reset", id: row.id, account: { username: a.username.trim(), password: a.password } });
     setBusy(false);
     setMsg(d.ok
-      ? { ok: true, text: `✓ ${d.created ? "أُنشئ حساب مدير جديد" : "تغيّرت كلمة المرور"} — يدخل المختبر باسم «${a.username.trim()}» وكلمة المرور الجديدة.` }
+      ? { ok: true, text: `✓ ${d.created ? "أُنشئ حساب مدير جديد" : "تغيّرت كلمة المرور"} — يدخل المدرسة باسم «${a.username.trim()}» وكلمة المرور الجديدة.` }
       : { ok: false, text: adminDbError(d.error) });
   }
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-slate-900/40 p-4" onClick={onClose}>
-      <div role="dialog" aria-label="كلمة مرور مدير المختبر" data-testid="reset-admin-modal" onClick={(e) => e.stopPropagation()} className="w-full max-w-md rounded-2xl border border-line bg-surface p-5 shadow-[var(--shadow-pop)]">
-        <h2 className="flex items-center gap-2 text-lg font-bold"><KeyRound className="size-5 text-brand" /> كلمة مرور مدير المختبر — {row.lab_name}</h2>
+      <div role="dialog" aria-label="كلمة مرور مدير المدرسة" data-testid="reset-admin-modal" onClick={(e) => e.stopPropagation()} className="w-full max-w-md rounded-2xl border border-line bg-surface p-5 shadow-[var(--shadow-pop)]">
+        <h2 className="flex items-center gap-2 text-lg font-bold"><KeyRound className="size-5 text-brand" /> كلمة مرور مدير المدرسة — {row.lab_name}</h2>
         <p className="mt-1 text-xs leading-relaxed text-muted">
-          تُكتب مباشرة في قاعدة هذا المختبر ({row.admin_db?.host}). إن كان اسم المستخدم موجوداً تتغيّر كلمة مروره ويُفعَّل كمدير، وإن لم يكن يُنشأ حساب مدير جديد.
+          تُكتب مباشرة في قاعدة هذا المدرسة ({row.admin_db?.host}). إن كان اسم المستخدم موجوداً تتغيّر كلمة مروره ويُفعَّل كمدير، وإن لم يكن يُنشأ حساب مدير جديد.
         </p>
         <div className="mt-3 grid gap-2">
           <input dir="ltr" aria-label="اسم مستخدم المدير" value={a.username} onChange={(e) => setA({ ...a, username: e.target.value })} className={inp} />
@@ -1380,10 +1380,10 @@ function PrefsCard({ prefs, onSaved }: { prefs: Prefs; onSaved: () => void }) {
       <label data-testid="needs-own-db" className="mt-4 flex items-start gap-2 rounded-lg border border-line p-3 text-sm">
         <input type="checkbox" checked={p.adminNeedsOwnDb} onChange={(e) => setP({ ...p, adminNeedsOwnDb: e.target.checked })} aria-label="لوحة الإدارة تحتاج قاعدة خاصة" className="mt-1" />
         <span>
-          <b>لوحة الإدارة الكاملة تحتاج قاعدة بيانات خاصة لكل مختبر</b>
+          <b>لوحة الإدارة الكاملة تحتاج قاعدة بيانات خاصة لكل مدرسة</b>
           <span className="mt-0.5 block text-xs text-muted">
-            لا تُفتح لوحة الإدارة لرمز مدفوع حتى تُربط قاعدته (منك في «قواعد البيانات» أو من المختبر نفسه). الرموز التجريبية تعمل في قسم مستقل من قاعدة الموقع.
-            عند الإيقاف يعمل كل مختبر بلا قاعدة خاصة في قسمه المستقل من قاعدة الموقع. في الحالتين لا يرى مختبر بيانات غيره.
+            لا تُفتح لوحة الإدارة لرمز مدفوع حتى تُربط قاعدته (منك في «قواعد البيانات» أو من المدرسة نفسه). الرموز التجريبية تعمل في قسم مستقل من قاعدة الموقع.
+            عند الإيقاف يعمل كل مدرسة بلا قاعدة خاصة في قسمه المستقل من قاعدة الموقع. في الحالتين لا يرى مدرسة بيانات غيره.
           </span>
         </span>
       </label>
@@ -1394,9 +1394,9 @@ function PrefsCard({ prefs, onSaved }: { prefs: Prefs; onSaved: () => void }) {
         </div>
         <div className="mt-2 grid gap-2">
           {([
-            ["multiDevice", "حساب واحد بعدة أجهزة", "يُدخل المختبر الرمز نفسه على أكثر من جهاز حتى العدد الذي تحدّده لكل رمز (في «رمز جديد» وفي تفاصيل الرمز)."],
-            ["selfSignup", "التسجيل الذاتي", "صفحة /signup يسجّل فيها المختبر اسمه ورقمه ويحصل فوراً على رمز تجريبي، ويظهر عندك بشارة «تسجيل ذاتي». يظهر رابطها في نافذة التفعيل."],
-            ["errorLog", "سجل الأخطاء", "تُحفظ أخطاء الموقع والمحطات ولوحة الإدارة مع اسم المختبر والصفحة، وتظهر في قسم «سجل الأخطاء»."],
+            ["multiDevice", "حساب واحد بعدة أجهزة", "يُدخل المدرسة الرمز نفسه على أكثر من جهاز حتى العدد الذي تحدّده لكل رمز (في «رمز جديد» وفي تفاصيل الرمز)."],
+            ["selfSignup", "التسجيل الذاتي", "صفحة /signup يسجّل فيها المدرسة اسمه ورقمه ويحصل فوراً على رمز تجريبي، ويظهر عندك بشارة «تسجيل ذاتي». يظهر رابطها في نافذة التفعيل."],
+            ["errorLog", "سجل الأخطاء", "تُحفظ أخطاء الموقع والمحطات ولوحة الإدارة مع اسم المدرسة والصفحة، وتظهر في قسم «سجل الأخطاء»."],
           ] as const).map(([k, title, desc]) => (
             <label key={k} className="flex items-start gap-2 text-sm">
               <input type="checkbox" checked={p[k]} onChange={(e) => setP({ ...p, [k]: e.target.checked })} aria-label={title} className="mt-1" />
@@ -1409,12 +1409,12 @@ function PrefsCard({ prefs, onSaved }: { prefs: Prefs; onSaved: () => void }) {
       <details className="mt-3 rounded-lg border border-dashed border-line p-3" data-testid="secret-features">
         <summary className="flex cursor-pointer items-center gap-1.5 text-sm font-semibold"><Lock className="size-3.5" /> متقدم (خاصية سرية)</summary>
         <label className="mt-2 flex items-start gap-2 text-sm">
-          <input type="checkbox" checked={p.dataExport} onChange={(e) => setP({ ...p, dataExport: e.target.checked })} aria-label="تصدير بيانات المختبر" className="mt-1" />
+          <input type="checkbox" checked={p.dataExport} onChange={(e) => setP({ ...p, dataExport: e.target.checked })} aria-label="تصدير بيانات المدرسة" className="mt-1" />
           <span>
-            <b>تصدير بيانات المختبر (Excel)</b>
+            <b>تصدير بيانات المدرسة (Excel)</b>
             <span className="block text-xs text-muted">
               يظهر زر «تصدير Excel» لكل عميل في «قواعد البيانات»: ملف بكل بيانات لوحة إدارته، ورقة لكل جدول (دون كلمات المرور).
-              يطلب كلمة مرورك في كل مرة، ولا يظهر للمختبر ولا يُسجَّل في سجل تدقيقه — فقط في سجل الرمز عندك.
+              يطلب كلمة مرورك في كل مرة، ولا يظهر للمدرسة ولا يُسجَّل في سجل تدقيقه — فقط في سجل الرمز عندك.
             </span>
           </span>
         </label>
@@ -1468,14 +1468,14 @@ function AdminDbModal({ row, rows, provider: initial, needsOwn, onClose, onSaved
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-slate-900/40 p-4" onClick={onClose}>
       <div role="dialog" aria-label="قاعدة لوحة الإدارة" data-testid="admin-db-modal" onClick={(e) => e.stopPropagation()} className="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-line bg-surface p-5 shadow-[var(--shadow-pop)]">
-        <h2 className="flex items-center gap-2 text-lg font-bold"><HardDrive className="size-5 text-brand" /> قاعدة بيانات المختبر — {row.lab_name}</h2>
+        <h2 className="flex items-center gap-2 text-lg font-bold"><HardDrive className="size-5 text-brand" /> قاعدة بيانات المدرسة — {row.lab_name}</h2>
         <p className="mt-1 text-xs leading-relaxed text-muted">
-          تعمل لوحة الإدارة الكاملة لهذا المختبر على قاعدة PostgreSQL خاصة به: المرضى والطلبات والنتائج والفواتير والمستخدمون.
+          تعمل لوحة الإدارة الكاملة لهذا المدرسة على قاعدة PostgreSQL خاصة به: الطلاب والطلبات والنتائج والفواتير والمستخدمون.
           تُنشأ الجداول تلقائياً عند أول اتصال. يُحفظ الرابط مشفّراً بـ AUTH_SECRET ولا يُعرض مرة أخرى.
         </p>
         <div className="mt-3 rounded-lg bg-canvas px-3 py-2 text-xs">
           الحالية: {row.admin_db ? <b dir="ltr">{row.admin_db.host}</b> : <b>{PLACE_LABEL[placeOf(row, needsOwn)] || "قسم مستقل في قاعدة الموقع"}</b>}
-          {row.admin_db?.by === "lab" && <span className="text-muted"> — ضبطها المختبر</span>}
+          {row.admin_db?.by === "lab" && <span className="text-muted"> — ضبطها المدرسة</span>}
         </div>
 
         <div className="mt-4 text-sm font-semibold">1. اختر مزوّد القاعدة</div>
@@ -1506,7 +1506,7 @@ function AdminDbModal({ row, rows, provider: initial, needsOwn, onClose, onSaved
         <label data-testid="copy-site" className="mt-2 flex items-start gap-2 rounded-lg border border-line p-3 text-xs">
           <input type="checkbox" checked={copy} onChange={(e) => setCopy(e.target.checked)} aria-label="نسخ بيانات قاعدة الموقع" className="mt-0.5" />
           <span>
-            <b className="text-sm">انسخ بيانات لوحته الحالية إليها</b> — من {row.admin_db ? <>قاعدته الحالية (<span dir="ltr">{row.admin_db.host}</span>)</> : "قسمه في قاعدة الموقع"}: المرضى والطلبات والنتائج والفواتير والمخزون والمستخدمون، ليكمل المختبر من حيث توقّف. السجلات الموجودة في القاعدة الجديدة لا تتغيّر.
+            <b className="text-sm">انسخ بيانات لوحته الحالية إليها</b> — من {row.admin_db ? <>قاعدته الحالية (<span dir="ltr">{row.admin_db.host}</span>)</> : "قسمه في قاعدة الموقع"}: الطلاب والطلبات والنتائج والفواتير والمخزون والمستخدمون، ليكمل المدرسة من حيث توقّف. السجلات الموجودة في القاعدة الجديدة لا تتغيّر.
           </span>
         </label>
         <div className={`mt-2 rounded-lg border p-3 ${needsAdmin ? "border-amber-300 bg-amber-50/50" : "border-line"}`}>
@@ -1519,7 +1519,7 @@ function AdminDbModal({ row, rows, provider: initial, needsOwn, onClose, onSaved
         {msg && <p className={`mt-3 text-sm ${msg.ok ? "text-teal-700" : "text-red-700"}`} data-testid="admin-db-msg">{msg.text}</p>}
         <div className="mt-4 flex flex-wrap justify-end gap-2">
           <button onClick={onClose} className="rounded-lg border border-line px-4 py-2 text-sm hover:bg-canvas">إغلاق</button>
-          {row.admin_db && <button disabled={busy} onClick={() => { if (confirm(locksWithout ? "إلغاء ربط قاعدة هذا المختبر؟ تُقفل لوحة الإدارة عنده حتى تُربط قاعدة أخرى، وتبقى بيانات قاعدته كما هي." : "إرجاع لوحة هذا المختبر إلى قسمه في قاعدة الموقع؟ تبقى بيانات قاعدته كما هي.")) go("unlink"); }} className="rounded-lg border border-red-200 px-4 py-2 text-sm text-red-700 hover:bg-red-50 disabled:opacity-50">{locksWithout ? "إلغاء ربط القاعدة" : "إرجاع لقسمه في قاعدة الموقع"}</button>}
+          {row.admin_db && <button disabled={busy} onClick={() => { if (confirm(locksWithout ? "إلغاء ربط قاعدة هذا المدرسة؟ تُقفل لوحة الإدارة عنده حتى تُربط قاعدة أخرى، وتبقى بيانات قاعدته كما هي." : "إرجاع لوحة هذا المدرسة إلى قسمه في قاعدة الموقع؟ تبقى بيانات قاعدته كما هي.")) go("unlink"); }} className="rounded-lg border border-red-200 px-4 py-2 text-sm text-red-700 hover:bg-red-50 disabled:opacity-50">{locksWithout ? "إلغاء ربط القاعدة" : "إرجاع لقسمه في قاعدة الموقع"}</button>}
           <button disabled={busy || !ready} onClick={() => go("test")} className="rounded-lg border border-line px-4 py-2 text-sm hover:bg-canvas disabled:opacity-50">اختبار الاتصال</button>
           <button disabled={busy || !ready} onClick={() => go("set")} className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-50">{busy ? "جارٍ…" : "حفظ"}</button>
         </div>
@@ -1591,9 +1591,9 @@ function ExportModal({ row, needCode, onClose }: { row: Row; needCode: boolean; 
   }
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-slate-900/40 p-4" onClick={onClose}>
-      <div role="dialog" aria-label="تصدير بيانات المختبر" data-testid="export-modal" onClick={(e) => e.stopPropagation()} className="w-full max-w-md rounded-2xl border border-line bg-surface p-5 shadow-[var(--shadow-pop)]">
+      <div role="dialog" aria-label="تصدير بيانات المدرسة" data-testid="export-modal" onClick={(e) => e.stopPropagation()} className="w-full max-w-md rounded-2xl border border-line bg-surface p-5 shadow-[var(--shadow-pop)]">
         <h2 className="flex items-center gap-2 text-lg font-bold"><FileSpreadsheet className="size-5 text-brand" /> تصدير بيانات — {row.lab_name}</h2>
-        <p className="mt-1 text-xs text-muted">ملف Excel بكل بيانات لوحة إدارة هذا المختبر (ورقة لكل جدول، دون كلمات المرور). أدخل كلمة مرورك للتأكيد.</p>
+        <p className="mt-1 text-xs text-muted">ملف Excel بكل بيانات لوحة إدارة هذا المدرسة (ورقة لكل جدول، دون كلمات المرور). أدخل كلمة مرورك للتأكيد.</p>
         <div className="mt-3 grid gap-2">
           <input type="password" dir="ltr" value={pw} onChange={(e) => setPw(e.target.value)} aria-label="كلمة مرور المالك" placeholder="كلمة المرور" className={inp} />
           {needCode && <input dir="ltr" inputMode="numeric" value={code} onChange={(e) => setCode(e.target.value)} aria-label="رمز التحقق" placeholder="رمز التحقق من الهاتف" className={inp} />}
@@ -1632,7 +1632,7 @@ function OwnerNav({ section, go, total, soon, soonDays, dbDown, showErrors, open
             <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand to-brand-dark text-white shadow-[0_6px_16px_-4px_color-mix(in_oklab,var(--color-brand)_60%,transparent)]"><KeyRound className="size-[22px]" /></span>
             <div className="min-w-0 flex-1 leading-tight">
               <div className="truncate text-[15px] font-bold">إدارة الرموز</div>
-              <div className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-brand-light px-2 py-0.5 text-[10px] font-medium text-brand-dark">منظومة رموز المختبرات</div>
+              <div className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-brand-light px-2 py-0.5 text-[10px] font-medium text-brand-dark">منظومة رموز المدارس</div>
             </div>
             <button onClick={() => setOpen(false)} aria-label="إغلاق القائمة" className="grid size-8 place-items-center rounded-lg text-muted hover:bg-canvas hover:text-ink md:hidden"><X className="size-4" /></button>
           </div>

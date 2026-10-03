@@ -71,7 +71,7 @@ export function PinCard({ station }: { station: PinStation }) {
   if (hidden) return (
     <div data-testid="pin-card-hidden" className="rounded-2xl border border-line bg-surface p-5 shadow-[var(--shadow-card)]">
       <div className="mb-1 flex items-center gap-2 text-sm font-semibold"><EyeOff className="size-4" /> رمز الدخول (PIN)</div>
-      <p className="text-xs text-muted">أوقف المزوّد خاصية رمز الدخول لهذا المختبر، فلا يُطلب رمز عند فتح المحطات. تعود رموزك كما كانت إذا أعادها.</p>
+      <p className="text-xs text-muted">أوقف المزوّد خاصية رمز الدخول لهذا المدرسة، فلا يُطلب رمز عند فتح المحطات. تعود رموزك كما كانت إذا أعادها.</p>
     </div>
   );
 

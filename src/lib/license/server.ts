@@ -702,7 +702,7 @@ export async function check(lid: string, device: string, version = ""): Promise<
   return issue(row, device);
 }
 
-// ── The lab's own database («قاعدة بيانات المختبر») ──────────────────────────────
+// ── The lab's own database («قاعدة بيانات المدرسة») ──────────────────────────────
 // Kept sealed with AUTH_SECRET (bound to the code's id), so a copy of the codes database alone
 // reveals no lab's connection details. A short summary (kind, host) is kept beside it for the list.
 const syncAad = (id: string) => `lab-sync:${id}`;
@@ -796,7 +796,7 @@ export async function setAdminDb(id: string, conn: string | null, by: "owner" | 
   // Saved only after it was opened, so it starts as a successful check.
   await query(`update station_licenses set admin_db = $2, admin_db_info = $3, admin_db_check_at = ${Date.now()}, admin_db_ok = true, admin_db_error = '' where id = $1`,
     [id, JSON.stringify(sealText(JSON.stringify({ conn, by }), secret, adminDbAad(id))), JSON.stringify(info)]);
-  await logEvent(id, "admin_db", `${info.host}${by === "lab" ? " (من المختبر)" : ""}`);
+  await logEvent(id, "admin_db", `${info.host}${by === "lab" ? " (من المدرسة)" : ""}`);
   return null;
 }
 
