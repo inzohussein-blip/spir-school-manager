@@ -37,12 +37,12 @@ export default function Dashboard() {
         <Link href="/students" className="inline-flex items-center gap-1.5 rounded-full border border-ink/15 bg-surface px-5 py-2.5 text-sm font-medium"><GraduationCap className="size-4" /> تسجيل طلاب</Link>
       </PageTitle>
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
         {kpis.map((k) => (
           <Link key={k.t} href={k.href} className={`relative block rounded-3xl p-5 ${k.dark ? "bg-gradient-to-br from-[#14733f] to-[#0b4527] text-white shadow-[0_18px_30px_-16px_#0e5530]" : "bg-surface shadow-[var(--shadow-card)]"}`}>
             <div className="flex items-start justify-between"><div className={`text-sm font-medium ${k.dark ? "text-white/90" : ""}`}>{k.t}</div>
               <span className={`grid size-9 place-items-center rounded-full border ${k.dark ? "border-white/60 bg-white text-brand-dark" : "border-line"}`}><ArrowUpRight className="size-4" /></span></div>
-            <div className="mt-3 text-5xl font-extrabold tabular-nums">{k.v}</div>
+            <div className="mt-3 text-3xl font-extrabold tabular-nums sm:text-5xl">{k.v}</div>
             <div className={`mt-3 text-xs ${k.dark ? "text-white/75" : "text-muted"}`}>{k.n}</div>
           </Link>
         ))}

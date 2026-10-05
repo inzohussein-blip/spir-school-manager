@@ -8,7 +8,7 @@ import { getInfo, currentYear } from "@/lib/school/store";
 export function SchoolSheet({ title, children, landscape = true, color = "#1e40af", breakBefore = false }: { title: string; children: ReactNode; landscape?: boolean; color?: string; breakBefore?: boolean }) {
   const info = getInfo(); const year = currentYear();
   return (
-    <section className={`print-doc mb-6 rounded-2xl border border-line bg-white p-5 text-gray-900 shadow-[var(--shadow-card)] print:m-0 print:rounded-none print:border-0 print:shadow-none ${breakBefore ? "page-break" : ""}`}>
+    <section className={`print-doc mb-6 min-w-0 max-w-full overflow-x-auto print:overflow-visible rounded-2xl border border-line bg-white p-5 text-gray-900 shadow-[var(--shadow-card)] print:m-0 print:rounded-none print:border-0 print:shadow-none ${breakBefore ? "page-break" : ""}`}>
       <PrintStyle landscape={landscape} />
       <Letterhead title={info.name || "المدرسة"} color={color} logo={info.logo}
         subtitle={[info.subtitle, info.directorate, info.province].filter(Boolean).join(" — ")}
