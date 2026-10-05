@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 import type { LicenseModule } from "@/lib/license/modules";
 import { Palette } from "./Palette";
 
-export type ShellId = Exclude<LicenseModule, "admin"> | "dashboard";
+export type ShellId = Exclude<LicenseModule, "admin"> | "dashboard" | "sync";
 const SHORT: Record<string, string> = { setup: "الإعداد", students: "الطلاب", classes: "الصفوف والجداول", teachers: "الكادر التدريسي", results: "النتائج والشهادات", leaves: "الإجازات والعطل", plan: "الخطة السنوية", attendance: "الحضور والغياب", fees: "الأقساط الشهرية" };
 
 /** The app frame in the dashboard style: floating side menu, top bar (search, alerts, theme, school), page tabs, content. */
@@ -67,7 +67,7 @@ export function AppShell({ id, children }: { id: ShellId; children: ReactNode })
       <div className="px-3 pb-1 pt-3 text-[11px] font-semibold tracking-wide text-muted">عام</div>
       <nav className="flex flex-col gap-0.5">
         {link("/setup/settings", "الإعدادات", Settings, pathname === "/setup/settings")}
-        {link("/sync", "المزامنة", RefreshCw, isOn("/sync"))}
+        {link("/sync", "المزامنة", RefreshCw, id === "sync")}
         {link("/about", "المساعدة", HelpCircle, isOn("/about"))}
         {link("/welcome", "الصفحة الرئيسية", Home, false)}
       </nav>

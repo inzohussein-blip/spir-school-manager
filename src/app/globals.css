@@ -136,6 +136,16 @@ main > * {
 :root[data-theme="dark"] :is(.school-st, .about, .sync) :is(.bg-brand, .from-brand).text-white {
   color: #062613;
 }
+/* Older pages (sync, license, welcome, about, settings…) pick up the same look without their markup changing:
+   soft cards, pill buttons, rounded fields. */
+@media screen {
+  :is(.school-st, .about, .sync, .lic) :is(.rounded-2xl, .rounded-xl).border.border-line.bg-surface { border-color: transparent; border-radius: 1.5rem; box-shadow: var(--shadow-card); }
+  :is(.school-st, .about, .sync, .lic) button.bg-brand, :is(.school-st, .about, .sync, .lic) a.bg-brand {
+    border-radius: 9999px; background-image: linear-gradient(to bottom, var(--color-brand), var(--color-brand-dark)); box-shadow: 0 8px 18px -10px var(--color-brand);
+  }
+  :is(.school-st, .about, .sync, .lic) button.rounded-lg.border { border-radius: 9999px; }
+  :is(.school-st, .about, .sync, .lic) :is(input, select, textarea).rounded-lg { border-radius: 0.85rem; }
+}
 /* Page titles: large and plain; the page icon is hidden (the sidebar already shows it). */
 @media screen {
   :is(.school-st, .about, .sync) main h1 > svg:first-child { display: none; }

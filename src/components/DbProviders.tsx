@@ -67,7 +67,7 @@ export function AdviceList({ conn, provider }: { conn: string; provider: Provide
   return (
     <ul data-testid="conn-advice" className="space-y-1 text-xs">
       {list.map((a) => (
-        <li key={a.text} data-level={a.level} className={`flex items-start gap-1.5 ${a.level === "error" ? "text-red-700" : a.level === "warn" ? "text-amber-700" : "text-teal-700"}`}>
+        <li key={a.text} data-level={a.level} className={`flex items-start gap-1.5 ${a.level === "error" ? "text-red-700" : a.level === "warn" ? "text-amber-700" : "text-emerald-700"}`}>
           {a.level === "error" ? <XCircle className="mt-0.5 size-3.5 shrink-0" /> : a.level === "warn" ? <AlertTriangle className="mt-0.5 size-3.5 shrink-0" /> : <CheckCircle2 className="mt-0.5 size-3.5 shrink-0" />}
           <span>{a.text}</span>
         </li>

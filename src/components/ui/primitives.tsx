@@ -91,7 +91,7 @@ export function Badge({
 }) {
   const tones: Record<string, string> = {
     neutral: "bg-canvas text-muted",
-    brand: "bg-teal-50 text-brand-dark",
+    brand: "bg-emerald-50 text-brand-dark",
     warn: "bg-amber-50 text-amber-700",
     danger: "bg-red-50 text-red-600",
     info: "bg-blue-50 text-blue-600",

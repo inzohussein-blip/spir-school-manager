@@ -3,14 +3,23 @@ import type { LicenseModule } from "@/lib/license/modules";
 import {
   LayoutDashboard, Building2, CalendarRange, BookOpen, Clock, Settings, GraduationCap, ArrowUpCircle, School, CalendarDays, AlertTriangle,
   Users, BarChart3, Printer, PenLine, Table2, CalendarOff, Plane, HeartPulse, UserCheck, ClipboardCheck, ClipboardList, FileBarChart,
-  Banknote, Layers, FilePlus2, HandCoins, Award, SlidersHorizontal, KanbanSquare, type LucideIcon,
+  Banknote, Layers, FilePlus2, HandCoins, Award, SlidersHorizontal, KanbanSquare, RefreshCw, FileDown, Network, History, type LucideIcon,
 } from "lucide-react";
 
-type Id = Exclude<LicenseModule, "admin">;
+type Id = Exclude<LicenseModule, "admin"> | "sync";
 export const it = (href: string, label: string, hint: string, icon: LucideIcon, exact = false) => ({ href, label, hint, icon, exact });
 
 /** Each station's pages. Stations whose pages are not built yet show only their home. */
 export const NAV: Partial<Record<Id, SideSection[]>> = {
+  sync: [
+    { title: "المزامنة", items: [
+      it("/sync", "نظرة عامة", "هذا الحاسوب وحالة المزامنة", LayoutDashboard, true),
+      it("/sync/file", "المزامنة بملف", "تصدير ملف وإدخال ملف", FileDown),
+      it("/sync/auto", "المزامنة التلقائية", "عبر الإنترنت أو الشبكة المحلية", Network),
+      it("/sync/log", "سجل المزامنة", "ما صُدّر وما أُدخل", History),
+    ] },
+    { title: "الإدارة", items: [it("/sync/settings", "الإعدادات", "اسم الحاسوب والمحطات المشتركة", Settings)] },
+  ],
   setup: [
     { title: "البداية", items: [it("/setup", "نظرة عامة", "ما أُنجز وما بقي", LayoutDashboard, true)] },
     { title: "الإعداد", items: [

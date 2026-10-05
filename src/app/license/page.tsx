@@ -136,7 +136,7 @@ function status(r: Row, now: number, soonMs?: number) {
   if (k === "unused") return { t: "غير مستخدم", c: "bg-slate-100 text-slate-600", stripe: "border-s-slate-300", bar: "bg-slate-300" };
   if (k === "expired") return { t: "منتهٍ", c: "bg-red-50 text-red-700", stripe: "border-s-red-500", bar: "bg-red-400" };
   if (k === "soon") return { t: "فعّال — ينتهي قريباً", c: "bg-amber-50 text-amber-700", stripe: "border-s-amber-500", bar: "bg-amber-500" };
-  return { t: "فعّال", c: "bg-teal-50 text-teal-800", stripe: "border-s-teal-500", bar: "bg-teal-500" };
+  return { t: "فعّال", c: "bg-emerald-50 text-emerald-800", stripe: "border-s-emerald-500", bar: "bg-emerald-500" };
 }
 /** Each station in the colour it has on the welcome page. */
 const MOD_TONE: Record<LicenseModule, string> = {
@@ -146,7 +146,7 @@ const MOD_TONE: Record<LicenseModule, string> = {
 /** Filter tiles: a dot in their colour, filled with it when chosen. */
 const TILE_TONE: Record<Filter, { dot: string; on: string }> = {
   all: { dot: "bg-slate-400", on: "bg-slate-700 text-white border-slate-700" },
-  active: { dot: "bg-teal-500", on: "bg-teal-600 text-white border-teal-600" },
+  active: { dot: "bg-emerald-500", on: "bg-emerald-600 text-white border-emerald-600" },
   soon: { dot: "bg-amber-500", on: "bg-amber-500 text-white border-amber-500" },
   expired: { dot: "bg-red-500", on: "bg-red-600 text-white border-red-600" },
   unused: { dot: "bg-slate-300", on: "bg-slate-500 text-white border-slate-500" },
@@ -339,7 +339,7 @@ export default function LicensesPage() {
   if (!data) return <div className="p-8 text-center text-sm text-muted">جارٍ التحميل…</div>;
 
   const shell = (children: React.ReactNode) => (
-    <div className="min-h-screen bg-canvas">
+    <div className="lic school-st min-h-screen bg-canvas">
       <div className="mx-auto max-w-5xl px-4 py-8">{children}</div>
     </div>
   );
@@ -407,7 +407,7 @@ export default function LicensesPage() {
         <>
           <SectionTitle icon={<KeyRound className="size-6" />} title="إدارة الرموز" desc="رمز لكل مدرسة، يعمل على جهاز واحد، وتبدأ مدته من يوم التفعيل." />
           <div className="mb-5 grid grid-cols-2 gap-3 lg:grid-cols-4" data-testid="codes-kpis">
-            <Kpi icon={<KeyRound className="size-5" />} tone="from-teal-500 to-teal-700" label="رموز فعّالة" value={counts.active} sub={`من ${counts.all} رمز`} />
+            <Kpi icon={<KeyRound className="size-5" />} tone="from-emerald-500 to-emerald-700" label="رموز فعّالة" value={counts.active} sub={`من ${counts.all} رمز`} />
             <Kpi icon={<Wifi className="size-5" />} tone="from-sky-500 to-sky-700" label="اتصلت اليوم" value={online} sub="آخر 24 ساعة" />
             <Kpi icon={<AlarmClock className="size-5" />} tone="from-amber-500 to-orange-600" label="تنتهي قريباً" value={counts.soon} sub={`خلال ${prefs.soonDays} يوماً`} onClick={() => setFilter("soon")} />
             <Kpi icon={<CircleDollarSign className="size-5" />} tone="from-violet-500 to-violet-700" label="غير مدفوع" value={money.due.toLocaleString("en-US")} sub={`المدفوع ${money.paid.toLocaleString("en-US")}`} onClick={() => setFilter("unpaid")} />
@@ -475,7 +475,7 @@ export default function LicensesPage() {
                     <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${st.c}`}>{st.t}</span>
                     {r.is_trial && <span className="rounded-full bg-violet-50 px-2 py-0.5 text-xs font-semibold text-violet-700">تجريبي</span>}
                     {r.source === "signup" && <span data-testid="signup-badge" className="rounded-full bg-sky-50 px-2 py-0.5 text-xs font-semibold text-sky-700">تسجيل ذاتي</span>}
-                    {r.price.trim() && <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${r.paid ? "bg-teal-50 text-brand-dark" : "bg-amber-50 text-amber-700"}`}>{r.paid ? "مدفوع" : "غير مدفوع"} · <span className="tabular-nums">{r.price}</span></span>}
+                    {r.price.trim() && <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${r.paid ? "bg-emerald-50 text-brand-dark" : "bg-amber-50 text-amber-700"}`}>{r.paid ? "مدفوع" : "غير مدفوع"} · <span className="tabular-nums">{r.price}</span></span>}
                     {r.message && <span title={r.message} className="inline-flex items-center gap-1 rounded-full bg-sky-50 px-2 py-0.5 text-xs text-sky-700"><MessageSquare className="size-3" /> رسالة</span>}
                     {r.pinPolicy?.hidden
                       ? <span data-testid="pin-badge" title="خاصية رمز الدخول مخفية عن هذا المدرسة" className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-500 line-through"><Lock className="size-3" /> PIN</span>
@@ -707,11 +707,11 @@ export default function LicensesPage() {
   );
 
   return (
-    <div className="min-h-screen bg-canvas md:flex">
+    <div className="lic school-st min-h-screen bg-canvas md:flex">
       <OwnerNav section={section} go={go} total={counts.all} soon={soon} soonDays={prefs.soonDays}
         dbDown={all.filter((r) => r.admin_db && r.admin_db_check && !r.admin_db_check.ok).length} showErrors={prefs.errorLog} open={menu} setOpen={setMenu}
         onLogout={async () => { await post({ op: "logout" }); load(); }} />
-      <main className="min-w-0 flex-1 p-4 md:p-7">
+      <main className="min-w-0 flex-1 p-4 md:py-4 md:pe-4">
         <div className="mx-auto max-w-5xl">{main}</div>
       </main>
       {dbFor && <DbModal row={dbFor} rows={all} onClose={() => setDbFor(null)} onSaved={() => { setDbFor(null); load(); }} />}
@@ -826,7 +826,7 @@ function SyncHealth({ r, now }: { r: Row; now: number }) {
   }
   const stale = !r.sync_last_at || now - r.sync_last_at > SYNC_STALE;
   return (
-    <div className={`truncate text-[11px] ${stale ? "text-amber-700" : "text-teal-700"}`} data-testid="sync-health">
+    <div className={`truncate text-[11px] ${stale ? "text-amber-700" : "text-emerald-700"}`} data-testid="sync-health">
       {stale ? "⚠️ " : "✓ "}آخر مزامنة <span dir="ltr" className="font-mono tabular-nums">{fmtShort(r.sync_last_at)}</span>
       {r.sync_pending > 0 && <> · ينتظر <span className="tabular-nums">{r.sync_pending}</span></>}
     </div>
@@ -839,7 +839,7 @@ function isOutdated(r: Row, current?: string): boolean {
 }
 function VersionInfo({ r, current }: { r: Row; current?: string }) {
   const v = r.app_version;
-  const tone = !r.device_id ? "" : !v || (current && v !== current) ? "text-amber-700" : "text-teal-700";
+  const tone = !r.device_id ? "" : !v || (current && v !== current) ? "text-amber-700" : "text-emerald-700";
   const text = !r.device_id ? "—" : !v ? "⚠️ قديمة (قبل هذا التحديث)" : current && v !== current ? `⚠️ ${v} — أقدم` : `✓ ${v}`;
   return (
     <div data-testid="app-version" title={current ? `أحدث إصدار: ${current}` : undefined}>
@@ -933,7 +933,7 @@ const initials = (name: string) => name.trim().split(/\s+/).filter((w) => !["م�
 const PANEL_TONE = {
   sky: "bg-sky-100 text-sky-700",
   violet: "bg-violet-100 text-violet-700",
-  teal: "bg-teal-100 text-teal-700",
+  teal: "bg-emerald-100 text-emerald-700",
   amber: "bg-amber-100 text-amber-700",
 } as const;
 function Panel({ tone, icon, title, desc, testid, children }: {
@@ -1113,7 +1113,7 @@ function DbModal({ row, rows, onClose, onSaved }: { row: Row; rows: Row[]; onClo
           </div>
         )}
 
-        {msg && <p className={`mt-3 text-sm ${msg.ok ? "text-teal-700" : "text-red-700"}`} data-testid="db-msg">{msg.text}</p>}
+        {msg && <p className={`mt-3 text-sm ${msg.ok ? "text-emerald-700" : "text-red-700"}`} data-testid="db-msg">{msg.text}</p>}
         <div className="mt-4 flex flex-wrap justify-end gap-2">
           <button onClick={onClose} className="rounded-lg border border-line px-4 py-2 text-sm hover:bg-canvas">إغلاق</button>
           {kind === "none" ? (
@@ -1186,11 +1186,11 @@ function Databases({ rows, now, needsOwn, onOpen, onReset, onChecked, onExport }
   const lastCheck = (r: Row) => {
     const c = checks[r.id];
     if (c?.busy) return <span className="text-muted">جارٍ الفحص…</span>;
-    if (c?.text) return <span className={c.ok ? "text-teal-700" : "text-red-700"}>{c.text}</span>;
+    if (c?.text) return <span className={c.ok ? "text-emerald-700" : "text-red-700"}>{c.text}</span>;
     const s = r.admin_db_check;
     if (!s) return <span className="text-muted">لم تُفحص بعد</span>;
     return s.ok
-      ? <span className="text-teal-700">✓ تعمل — آخر فحص {fmtShort(s.at)}</span>
+      ? <span className="text-emerald-700">✓ تعمل — آخر فحص {fmtShort(s.at)}</span>
       : <span className="text-red-700">✗ لا تستجيب ({adminDbError(s.error)}) — {fmtShort(s.at)}</span>;
   };
   async function importShared(r: Row) {
@@ -1330,7 +1330,7 @@ function ResetAdminModal({ row, onClose }: { row: Row; onClose: () => void }) {
           <input dir="ltr" type="password" aria-label="كلمة المرور الجديدة" placeholder="6 أحرف على الأقل" value={a.password} onChange={(e) => setA({ ...a, password: e.target.value })} className={inp} />
           <input dir="ltr" type="password" aria-label="تأكيد كلمة المرور" placeholder="أعد كتابتها" value={a.again} onChange={(e) => setA({ ...a, again: e.target.value })} className={inp} />
         </div>
-        {msg && <p data-testid="reset-admin-msg" className={`mt-3 text-sm ${msg.ok ? "text-teal-700" : "text-red-700"}`}>{msg.text}</p>}
+        {msg && <p data-testid="reset-admin-msg" className={`mt-3 text-sm ${msg.ok ? "text-emerald-700" : "text-red-700"}`}>{msg.text}</p>}
         <div className="mt-4 flex justify-end gap-2">
           <button onClick={onClose} className="rounded-lg border border-line px-4 py-2 text-sm hover:bg-canvas">إغلاق</button>
           <button disabled={busy || !a.username.trim() || a.password.length < 6} onClick={save} className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-50">حفظ كلمة المرور</button>
@@ -1516,7 +1516,7 @@ function AdminDbModal({ row, rows, provider: initial, needsOwn, onClose, onSaved
             <input dir="ltr" type="password" aria-label="كلمة مرور المدير" placeholder="6 أحرف على الأقل" value={first.password} onChange={(e) => setFirst({ ...first, password: e.target.value })} className={inp} />
           </div>
         </div>
-        {msg && <p className={`mt-3 text-sm ${msg.ok ? "text-teal-700" : "text-red-700"}`} data-testid="admin-db-msg">{msg.text}</p>}
+        {msg && <p className={`mt-3 text-sm ${msg.ok ? "text-emerald-700" : "text-red-700"}`} data-testid="admin-db-msg">{msg.text}</p>}
         <div className="mt-4 flex flex-wrap justify-end gap-2">
           <button onClick={onClose} className="rounded-lg border border-line px-4 py-2 text-sm hover:bg-canvas">إغلاق</button>
           {row.admin_db && <button disabled={busy} onClick={() => { if (confirm(locksWithout ? "إلغاء ربط قاعدة هذا المدرسة؟ تُقفل لوحة الإدارة عنده حتى تُربط قاعدة أخرى، وتبقى بيانات قاعدته كما هي." : "إرجاع لوحة هذا المدرسة إلى قسمه في قاعدة الموقع؟ تبقى بيانات قاعدته كما هي.")) go("unlink"); }} className="rounded-lg border border-red-200 px-4 py-2 text-sm text-red-700 hover:bg-red-50 disabled:opacity-50">{locksWithout ? "إلغاء ربط القاعدة" : "إرجاع لقسمه في قاعدة الموقع"}</button>}
@@ -1598,7 +1598,7 @@ function ExportModal({ row, needCode, onClose }: { row: Row; needCode: boolean; 
           <input type="password" dir="ltr" value={pw} onChange={(e) => setPw(e.target.value)} aria-label="كلمة مرور المالك" placeholder="كلمة المرور" className={inp} />
           {needCode && <input dir="ltr" inputMode="numeric" value={code} onChange={(e) => setCode(e.target.value)} aria-label="رمز التحقق" placeholder="رمز التحقق من الهاتف" className={inp} />}
         </div>
-        {msg && <p data-testid="export-msg" className={`mt-3 text-sm ${msg.ok ? "text-teal-700" : "text-red-700"}`}>{msg.text}</p>}
+        {msg && <p data-testid="export-msg" className={`mt-3 text-sm ${msg.ok ? "text-emerald-700" : "text-red-700"}`}>{msg.text}</p>}
         <div className="mt-4 flex justify-end gap-2">
           <button onClick={onClose} className="rounded-lg border border-line px-4 py-2 text-sm hover:bg-canvas">إغلاق</button>
           <button disabled={busy || !pw} onClick={go} className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-50">{busy ? "جارٍ التصدير…" : "تصدير"}</button>
@@ -1608,7 +1608,7 @@ function ExportModal({ row, needCode, onClose }: { row: Row; needCode: boolean; 
   );
 }
 
-/** The page's side menu, like the lab station's (a drawer on phones). */
+/** The page's side menu in the dashboard style: a floating card (a drawer on phones). */
 function OwnerNav({ section, go, total, soon, soonDays, dbDown, showErrors, open, setOpen, onLogout }: {
   section: Section; go: (s: Section) => void; total: number; soon: number; soonDays: number; dbDown: number; showErrors: boolean; open: boolean; setOpen: (v: boolean) => void; onLogout: () => void;
 }) {
@@ -1616,8 +1616,8 @@ function OwnerNav({ section, go, total, soon, soonDays, dbDown, showErrors, open
   return (
     <>
       {/* Phone top bar */}
-      <div className="sticky top-0 z-30 flex items-center gap-3 border-b border-line bg-surface/90 px-4 py-2.5 backdrop-blur md:hidden">
-        <button onClick={() => setOpen(true)} aria-label="فتح القائمة" className="grid size-10 place-items-center rounded-xl border border-line bg-surface hover:bg-canvas"><Menu className="size-5" /></button>
+      <div className="sticky top-0 z-30 flex items-center gap-3 bg-canvas/85 px-4 py-3 backdrop-blur md:hidden">
+        <button onClick={() => setOpen(true)} aria-label="فتح القائمة" className="grid size-10 place-items-center rounded-full border border-line bg-surface"><Menu className="size-5" /></button>
         <div className="min-w-0 flex-1">
           <div className="truncate text-sm font-bold">{current}</div>
           <div className="text-[11px] text-muted">إدارة الرموز</div>
@@ -1626,43 +1626,34 @@ function OwnerNav({ section, go, total, soon, soonDays, dbDown, showErrors, open
       </div>
       <div onClick={() => setOpen(false)} className={`fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-[2px] transition-opacity md:hidden ${open ? "opacity-100" : "pointer-events-none opacity-0"}`} />
 
-      <aside className={`fixed inset-y-0 start-0 z-50 flex h-screen w-72 shrink-0 flex-col border-e border-line bg-surface shadow-[var(--shadow-pop)] transition-transform duration-200 md:sticky md:top-0 md:z-auto md:translate-x-0 md:shadow-none ${open ? "translate-x-0" : "translate-x-full"}`}>
-        <div className="px-4 pb-4 pt-5">
-          <div className="flex items-center gap-3">
-            <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand to-brand-dark text-white shadow-[0_6px_16px_-4px_color-mix(in_oklab,var(--color-brand)_60%,transparent)]"><KeyRound className="size-[22px]" /></span>
-            <div className="min-w-0 flex-1 leading-tight">
-              <div className="truncate text-[15px] font-bold">إدارة الرموز</div>
-              <div className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-brand-light px-2 py-0.5 text-[10px] font-medium text-brand-dark">منظومة رموز المدارس</div>
-            </div>
-            <button onClick={() => setOpen(false)} aria-label="إغلاق القائمة" className="grid size-8 place-items-center rounded-lg text-muted hover:bg-canvas hover:text-ink md:hidden"><X className="size-4" /></button>
+      <aside className={`fixed inset-y-0 start-0 z-50 flex w-72 flex-col overflow-y-auto bg-surface p-4 shadow-[var(--shadow-pop)] transition-transform duration-200 md:sticky md:top-4 md:z-auto md:m-4 md:h-[calc(100vh-2rem)] md:w-64 md:shrink-0 md:translate-x-0 md:rounded-[28px] md:shadow-[var(--shadow-card)] ${open ? "translate-x-0" : "translate-x-full"}`}>
+        <div className="flex items-center gap-3 px-3 pb-3 pt-1">
+          <span className="grid size-10 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand to-brand-dark text-white shadow-[0_8px_18px_-8px_var(--color-brand)]"><KeyRound className="size-5" /></span>
+          <div className="min-w-0 flex-1 leading-tight">
+            <div className="truncate text-lg font-extrabold">إدارة الرموز</div>
+            <div className="truncate text-[11px] text-muted">منظومة رموز المدارس</div>
           </div>
+          <button onClick={() => setOpen(false)} aria-label="إغلاق القائمة" className="grid size-8 place-items-center rounded-lg text-muted hover:bg-canvas md:hidden"><X className="size-4" /></button>
         </div>
-        <nav className="flex flex-1 flex-col gap-4 overflow-y-auto px-3 pb-3">
+        <nav className="flex flex-1 flex-col gap-3">
           {SECTIONS.map((g) => (
             <div key={g.title}>
-              <div className="mb-1.5 px-2.5 text-[11px] font-semibold text-muted">{g.title}</div>
+              <div className="px-3 pb-1 text-[11px] font-semibold tracking-wide text-muted">{g.title}</div>
               <div className="flex flex-col gap-0.5">
                 {g.items.filter((it) => it.id !== "errors" || showErrors).map((it) => {
                   const active = section === it.id;
                   const badge = it.id === "codes" ? (soon || total) : it.id === "databases" ? dbDown : 0;
                   const warn = it.id === "codes" ? !!soon : it.id === "databases";
                   return (
-                    <button key={it.id} data-section={it.id} onClick={() => go(it.id)} aria-current={active ? "page" : undefined}
-                      className={`group relative flex items-center gap-3 rounded-xl px-2.5 py-2 text-right text-sm ${active ? "bg-brand-light text-brand-dark shadow-[inset_0_0_0_1px_color-mix(in_oklab,var(--color-brand)_22%,transparent)]" : "text-ink hover:bg-canvas"}`}>
+                    <button key={it.id} data-section={it.id} onClick={() => go(it.id)} aria-current={active ? "page" : undefined} title={it.hint}
+                      className={`relative flex items-center gap-3 rounded-2xl px-3 py-2 text-right text-sm transition-colors ${active ? "font-bold text-ink" : "text-muted hover:bg-canvas hover:text-ink"}`}>
                       {active && <span className="absolute inset-y-2 -start-3 w-1 rounded-e-full bg-brand" />}
-                      <span className={`grid size-9 shrink-0 place-items-center rounded-lg transition-colors ${active ? "bg-gradient-to-br from-brand to-brand-dark text-white" : "bg-canvas text-muted ring-1 ring-line group-hover:bg-brand-light group-hover:text-brand group-hover:ring-transparent"}`}>
-                        <it.icon className="size-[18px]" strokeWidth={active ? 2.2 : 1.9} />
-                      </span>
-                      <span className="min-w-0 flex-1 leading-tight">
-                        <span className={`block truncate ${active ? "font-semibold" : ""}`}>{it.label}</span>
-                        <span className={`block truncate text-[11px] ${active ? "text-brand-dark/70" : "text-muted"}`}>{it.hint}</span>
-                      </span>
+                      <it.icon className={`size-[18px] ${active ? "text-brand" : ""}`} strokeWidth={active ? 2.2 : 1.9} />
+                      <span className="min-w-0 flex-1 truncate">{it.label}</span>
                       {badge ? (
                         <span data-testid={`badge-${it.id}`} title={it.id === "databases" ? "قواعد لا تستجيب" : soon ? `تنتهي خلال ${soonDays} يوماً` : undefined}
-                          className={`min-w-5 rounded-full px-1.5 py-0.5 text-center text-[10px] font-bold leading-none tabular-nums text-white ${it.id === "databases" ? "bg-red-600" : warn ? "bg-amber-500" : "bg-brand"}`}>{badge}</span>
-                      ) : (
-                        <ChevronLeft className={`size-4 shrink-0 transition-all ${active ? "text-brand opacity-100" : "text-muted opacity-0 group-hover:opacity-60"}`} />
-                      )}
+                          className={`grid min-w-5 place-items-center rounded-md px-1.5 py-0.5 text-[10px] font-bold leading-none tabular-nums text-white ${it.id === "databases" ? "bg-red-600" : warn ? "bg-amber-500" : "bg-brand-dark"}`}>{badge}</span>
+                      ) : null}
                     </button>
                   );
                 })}
@@ -1670,23 +1661,20 @@ function OwnerNav({ section, go, total, soon, soonDays, dbDown, showErrors, open
             </div>
           ))}
         </nav>
-        <div className="border-t border-line p-3">
-          <button onClick={onLogout} className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-line px-3 py-2 text-sm hover:bg-canvas"><LogOut className="size-4" /> خروج</button>
+        <div className="pt-3">
+          <button onClick={onLogout} className="flex w-full items-center justify-center gap-1.5 rounded-full border border-ink/15 px-3 py-2.5 text-sm font-medium hover:bg-canvas"><LogOut className="size-4" /> خروج</button>
         </div>
       </aside>
     </>
   );
 }
 
-/** A section's heading, as on the lab station's pages. */
-function SectionTitle({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
+/** A section's heading: large and plain, with one line under it. */
+function SectionTitle({ title, desc }: { icon?: React.ReactNode; title: string; desc: string }) {
   return (
-    <div className="mb-5 flex items-start gap-3">
-      <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand to-brand-dark text-white shadow-[0_6px_16px_-6px_color-mix(in_oklab,var(--color-brand)_70%,transparent)] [&>svg]:size-[22px]">{icon}</span>
-      <div className="min-w-0">
-        <h1 className="text-2xl font-bold">{title}</h1>
-        <p className="mt-0.5 text-sm text-muted">{desc}</p>
-      </div>
+    <div className="mb-5">
+      <h1 className="text-3xl font-extrabold">{title}</h1>
+      <p className="mt-1.5 text-sm text-muted">{desc}</p>
     </div>
   );
 }

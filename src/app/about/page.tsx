@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Phone, Rocket, HelpCircle, ShieldCheck, Layers } from "lucide-react";
+import { ArrowRight, Phone, Rocket, HelpCircle, ShieldCheck, Layers, School, ArrowLeft } from "lucide-react";
 import { SCHOOL_STATIONS } from "@/lib/school/stations";
 
 export const metadata = { title: "عن التطبيق — سبير إدارة المدارس" };
@@ -20,34 +20,43 @@ const FAQ = [
   ["هل الشهادات بالصيغة الرسمية للوزارة؟", "القوالب قابلة للتعديل (النص والعنوان والاتجاه)، لكنها ليست الصيغة الرسمية الجاهزة. راجع الجهة المختصة قبل اعتماد أي شهادة."],
   ["نسيت رمز الدخول (PIN) لمحطة", "يعيّنه المالك أو يزيله من مدير الرموز، ثم يأخذه الجهاز بـ«نسيت الرمز؟ ← تحديث من المزوّد»."],
 ] as const;
+const card = "rounded-3xl bg-surface p-5 shadow-[var(--shadow-card)]";
+const h2 = "mb-3 flex items-center gap-2 text-xl font-bold";
 
 export default function AboutPage() {
   return (
-    <div className="about min-h-screen bg-canvas">
+    <div className="about school-st min-h-screen bg-canvas">
       <div className="mx-auto max-w-4xl px-4 py-8">
-        <Link href="/welcome" className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted hover:text-ink"><ArrowRight className="size-4" /> الصفحة الرئيسية</Link>
-        <h1 className="text-3xl font-extrabold text-blue-800">عن التطبيق</h1>
-        <p className="mt-3 text-sm leading-7 text-muted">
-          «سبير» منصة عربية لإدارة المدارس الحكومية والأهلية العراقية. تضم محطات مستقلة تعمل على حاسوب المدرسة بلا إنترنت وتتشارك ملفاً مدرسياً واحداً: الطلاب والصفوف والمدرسون والجداول والنتائج والشهادات والإجازات والعطل والخطط السنوية والأقساط.
-        </p>
+        <header className="mb-6 flex items-center justify-between rounded-[28px] bg-surface px-5 py-3 shadow-[var(--shadow-card)]">
+          <Link href="/welcome" className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-ink"><ArrowRight className="size-4" /> الصفحة الرئيسية</Link>
+          <div className="flex items-center gap-2 font-extrabold"><span className="grid size-9 place-items-center rounded-xl bg-gradient-to-br from-brand to-brand-dark text-white"><School className="size-5" /></span> سبير</div>
+        </header>
 
-        <section className="mt-8">
-          <h2 className="mb-3 flex items-center gap-2 text-xl font-bold"><Rocket className="size-5 text-brand" /> البدء السريع</h2>
-          <ol className="grid gap-2">{STEPS.map(([t, d], i) => (
-            <li key={t} className="flex gap-3 rounded-2xl border border-line bg-surface p-4"><span className="grid size-7 shrink-0 place-items-center rounded-full bg-brand text-sm font-bold text-white">{i + 1}</span><span className="text-sm"><b>{t}.</b> {d}</span></li>))}</ol>
+        <section className="relative overflow-hidden rounded-[28px] bg-gradient-to-br from-[#14733f] to-[#0b4527] p-7 text-white shadow-[0_18px_30px_-16px_#0e5530]">
+          <h1 className="text-3xl font-extrabold">عن التطبيق</h1>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-white/80">
+            «سبير» منصة عربية لإدارة المدارس الحكومية والأهلية العراقية. تضم محطات مستقلة تعمل على حاسوب المدرسة بلا إنترنت وتتشارك ملفاً مدرسياً واحداً: الطلاب والصفوف والمدرسون والجداول والنتائج والشهادات والإجازات والعطل والخطط السنوية والأقساط.
+          </p>
+          <Link href="/welcome" className="mt-5 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-brand-dark">ابدأ الآن <ArrowLeft className="size-4" /></Link>
         </section>
 
         <section className="mt-8">
-          <h2 className="mb-3 flex items-center gap-2 text-xl font-bold"><Layers className="size-5 text-brand" /> المحطات</h2>
+          <h2 className={h2}><Rocket className="size-5 text-brand" /> البدء السريع</h2>
+          <ol className="grid gap-3 sm:grid-cols-2">{STEPS.map(([t, d], i) => (
+            <li key={t} className={`${card} flex gap-3`}><span className="grid size-8 shrink-0 place-items-center rounded-full bg-gradient-to-b from-brand to-brand-dark text-sm font-bold text-white">{i + 1}</span><span className="text-sm leading-7"><b>{t}.</b> {d}</span></li>))}</ol>
+        </section>
+
+        <section className="mt-8">
+          <h2 className={h2}><Layers className="size-5 text-brand" /> المحطات</h2>
           <div className="grid gap-3 sm:grid-cols-2">{SCHOOL_STATIONS.map((s) => (
-            <Link key={s.id} href={s.path} className={`flex gap-3 rounded-2xl border-2 bg-surface p-4 ${s.border}`}>
-              <span className={`grid size-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white ${s.grad}`}><s.icon className="size-5" /></span>
+            <Link key={s.id} href={s.path} className={`${card} flex gap-3 transition-shadow hover:shadow-[var(--shadow-pop)]`}>
+              <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand to-brand-dark text-white"><s.icon className="size-5" /></span>
               <span><b className="block">{s.label}</b><span className="text-xs leading-6 text-muted">{s.desc}</span></span></Link>))}</div>
         </section>
 
         <section className="mt-8">
-          <h2 className="mb-3 flex items-center gap-2 text-xl font-bold"><ShieldCheck className="size-5 text-brand" /> نصائح</h2>
-          <ul className="list-disc space-y-1.5 ps-5 text-sm leading-7">
+          <h2 className={h2}><ShieldCheck className="size-5 text-brand" /> نصائح</h2>
+          <ul className={`${card} list-disc space-y-1.5 ps-10 text-sm leading-7`}>
             <li>خذ نسخة احتياطية أسبوعية على الأقل، واحتفظ بها خارج الحاسوب.</li>
             <li>فعّل رمز الدخول (PIN) للمحطات الحساسة كالنتائج والأقساط من إعدادات المحطة.</li>
             <li>اضبط العطل الرسمية مبكراً؛ فهي تدخل في الحضور وأرصدة الإجازات وأسابيع الخطة السنوية.</li>
@@ -56,14 +65,14 @@ export default function AboutPage() {
         </section>
 
         <section className="mt-8">
-          <h2 className="mb-3 flex items-center gap-2 text-xl font-bold"><HelpCircle className="size-5 text-brand" /> أسئلة شائعة</h2>
-          <div className="grid gap-2">{FAQ.map(([q, a]) => (
-            <details key={q} className="rounded-2xl border border-line bg-surface p-4"><summary className="cursor-pointer text-sm font-semibold">{q}</summary><p className="mt-2 text-sm leading-7 text-muted">{a}</p></details>))}</div>
+          <h2 className={h2}><HelpCircle className="size-5 text-brand" /> أسئلة شائعة</h2>
+          <div className="grid gap-3">{FAQ.map(([q, a]) => (
+            <details key={q} className={card}><summary className="cursor-pointer text-sm font-semibold">{q}</summary><p className="mt-2 text-sm leading-7 text-muted">{a}</p></details>))}</div>
         </section>
 
-        <div className="mt-10 flex flex-col items-center gap-2 border-t border-line pt-6 text-center">
+        <div className="mt-10 flex flex-col items-center gap-2 pt-4 text-center">
           <div className="text-sm font-semibold">للاشتراك والتفعيل والدعم الفني</div>
-          <a href="tel:07803993585" className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-2 font-bold tabular-nums"><Phone className="size-4 text-brand-dark" /> 07803993585</a>
+          <a href="tel:07803993585" className="inline-flex items-center gap-2 rounded-full bg-surface px-5 py-2.5 font-bold tabular-nums shadow-[var(--shadow-card)]"><Phone className="size-4 text-brand-dark" /> 07803993585</a>
         </div>
       </div>
     </div>

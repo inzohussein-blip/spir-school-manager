@@ -41,7 +41,7 @@ export function WelcomeAccount() {
   const lab = state.kind === "ok" ? state.lab : state.kind === "locked" ? state.lab ?? "" : "";
   const left = until ? Math.ceil((until - now) / DAY) : 0;
   const tone = state.kind === "locked" || left <= 3 ? "red" : left <= WARN_DAYS || state.kind === "grace" ? "amber" : "teal";
-  const toneCls = { red: "text-red-700 bg-red-50", amber: "text-amber-700 bg-amber-50", teal: "text-brand-dark bg-teal-50" }[tone];
+  const toneCls = { red: "text-red-700 bg-red-50", amber: "text-amber-700 bg-amber-50", teal: "text-brand-dark bg-emerald-50" }[tone];
   const status = state.kind === "locked" ? (state.reason === "stopped" ? "موقوف" : "منتهٍ")
     : state.kind === "grace" ? "تفعيل سابق" : left <= WARN_DAYS ? "ينتهي قريباً" : "فعّال";
   const mods = state.kind === "ok" ? LICENSE_MODULES.filter((m) => state.mods.includes(m.id)) : [];

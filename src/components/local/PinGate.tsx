@@ -91,7 +91,7 @@ export function PinCard({ station }: { station: PinStation }) {
     <div data-testid="pin-card" className="rounded-2xl border border-line bg-surface p-5 shadow-[var(--shadow-card)]">
       <div className="mb-1 flex items-center gap-2 text-sm font-semibold">
         <LockKeyhole className="size-4" /> رمز الدخول (PIN)
-        {on && <span className="inline-flex items-center gap-1 rounded-full bg-teal-50 px-2 py-0.5 text-xs font-medium text-brand-dark"><ShieldCheck className="size-3" /> مفعّل</span>}
+        {on && <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-brand-dark"><ShieldCheck className="size-3" /> مفعّل</span>}
       </div>
       <p className="mb-3 text-xs text-muted">
         رمز خاص بهذه المحطة وحدها، يُطلب عند فتحها على هذا الجهاز (مرة لكل نافذة). إذا نُسي، يعيّنه المزوّد أو يزيله من «رموز الدخول» في صفحة الترخيص ثم «نسيت الرمز؟ ← تحديث من المزوّد» في شاشة الدخول.

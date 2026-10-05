@@ -101,7 +101,7 @@ function PinCode({ r, open, toggle, change }: { r: PinRow; open: boolean; toggle
   const n = pinCount(r);
   const stations = stationsOf(r);
   return (
-    <div data-testid="pin-code" data-pin-lab={r.lab_name} className={`rounded-2xl border border-s-4 border-line bg-surface p-4 shadow-[var(--shadow-card)] ${hidden ? "border-s-slate-400" : n ? "border-s-teal-500" : "border-s-slate-200"}`}>
+    <div data-testid="pin-code" data-pin-lab={r.lab_name} className={`rounded-2xl border border-s-4 border-line bg-surface p-4 shadow-[var(--shadow-card)] ${hidden ? "border-s-slate-400" : n ? "border-s-emerald-500" : "border-s-slate-200"}`}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <button onClick={toggle} aria-expanded={open} className="flex min-w-0 items-center gap-2 text-start">
           <ChevronDown className={`size-4 shrink-0 text-muted transition-transform ${open ? "rotate-180" : ""}`} />
@@ -109,7 +109,7 @@ function PinCode({ r, open, toggle, change }: { r: PinRow; open: boolean; toggle
           {r.status === "stopped" && <span className="rounded-full bg-red-50 px-2 py-0.5 text-xs font-semibold text-red-700">موقوف</span>}
           {hidden
             ? <span data-testid="pin-hidden-badge" className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700"><EyeOff className="size-3" /> مخفية</span>
-            : <span className="inline-flex items-center gap-1 rounded-full bg-teal-50 px-2 py-0.5 text-xs font-semibold text-brand-dark"><Eye className="size-3" /> ظاهرة</span>}
+            : <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-brand-dark"><Eye className="size-3" /> ظاهرة</span>}
           {n > 0 && <span className="inline-flex items-center gap-1 rounded-full bg-canvas px-2 py-0.5 text-xs text-muted ring-1 ring-line"><Lock className="size-3" /> {n} {n === 1 ? "رمز" : "رموز"}</span>}
         </button>
         <button data-testid="pin-hide-toggle" aria-pressed={hidden}
