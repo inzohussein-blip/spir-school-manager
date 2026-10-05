@@ -8,7 +8,7 @@ import { ACTIVATION_SCRIPT } from "@/lib/local/activation";
 import { THEME_KEYS, themeScript } from "@/lib/local/theme";
 import type { LicenseModule } from "@/lib/license/modules";
 import { stationById } from "@/lib/school/stations";
-import { SchoolSidebar } from "./SchoolSidebar";
+import { AppShell } from "./AppShell";
 
 type Id = Exclude<LicenseModule, "admin">;
 
@@ -23,8 +23,7 @@ export function StationFrame({ id, children }: { id: Id; children: ReactNode }) 
       <script dangerouslySetInnerHTML={{ __html: themeScript(THEME_KEYS[id]) }} />
       <LocalThemeApplier storageKey={THEME_KEYS[id]} />
       <LocalDataGate>
-        <SchoolSidebar id={id} />
-        <main className="min-w-0 flex-1 p-4 md:p-7 print:p-0">{children}</main>
+        <AppShell id={id}>{children}</AppShell>
       </LocalDataGate>
       <OfflineReady />
     </div>

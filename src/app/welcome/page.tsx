@@ -2,7 +2,7 @@ import { OfflineReady } from "@/components/local/OfflineReady";
 import { ActivationGate } from "@/components/local/ActivationGate";
 import { ACTIVATION_SCRIPT } from "@/lib/local/activation";
 import Link from "next/link";
-import { School, ArrowLeft, Phone, RefreshCw, Info } from "lucide-react";
+import { School, ArrowLeft, Phone, RefreshCw, Info, LayoutDashboard } from "lucide-react";
 import { LicensedLink, AdminPanelCard } from "@/components/local/WelcomeLicense";
 import { WelcomeAccount } from "@/components/local/WelcomeAccount";
 import { WelcomeFooter } from "@/components/local/WelcomeFooter";
@@ -30,6 +30,11 @@ export default function WelcomePage() {
           </p>
         </div>
 
+        <Link href="/dashboard" data-testid="dashboard-card" className="mb-5 flex items-center gap-4 rounded-3xl bg-gradient-to-br from-[#14733f] to-[#0b4527] p-6 text-white shadow-[0_18px_30px_-16px_#0e5530]">
+          <span className="grid size-14 place-items-center rounded-2xl bg-white/15"><LayoutDashboard className="size-7" /></span>
+          <span className="flex-1"><span className="block text-xl font-extrabold">لوحة التحكم</span><span className="block text-sm text-white/75">نظرة عامة على الطلاب والحضور والخطط والتنبيهات، والتحليلات.</span></span>
+          <ArrowLeft className="size-6" />
+        </Link>
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           <AdminPanelCard />
           {SCHOOL_STATIONS.map((s) => (

@@ -11,7 +11,7 @@ import { Monitor, Moon, Sun } from "lucide-react";
 export type ThemeMode = "auto" | "light" | "dark";
 const EVENT = "local-theme";
 
-function getMode(key: string): ThemeMode {
+export function getMode(key: string): ThemeMode {
   try {
     const t = localStorage.getItem(key);
     return t === "dark" || t === "light" ? t : "auto";
@@ -19,7 +19,7 @@ function getMode(key: string): ThemeMode {
     return "auto";
   }
 }
-function setMode(key: string, mode: ThemeMode): void {
+export function setMode(key: string, mode: ThemeMode): void {
   try {
     if (mode === "auto") localStorage.removeItem(key);
     else localStorage.setItem(key, mode);

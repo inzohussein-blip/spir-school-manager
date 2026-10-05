@@ -1,18 +1,16 @@
-"use client";
-
+import type { SideSection } from "@/components/local/AppSidebar";
+import type { LicenseModule } from "@/lib/license/modules";
 import {
   LayoutDashboard, Building2, CalendarRange, BookOpen, Clock, Settings, GraduationCap, ArrowUpCircle, School, CalendarDays, AlertTriangle,
-  Users, BarChart3, Printer, PenLine, Table2, CalendarOff, Plane, HeartPulse, UserCheck, ClipboardCheck, ClipboardList, FileBarChart, Banknote, Layers, FilePlus2, HandCoins, Award, SlidersHorizontal, type LucideIcon,
+  Users, BarChart3, Printer, PenLine, Table2, CalendarOff, Plane, HeartPulse, UserCheck, ClipboardCheck, ClipboardList, FileBarChart,
+  Banknote, Layers, FilePlus2, HandCoins, Award, SlidersHorizontal, KanbanSquare, type LucideIcon,
 } from "lucide-react";
-import { AppSidebar, type SideSection } from "@/components/local/AppSidebar";
-import { stationById } from "@/lib/school/stations";
-import type { LicenseModule } from "@/lib/license/modules";
 
 type Id = Exclude<LicenseModule, "admin">;
-const it = (href: string, label: string, hint: string, icon: LucideIcon, exact = false) => ({ href, label, hint, icon, exact });
+export const it = (href: string, label: string, hint: string, icon: LucideIcon, exact = false) => ({ href, label, hint, icon, exact });
 
 /** Each station's pages. Stations whose pages are not built yet show only their home. */
-const NAV: Partial<Record<Id, SideSection[]>> = {
+export const NAV: Partial<Record<Id, SideSection[]>> = {
   setup: [
     { title: "البداية", items: [it("/setup", "نظرة عامة", "ما أُنجز وما بقي", LayoutDashboard, true)] },
     { title: "الإعداد", items: [
@@ -69,6 +67,7 @@ const NAV: Partial<Record<Id, SideSection[]>> = {
   plan: [
     { title: "الخطط السنوية", items: [
       it("/plan", "الخطط", "لكل مدرس ومادة وصف", ClipboardList, true),
+      it("/plan/board", "لوحة المتابعة", "اسحب الوحدات بين المراحل", KanbanSquare),
       it("/plan/view", "محرّر الخطة", "الوحدات والأسابيع والإنجاز", PenLine),
       it("/plan/report", "تقرير التنفيذ", "المنجز مقابل المتوقع", FileBarChart),
     ] },
@@ -93,9 +92,3 @@ const NAV: Partial<Record<Id, SideSection[]>> = {
   ],
 };
 
-export function SchoolSidebar({ id }: { id: Id }) {
-  const st = stationById(id)!;
-  const sections = NAV[id] ?? [{ title: st.label, items: [it(st.path, st.label, "قيد الإنشاء", st.icon, true), it(`${st.path}/settings`, "الإعدادات", "النسخ الاحتياطي والمظهر", Settings)] }];
-  return <AppSidebar appName={st.label} appTag="مدرسة · بلا إنترنت" icon={st.icon} sections={sections}
-    footerNote="البيانات محفوظة على هذا الجهاز ومشتركة مع باقي محطات المدرسة." />;
-}

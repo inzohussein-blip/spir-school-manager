@@ -17,6 +17,7 @@ export default function StudentsPage() {
   const [q, setQ] = useState(""); const [sec, setSec] = useState(""); const [status, setStatus] = useState<"" | StudentStatus>("active");
   const [edit, setEdit] = useState<Student | null>(null);
   const [bulk, setBulk] = useState(false);
+  const [limit, setLimit] = useState(50);
 
   const norm = (t: string) => t.toLowerCase().replace(/[ً-ْـ]/g, "").replace(/[أإآ]/g, "ا").replace(/ة/g, "ه").replace(/ى/g, "ي");
   const shown = useMemo(() => students.filter((s) =>
@@ -57,7 +58,7 @@ export default function StudentsPage() {
               <th className="p-3 text-start">رقم</th><th className="p-3 text-start">الاسم</th><th className="p-3 text-start">الشعبة</th><th className="p-3 text-start">ولي الأمر</th><th className="p-3 text-start">الهاتف</th><th className="p-3 text-start">الحالة</th><th className="no-print p-3" />
             </tr></thead>
             <tbody>
-              {shown.map((s) => (
+              {shown.slice(0, limit).map((s) => (
                 <tr key={s.id} className="border-b border-line last:border-0 hover:bg-canvas/60">
                   <td className="p-3 tabular-nums">{s.no}</td>
                   <td className="p-3 font-medium">{s.name}</td>
@@ -73,6 +74,7 @@ export default function StudentsPage() {
               ))}
             </tbody>
           </table>
+          {shown.length > limit && <div className="no-print border-t border-line p-3 text-center"><button onClick={() => setLimit((l) => l + 100)} className={btnGhost}>عرض المزيد ({shown.length - limit} متبقٍّ)</button></div>}
         </div>
       )}
       {edit && <StudentForm s={edit} onSave={save} onClose={() => setEdit(null)} />}

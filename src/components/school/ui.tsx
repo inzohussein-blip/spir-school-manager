@@ -4,17 +4,17 @@ import { useEffect, useState, type ReactNode } from "react";
 import { X } from "lucide-react";
 import { onKvChange } from "@/lib/local/kv";
 
-export const inp = "w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm outline-none focus:border-brand";
-export const btnPrimary = "inline-flex items-center justify-center gap-1.5 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-50";
-export const btnGhost = "inline-flex items-center justify-center gap-1.5 rounded-lg border border-line bg-surface px-3 py-2 text-sm hover:bg-canvas disabled:opacity-50";
-export const card = "rounded-2xl border border-line bg-surface p-5 shadow-[var(--shadow-card)]";
+export const inp = "w-full rounded-xl border border-line bg-surface px-3.5 py-2.5 text-sm outline-none focus:border-brand";
+export const btnPrimary = "inline-flex items-center justify-center gap-1.5 rounded-full bg-gradient-to-b from-brand to-brand-dark px-5 py-2.5 text-sm font-semibold text-white shadow-[0_8px_18px_-8px_var(--color-brand)] hover:brightness-110 disabled:opacity-50";
+export const btnGhost = "inline-flex items-center justify-center gap-1.5 rounded-full border border-ink/15 bg-surface px-4 py-2.5 text-sm font-medium hover:bg-canvas disabled:opacity-50";
+export const card = "rounded-3xl bg-surface p-5 shadow-[var(--shadow-card)]";
 
 export function PageTitle({ icon, title, sub, children }: { icon: ReactNode; title: string; sub?: string; children?: ReactNode }) {
   return (
     <div className="no-print mb-5 flex flex-wrap items-end justify-between gap-3">
       <div>
-        <h1 className="flex items-center gap-2 text-2xl font-bold">{icon} {title}</h1>
-        {sub && <p className="mt-1 text-sm text-muted">{sub}</p>}
+        <h1 className="flex items-center gap-2 text-3xl font-extrabold">{icon} {title}</h1>
+        {sub && <p className="mt-1.5 text-sm text-muted">{sub}</p>}
       </div>
       {children && <div className="flex flex-wrap items-center gap-2">{children}</div>}
     </div>
