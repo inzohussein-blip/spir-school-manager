@@ -139,18 +139,79 @@ main > * {
 /* Older pages (sync, license, welcome, about, settings…) pick up the same look without their markup changing:
    soft cards, pill buttons, rounded fields. */
 @media screen {
-  :is(.school-st, .about, .sync, .lic) :is(.rounded-2xl, .rounded-xl).border.border-line.bg-surface { border-color: transparent; border-radius: 1.5rem; box-shadow: var(--shadow-card); }
-  :is(.school-st, .about, .sync, .lic) button.bg-brand, :is(.school-st, .about, .sync, .lic) a.bg-brand {
+  :root:not([data-ui="classic"]) :is(.school-st, .about, .sync, .lic) :is(.rounded-2xl, .rounded-xl).border.border-line.bg-surface { border-color: transparent; border-radius: 1.5rem; box-shadow: var(--shadow-card); }
+  :root:not([data-ui="classic"]) :is(.school-st, .about, .sync, .lic) :is(button, a).bg-brand {
     border-radius: 9999px; background-image: linear-gradient(to bottom, var(--color-brand), var(--color-brand-dark)); box-shadow: 0 8px 18px -10px var(--color-brand);
   }
-  :is(.school-st, .about, .sync, .lic) button.rounded-lg.border { border-radius: 9999px; }
-  :is(.school-st, .about, .sync, .lic) :is(input, select, textarea).rounded-lg { border-radius: 0.85rem; }
+  :root:not([data-ui="classic"]) :is(.school-st, .about, .sync, .lic) button.rounded-lg.border { border-radius: 9999px; }
+  :root:not([data-ui="classic"]) :is(.school-st, .about, .sync, .lic) :is(input, select, textarea).rounded-lg { border-radius: 0.85rem; }
 }
 /* Page titles: large and plain; the page icon is hidden (the sidebar already shows it). */
 @media screen {
-  :is(.school-st, .about, .sync) main h1 > svg:first-child { display: none; }
-  :is(.school-st, .about, .sync) main h1 { font-size: 1.75rem; line-height: 1.2; letter-spacing: -0.01em; }
+  :root:not([data-ui="classic"]) :is(.school-st, .about, .sync) main h1 > svg:first-child { display: none; }
+  :root:not([data-ui="classic"]) :is(.school-st, .about, .sync) main h1 { font-size: 1.75rem; line-height: 1.2; letter-spacing: -0.01em; }
 }
+
+/* ════════ Classic look (the design before the green dashboard style) — chosen on the welcome page ════════ */
+:root[data-ui="classic"] {
+  --color-brand: #0d9488; --color-brand-dark: #0f766e; --color-brand-light: #f0fdfa;
+  --color-ink: #0f172a; --color-muted: #64748b; --color-line: #e2e8f0; --color-surface: #ffffff; --color-canvas: #f8fafc;
+  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06); --shadow-pop: 0 10px 30px rgba(15, 23, 42, 0.12);
+}
+:root[data-ui="classic"][data-theme="dark"] {
+  --color-brand: #2dd4bf; --color-brand-dark: #14b8a6; --color-brand-light: #0b3b36;
+  --color-ink: #e2e8f0; --color-muted: #94a3b8; --color-line: #1e293b; --color-surface: #111c30; --color-canvas: #0b1220;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.4); --shadow-pop: 0 10px 30px rgba(0, 0, 0, 0.55);
+}
+:root[data-ui="classic"][data-theme="dark"] :is(.school-st, .about, .sync) :is(.bg-brand, .from-brand).text-white { color: #0f172a; }
+:root[data-ui="classic"] .st-setup { --color-brand: #0d9488; --color-brand-dark: #0f766e; --color-brand-light: #f0fdfa; }
+:root[data-ui="classic"][data-theme="dark"] .st-setup { --color-brand: #2dd4bf; --color-brand-dark: #14b8a6; --color-brand-light: #0b3b36; }
+:root[data-ui="classic"] .st-students { --color-brand: #2563eb; --color-brand-dark: #1d4ed8; --color-brand-light: #eff6ff; }
+:root[data-ui="classic"][data-theme="dark"] .st-students { --color-brand: #60a5fa; --color-brand-dark: #3b82f6; --color-brand-light: #172554; }
+:root[data-ui="classic"] .st-classes { --color-brand: #d97706; --color-brand-dark: #b45309; --color-brand-light: #fffbeb; }
+:root[data-ui="classic"][data-theme="dark"] .st-classes { --color-brand: #fbbf24; --color-brand-dark: #f59e0b; --color-brand-light: #451a03; }
+:root[data-ui="classic"] .st-teachers { --color-brand: #0284c7; --color-brand-dark: #0369a1; --color-brand-light: #f0f9ff; }
+:root[data-ui="classic"][data-theme="dark"] .st-teachers { --color-brand: #38bdf8; --color-brand-dark: #0ea5e9; --color-brand-light: #082f49; }
+:root[data-ui="classic"] .st-results { --color-brand: #059669; --color-brand-dark: #047857; --color-brand-light: #ecfdf5; }
+:root[data-ui="classic"][data-theme="dark"] .st-results { --color-brand: #34d399; --color-brand-dark: #10b981; --color-brand-light: #022c22; }
+:root[data-ui="classic"] .st-leaves { --color-brand: #e11d48; --color-brand-dark: #be123c; --color-brand-light: #fff1f2; }
+:root[data-ui="classic"][data-theme="dark"] .st-leaves { --color-brand: #fb7185; --color-brand-dark: #f43f5e; --color-brand-light: #4c0519; }
+:root[data-ui="classic"] .st-plan { --color-brand: #4f46e5; --color-brand-dark: #4338ca; --color-brand-light: #eef2ff; }
+:root[data-ui="classic"][data-theme="dark"] .st-plan { --color-brand: #818cf8; --color-brand-dark: #6366f1; --color-brand-light: #1e1b4b; }
+:root[data-ui="classic"] .st-attendance { --color-brand: #ea580c; --color-brand-dark: #c2410c; --color-brand-light: #fff7ed; }
+:root[data-ui="classic"][data-theme="dark"] .st-attendance { --color-brand: #fb923c; --color-brand-dark: #f97316; --color-brand-light: #431407; }
+:root[data-ui="classic"] .st-fees { --color-brand: #65a30d; --color-brand-dark: #4d7c0f; --color-brand-light: #f7fee7; }
+:root[data-ui="classic"][data-theme="dark"] .st-fees { --color-brand: #a3e635; --color-brand-dark: #84cc16; --color-brand-light: #1a2e05; }
+:root[data-ui="classic"] .sync { --color-brand: #7c3aed; --color-brand-dark: #6d28d9; --color-brand-light: #f5f3ff; }
+:root[data-ui="classic"][data-theme="dark"] .sync { --color-brand: #a78bfa; --color-brand-dark: #8b5cf6; --color-brand-light: #2e1065; }
+:root[data-ui="classic"] .about { --color-brand: #9333ea; --color-brand-dark: #7e22ce; --color-brand-light: #faf5ff; }
+:root[data-ui="classic"][data-theme="dark"] .about { --color-brand: #c084fc; --color-brand-dark: #a855f7; --color-brand-light: #3b0764; }
+@media screen {
+  :root[data-ui="classic"] :is(.school-st, .about, .sync) main h1:has(> svg:first-child) { gap: 0.75rem; }
+  :root[data-ui="classic"] :is(.school-st, .about, .sync) main h1 > svg:first-child {
+    box-sizing: content-box; width: 22px; height: 22px; padding: 11px; flex-shrink: 0; border-radius: 1rem; color: #fff;
+    background: linear-gradient(135deg, var(--color-brand), var(--color-brand-dark)); box-shadow: 0 6px 16px -6px color-mix(in oklab, var(--color-brand) 70%, transparent);
+  }
+  :root[data-ui="classic"][data-theme="dark"] :is(.school-st, .about, .sync) main h1 > svg:first-child { color: #0f172a; }
+  /* the new look's shared pieces, back to their classic shape */
+  :root[data-ui="classic"] .ui-card { border-radius: 1rem; border: 1px solid var(--color-line); box-shadow: var(--shadow-card); }
+  :root[data-ui="classic"] .ui-btn { border-radius: 0.5rem; background-image: none; box-shadow: none; }
+  :root[data-ui="classic"] .ui-btn-primary { background: var(--color-brand); color: #fff; padding: 0.5rem 1rem; }
+  :root[data-ui="classic"] .ui-btn-primary:hover { background: var(--color-brand-dark); filter: none; }
+  :root[data-ui="classic"] .ui-btn-ghost { border: 1px solid var(--color-line); padding: 0.5rem 0.75rem; }
+  :root[data-ui="classic"] .ui-inp { border-radius: 0.5rem; padding: 0.5rem 0.75rem; }
+  :root[data-ui="classic"] .ui-admin-card { border: 2px solid #c4b5fd; border-radius: 1rem; box-shadow: var(--shadow-card); }
+  :root[data-ui="classic"] .ui-admin-card:hover { border-color: #8b5cf6; }
+  :root[data-ui="classic"] .ui-admin-icon { background: linear-gradient(135deg, #8b5cf6, #6d28d9); border-radius: 0.75rem; box-shadow: none; }
+  :root[data-ui="classic"] .ui-admin-btn { background: #7c3aed; border-radius: 0.5rem; background-image: none; }
+  :root[data-ui="classic"] .ui-station-card { border-radius: 1rem; border-width: 2px; border-style: solid; box-shadow: var(--shadow-card); }
+  :root[data-ui="classic"] .ui-sync-card { border-color: #c4b5fd; }
+  :root[data-ui="classic"] .ui-about-card { border-color: #d8b4fe; }
+  :root[data-ui="classic"] .sync-hero-ok { background-image: linear-gradient(to left, #7c3aed, #4f46e5); }
+}
+/* each look shows only its own markup */
+:root[data-ui="classic"] .ui-only-new { display: none !important; }
+:root:not([data-ui="classic"]) .ui-only-classic { display: none !important; }
 /* Toast slide-in */
 @keyframes station-toast-in {
   from { opacity: 0; transform: translateY(8px); }

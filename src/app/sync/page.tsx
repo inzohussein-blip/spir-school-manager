@@ -44,7 +44,7 @@ export default function SyncOverview() {
     <div className="flex max-w-5xl flex-col gap-5">
       {/* The state at a glance */}
       <section className={cn("relative overflow-hidden rounded-3xl p-6 text-white shadow-[var(--shadow-card)]",
-        state.tone === "ok" ? "bg-gradient-to-l from-[#14733f] to-[#0b4527]" : "bg-gradient-to-l from-amber-500 to-orange-600")} data-testid={stale ? "sync-reminder" : "sync-hero"}>
+        state.tone === "ok" ? "sync-hero-ok bg-gradient-to-l from-[#14733f] to-[#0b4527]" : "bg-gradient-to-l from-amber-500 to-orange-600")} data-testid={stale ? "sync-reminder" : "sync-hero"}>
         <RefreshCw className="pointer-events-none absolute -left-6 -top-6 size-40 opacity-10" />
         <div className="relative flex flex-wrap items-center gap-4">
           <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-white/20">{state.icon}</span>

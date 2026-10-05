@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Toaster } from "sonner";
 import { ErrorReporter } from "@/components/ErrorReporter";
+import { uiScript } from "@/lib/local/ui";
 // Arabic UI font bundled with the app (no Google Fonts request) — works offline.
 import "@fontsource/ibm-plex-sans-arabic/arabic-400.css";
 import "@fontsource/ibm-plex-sans-arabic/arabic-500.css";
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <link rel="apple-touch-icon" href="/icon-192.png" />
         {/* Build id for the stations' offline copy (public/local-sw.js). */}
         <meta name="lab-build" content={process.env.LAB_BUILD} />
+        <script dangerouslySetInnerHTML={{ __html: uiScript }} />
         {/* No-flash theme: apply the saved (or system) theme before paint. */}
         <script
           dangerouslySetInnerHTML={{

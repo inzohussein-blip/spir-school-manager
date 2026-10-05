@@ -4,10 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import {
-  LayoutDashboard, Search, Bell, Menu, X, Sun, Moon, HelpCircle, RefreshCw, Home, Settings, Download, Check, ShieldCheck,
+  LayoutDashboard, BarChart3, Search, Bell, Menu, X, Sun, Moon, HelpCircle, RefreshCw, Home, Settings, Download, Check, ShieldCheck,
 } from "lucide-react";
 import { SCHOOL_STATIONS } from "@/lib/school/stations";
-import { NAV } from "@/lib/school/nav";
+import { NAV, it } from "@/lib/school/nav";
+import { AppSidebar, type SideSection } from "@/components/local/AppSidebar";
+import { useUi } from "@/lib/local/ui";
 import { THEME_KEYS } from "@/lib/local/theme";
 import { getMode, setMode } from "@/components/local/LocalTheme";
 import { getInfo, KIND_LABEL, type SchoolInfo } from "@/lib/school/store";
@@ -24,6 +26,7 @@ const SHORT: Record<string, string> = { setup: "الإعداد", students: "ال
 /** The app frame in the dashboard style: floating side menu, top bar (search, alerts, theme, school), page tabs, content. */
 export function AppShell({ id, children }: { id: ShellId; children: ReactNode }) {
   const pathname = usePathname();
+  const ui = useUi();
   const [open, setOpen] = useState(false); const [pal, setPal] = useState(false); const [bell, setBell] = useState(false);
   const [info, setInfo] = useState<SchoolInfo | null>(null); const [al, setAl] = useState<Alerts | null>(null); const [dark, setDark] = useState(false); const [saved, setSaved] = useState(false);
   const themeKey = id === "dashboard" ? THEME_KEYS.setup : THEME_KEYS[id];
@@ -42,6 +45,21 @@ export function AppShell({ id, children }: { id: ShellId; children: ReactNode })
     : (NAV[id]?.flatMap((s) => s.items) ?? []).map((i) => ({ href: i.href, label: i.label, exact: !!i.exact }));
   const toggleTheme = () => { setMode(themeKey, dark ? "light" : "dark"); setDark(!dark); };
   const nItems = al?.items.length ?? 0;
+
+  if (ui === "classic") {
+    const st = SCHOOL_STATIONS.find((x) => x.id === id);
+    const sections: SideSection[] = id === "dashboard"
+      ? [{ title: "لوحة التحكم", items: [it("/dashboard", "نظرة عامة", "الطلاب والحضور والخطط", LayoutDashboard, true), it("/dashboard/analytics", "التحليلات", "الحضور والمقارنات", BarChart3)] }]
+      : (NAV[id] ?? []).map((sec) => ({ ...sec, items: sec.items.filter((i) => i.href !== "/plan/board") }));
+    return (
+      <>
+        <AppSidebar appName={id === "dashboard" ? "لوحة التحكم" : id === "sync" ? "محطة المزامنة" : st!.label} appTag={id === "sync" ? "بين حواسيب المدرسة" : "مدرسة · بلا إنترنت"}
+          icon={id === "dashboard" ? LayoutDashboard : id === "sync" ? RefreshCw : st!.icon} sections={sections}
+          footerNote={id === "sync" ? "تجمع بيانات المحطات (عدا ما تختاره للحاسوب وحده) بين حواسيب المدرسة نفسه فقط." : "البيانات محفوظة على هذا الجهاز ومشتركة مع باقي محطات المدرسة."} />
+        <main className="min-w-0 flex-1 p-4 md:p-7 print:p-0">{children}</main>
+      </>
+    );
+  }
 
   const link = (href: string, label: string, Icon: typeof Home, active: boolean, n = 0) => (
     <Link key={href} href={href} aria-current={active ? "page" : undefined}

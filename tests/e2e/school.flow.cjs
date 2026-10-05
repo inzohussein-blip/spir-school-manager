@@ -7,6 +7,7 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) fails++
 (async () => {
   const browser = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome', args: ['--no-sandbox'] });
   const ctx = await browser.newContext({ viewport: { width: 1400, height: 900 } });
+  if (process.env.UI) await ctx.addInitScript((u) => localStorage.setItem('school-ui', u), process.env.UI);
   const page = await ctx.newPage();
   const errors = [];
   page.on('pageerror', (e) => errors.push(String(e)));

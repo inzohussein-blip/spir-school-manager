@@ -14,6 +14,7 @@ import { SCHOOL_STATIONS } from "@/lib/school/stations";
 import { STATION_SYNC, SUPABASE_SQL } from "@/lib/sync/protocol";
 import { SYNC_ERRORS } from "@/components/local/SyncPanel";
 import { adminDbError } from "@/lib/db/labErrors";
+import { useUi } from "@/lib/local/ui";
 import { PROVIDERS, providerById, providerOf, type ProviderId } from "@/lib/db/providers";
 import { ConnInput, ProviderGuide, ProviderMark, ProviderPicker } from "@/components/DbProviders";
 import { fmtDateTime } from "@/lib/utils";
@@ -708,10 +709,10 @@ export default function LicensesPage() {
 
   return (
     <div className="lic school-st min-h-screen bg-canvas md:flex">
-      <OwnerNav section={section} go={go} total={counts.all} soon={soon} soonDays={prefs.soonDays}
+      <OwnerNavPick section={section} go={go} total={counts.all} soon={soon} soonDays={prefs.soonDays}
         dbDown={all.filter((r) => r.admin_db && r.admin_db_check && !r.admin_db_check.ok).length} showErrors={prefs.errorLog} open={menu} setOpen={setMenu}
         onLogout={async () => { await post({ op: "logout" }); load(); }} />
-      <main className="min-w-0 flex-1 p-4 md:py-4 md:pe-4">
+      <main className="min-w-0 flex-1 p-4 md:py-4 md:pe-4 [:root[data-ui=classic]_&]:md:p-7">
         <div className="mx-auto max-w-5xl">{main}</div>
       </main>
       {dbFor && <DbModal row={dbFor} rows={all} onClose={() => setDbFor(null)} onSaved={() => { setDbFor(null); load(); }} />}
@@ -1608,6 +1609,10 @@ function ExportModal({ row, needCode, onClose }: { row: Row; needCode: boolean; 
   );
 }
 
+function OwnerNavPick(props: React.ComponentProps<typeof OwnerNav>) {
+  return useUi() === "classic" ? <OwnerNavClassic {...props} /> : <OwnerNav {...props} />;
+}
+
 /** The page's side menu in the dashboard style: a floating card (a drawer on phones). */
 function OwnerNav({ section, go, total, soon, soonDays, dbDown, showErrors, open, setOpen, onLogout }: {
   section: Section; go: (s: Section) => void; total: number; soon: number; soonDays: number; dbDown: number; showErrors: boolean; open: boolean; setOpen: (v: boolean) => void; onLogout: () => void;
@@ -1666,6 +1671,89 @@ function OwnerNav({ section, go, total, soon, soonDays, dbDown, showErrors, open
         </div>
       </aside>
     </>
+  );
+}
+
+/** The page's side menu, classic look (a drawer on phones). */
+function OwnerNavClassic({ section, go, total, soon, soonDays, dbDown, showErrors, open, setOpen, onLogout }: {
+  section: Section; go: (s: Section) => void; total: number; soon: number; soonDays: number; dbDown: number; showErrors: boolean; open: boolean; setOpen: (v: boolean) => void; onLogout: () => void;
+}) {
+  const current = SECTIONS.flatMap((g) => g.items).find((i) => i.id === section)?.label ?? "إدارة الرموز";
+  return (
+    <>
+      {/* Phone top bar */}
+      <div className="sticky top-0 z-30 flex items-center gap-3 border-b border-line bg-surface/90 px-4 py-2.5 backdrop-blur md:hidden">
+        <button onClick={() => setOpen(true)} aria-label="فتح القائمة" className="grid size-10 place-items-center rounded-xl border border-line bg-surface hover:bg-canvas"><Menu className="size-5" /></button>
+        <div className="min-w-0 flex-1">
+          <div className="truncate text-sm font-bold">{current}</div>
+          <div className="text-[11px] text-muted">إدارة الرموز</div>
+        </div>
+        <span className="grid size-9 place-items-center rounded-xl bg-gradient-to-br from-brand to-brand-dark text-white"><KeyRound className="size-[18px]" /></span>
+      </div>
+      <div onClick={() => setOpen(false)} className={`fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-[2px] transition-opacity md:hidden ${open ? "opacity-100" : "pointer-events-none opacity-0"}`} />
+
+      <aside className={`fixed inset-y-0 start-0 z-50 flex h-screen w-72 shrink-0 flex-col border-e border-line bg-surface shadow-[var(--shadow-pop)] transition-transform duration-200 md:sticky md:top-0 md:z-auto md:translate-x-0 md:shadow-none ${open ? "translate-x-0" : "translate-x-full"}`}>
+        <div className="px-4 pb-4 pt-5">
+          <div className="flex items-center gap-3">
+            <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand to-brand-dark text-white shadow-[0_6px_16px_-4px_color-mix(in_oklab,var(--color-brand)_60%,transparent)]"><KeyRound className="size-[22px]" /></span>
+            <div className="min-w-0 flex-1 leading-tight">
+              <div className="truncate text-[15px] font-bold">إدارة الرموز</div>
+              <div className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-brand-light px-2 py-0.5 text-[10px] font-medium text-brand-dark">منظومة رموز المدارس</div>
+            </div>
+            <button onClick={() => setOpen(false)} aria-label="إغلاق القائمة" className="grid size-8 place-items-center rounded-lg text-muted hover:bg-canvas hover:text-ink md:hidden"><X className="size-4" /></button>
+          </div>
+        </div>
+        <nav className="flex flex-1 flex-col gap-4 overflow-y-auto px-3 pb-3">
+          {SECTIONS.map((g) => (
+            <div key={g.title}>
+              <div className="mb-1.5 px-2.5 text-[11px] font-semibold text-muted">{g.title}</div>
+              <div className="flex flex-col gap-0.5">
+                {g.items.filter((it) => it.id !== "errors" || showErrors).map((it) => {
+                  const active = section === it.id;
+                  const badge = it.id === "codes" ? (soon || total) : it.id === "databases" ? dbDown : 0;
+                  const warn = it.id === "codes" ? !!soon : it.id === "databases";
+                  return (
+                    <button key={it.id} data-section={it.id} onClick={() => go(it.id)} aria-current={active ? "page" : undefined}
+                      className={`group relative flex items-center gap-3 rounded-xl px-2.5 py-2 text-right text-sm ${active ? "bg-brand-light text-brand-dark shadow-[inset_0_0_0_1px_color-mix(in_oklab,var(--color-brand)_22%,transparent)]" : "text-ink hover:bg-canvas"}`}>
+                      {active && <span className="absolute inset-y-2 -start-3 w-1 rounded-e-full bg-brand" />}
+                      <span className={`grid size-9 shrink-0 place-items-center rounded-lg transition-colors ${active ? "bg-gradient-to-br from-brand to-brand-dark text-white" : "bg-canvas text-muted ring-1 ring-line group-hover:bg-brand-light group-hover:text-brand group-hover:ring-transparent"}`}>
+                        <it.icon className="size-[18px]" strokeWidth={active ? 2.2 : 1.9} />
+                      </span>
+                      <span className="min-w-0 flex-1 leading-tight">
+                        <span className={`block truncate ${active ? "font-semibold" : ""}`}>{it.label}</span>
+                        <span className={`block truncate text-[11px] ${active ? "text-brand-dark/70" : "text-muted"}`}>{it.hint}</span>
+                      </span>
+                      {badge ? (
+                        <span data-testid={`badge-${it.id}`} title={it.id === "databases" ? "قواعد لا تستجيب" : soon ? `تنتهي خلال ${soonDays} يوماً` : undefined}
+                          className={`min-w-5 rounded-full px-1.5 py-0.5 text-center text-[10px] font-bold leading-none tabular-nums text-white ${it.id === "databases" ? "bg-red-600" : warn ? "bg-amber-500" : "bg-brand"}`}>{badge}</span>
+                      ) : (
+                        <ChevronLeft className={`size-4 shrink-0 transition-all ${active ? "text-brand opacity-100" : "text-muted opacity-0 group-hover:opacity-60"}`} />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </nav>
+        <div className="border-t border-line p-3">
+          <button onClick={onLogout} className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-line px-3 py-2 text-sm hover:bg-canvas"><LogOut className="size-4" /> خروج</button>
+        </div>
+      </aside>
+    </>
+  );
+}
+
+/** A section's heading, as on the lab station's pages. */
+function SectionTitleClassic({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
+  return (
+    <div className="mb-5 flex items-start gap-3">
+      <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand to-brand-dark text-white shadow-[0_6px_16px_-6px_color-mix(in_oklab,var(--color-brand)_70%,transparent)] [&>svg]:size-[22px]">{icon}</span>
+      <div className="min-w-0">
+        <h1 className="text-2xl font-bold">{title}</h1>
+        <p className="mt-0.5 text-sm text-muted">{desc}</p>
+      </div>
+    </div>
   );
 }
 

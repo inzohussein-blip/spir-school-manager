@@ -29,13 +29,13 @@ export function AdminPanelCard() {
   const why = !state || state.kind === "off" ? "مقفلة حالياً" : "غير مفعّلة في رمزك";
   if (open) {
     return (
-      <Link href="/login" className="group flex flex-col rounded-3xl bg-surface p-6 shadow-[var(--shadow-card)] transition-shadow hover:shadow-[var(--shadow-pop)]">
-        <span className="grid size-12 place-items-center rounded-2xl bg-gradient-to-br from-brand to-brand-dark text-white shadow-[0_10px_20px_-10px_var(--color-brand)]">
+      <Link href="/login" className="ui-admin-card group flex flex-col rounded-3xl bg-surface p-6 shadow-[var(--shadow-card)] transition-shadow hover:shadow-[var(--shadow-pop)]">
+        <span className="ui-admin-icon grid size-12 place-items-center rounded-2xl bg-gradient-to-br from-brand to-brand-dark text-white shadow-[0_10px_20px_-10px_var(--color-brand)]">
           <LayoutDashboard className="size-6" />
         </span>
         <div className="mt-4 text-lg font-bold">لوحة الإدارة الكاملة</div>
         <p className="mt-1 flex-1 text-sm text-muted">إدارة كاملة للطلاب والكادر والنتائج والأقساط والتقارير على الإنترنت — تتطلّب تسجيل دخول وقاعدة بيانات.</p>
-        <span className="mt-5 inline-flex items-center justify-center gap-1.5 rounded-full bg-gradient-to-b from-brand to-brand-dark px-4 py-2.5 text-sm font-semibold text-white group-hover:brightness-110">
+        <span className="ui-admin-btn mt-5 inline-flex items-center justify-center gap-1.5 rounded-full bg-gradient-to-b from-brand to-brand-dark px-4 py-2.5 text-sm font-semibold text-white group-hover:brightness-110">
           الدخول <ArrowLeft className="size-4" />
         </span>
       </Link>
