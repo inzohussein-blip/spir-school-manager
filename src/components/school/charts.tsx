@@ -53,12 +53,15 @@ export function AreaChart({ series, labels, max, height = 260, unit = "" }: { se
 
 /** Ring with a figure in the middle. */
 export function Donut({ parts, center, sub, size = 190 }: { parts: { value: number; color?: string }[]; center: string; sub?: string; size?: number }) {
-  const total = parts.reduce((n, p) => n + p.value, 0) || 1; const r = 70, c = 2 * Math.PI * r; let off = 0;
+  const total = parts.reduce((n, p) => n + p.value, 0) || 1; const r = 70, c = 2 * Math.PI * r;
   return (
     <div className="relative mx-auto" style={{ width: size, height: size }}>
       <svg viewBox="0 0 180 180" className="size-full -rotate-90" aria-hidden>
         <circle cx="90" cy="90" r={r} fill="none" className="stroke-line" strokeWidth="22" />
-        {parts.map((p, i) => { const len = (p.value / total) * c; const el = <circle key={i} cx="90" cy="90" r={r} fill="none" stroke={p.color ?? PALETTE[i % PALETTE.length]} strokeWidth="22" strokeDasharray={`${Math.max(0, len - 2)} ${c}`} strokeDashoffset={-off} />; off += len; return el; })}
+        {parts.map((p, i) => {
+          const len = (p.value / total) * c; const off = parts.slice(0, i).reduce((n, q) => n + (q.value / total) * c, 0);
+          return <circle key={i} cx="90" cy="90" r={r} fill="none" stroke={p.color ?? PALETTE[i % PALETTE.length]} strokeWidth="22" strokeDasharray={`${Math.max(0, len - 2)} ${c}`} strokeDashoffset={-off} />;
+        })}
       </svg>
       <div className="absolute inset-0 grid place-content-center text-center"><div className="text-2xl font-extrabold tabular-nums">{center}</div>{sub && <div className="text-[11px] text-muted">{sub}</div>}</div>
     </div>
