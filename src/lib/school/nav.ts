@@ -3,7 +3,7 @@ import type { LicenseModule } from "@/lib/license/modules";
 import {
   LayoutDashboard, Building2, CalendarRange, BookOpen, Clock, Settings, GraduationCap, ArrowUpCircle, School, CalendarDays, AlertTriangle,
   Users, BarChart3, Printer, PenLine, Table2, CalendarOff, Plane, HeartPulse, UserCheck, ClipboardCheck, ClipboardList, FileBarChart,
-  Banknote, Layers, FilePlus2, HandCoins, Award, SlidersHorizontal, KanbanSquare, RefreshCw, FileDown, Network, History, type LucideIcon,
+  Banknote, Layers, FilePlus2, HandCoins, Award, SlidersHorizontal, KanbanSquare, RefreshCw, FileDown, Network, History, Globe, type LucideIcon,
 } from "lucide-react";
 
 type Id = Exclude<LicenseModule, "admin"> | "sync";
@@ -27,6 +27,7 @@ export const NAV: Partial<Record<Id, SideSection[]>> = {
       it("/setup/years", "العام والفصول الدراسية", "بداية العام ونهايته", CalendarRange),
       it("/setup/curriculum", "المراحل والصفوف والمواد", "المنهج وحصصه الأسبوعية", BookOpen),
       it("/setup/periods", "الحصص وأيام الدوام", "أوقات الحصص والاستراحة", Clock),
+      it("/setup/portal", "حسابات الويب", "من يدخل لوحة الإنترنت", Globe),
     ] },
     { title: "النظام", items: [it("/setup/settings", "الإعدادات", "النسخ الاحتياطي والمظهر", Settings)] },
   ],

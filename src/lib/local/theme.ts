@@ -11,6 +11,7 @@ export const THEME_KEYS = {
   attendance: "attendance.theme.v1",
   fees: "fees.theme.v1",
   sync: "sync.theme.v1",
+  portal: "portal.theme.v1",
   about: "about.theme.v1",
 } as const;
 export type ThemeStation = keyof typeof THEME_KEYS;

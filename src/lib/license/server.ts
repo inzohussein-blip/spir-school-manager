@@ -686,6 +686,15 @@ export async function activate(code: string, device: string, label: string, vers
   return issue((await getLicense(row.id))!, device);
 }
 
+/** The license a code belongs to (no device checks): for the school's web portal. */
+export async function findLicenseByCode(code: string): Promise<LicenseRow | null> {
+  await ensureTables();
+  const r = await queryOne<{ id: string }>(`select id from station_licenses where code_hash = $1`, [hashCode(code)]);
+  return r ? getLicense(r.id) : null;
+}
+
+export async function licenseById(id: string): Promise<LicenseRow | null> { await ensureTables(); return getLicense(id); }
+
 /** Periodic check from an activated device: the current state, re-signed. */
 export async function check(lid: string, device: string, version = ""): Promise<DeviceResult> {
   const row = await getLicense(lid);
@@ -843,7 +852,7 @@ export async function storageStatus(write = false): Promise<{ source: string; ok
 }
 
 // ── Attempt limits (kept in the database so they hold across server instances) ─────
-type AttemptKind = "activate" | "owner" | "signup";
+type AttemptKind = "activate" | "owner" | "signup" | "portal";
 const ATTEMPT_WINDOW = 10 * 60_000;
 const attemptKey = (kind: AttemptKind, ip: string) => `${kind}:${ip}`;
 /** Too many wrong tries from this address in the last 10 minutes? */

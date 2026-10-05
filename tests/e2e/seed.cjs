@@ -2,8 +2,7 @@
 const NAMES = ['أحمد','محمد','علي','حسين','زينب','فاطمة','مريم','سارة','يوسف','عمر','نور','هدى','كرار','مصطفى','رقية','آية'];
 const FATH = ['حسن','جاسم','كاظم','حميد','عباس','صالح','ناصر','رشيد'];
 const id = (p, i) => `${p}${i}`;
-module.exports = async function seed(page, base) {
-  await page.goto(base + '/setup'); await page.waitForTimeout(1500);
+function makeData() {
   const day = (n) => new Date(Date.now() + n * 864e5).toLocaleDateString('en-CA');
   const y0 = new Date().getMonth() >= 8 ? new Date().getFullYear() : new Date().getFullYear() - 1;
   const year = { id: 'y1', name: `${y0}-${y0 + 1}`, start: `${y0}-10-01`, end: `${y0 + 1}-06-30`, current: true };
@@ -30,6 +29,12 @@ module.exports = async function seed(page, base) {
     'fees.payments.v1': students.slice(0, 60).map((s, i) => ({ id: 'pay' + i, no: `2026/${String(i + 1).padStart(5, '0')}`, studentId: s.id, date: day(-(i % 28)), amount: 150000 })),
     'fees.charges.v1': students.map((s, i) => ({ id: 'ch' + i, studentId: s.id, month: new Date().toLocaleDateString('en-CA').slice(0, 7), amount: 150000, kind: 'monthly', label: 'القسط الشهري' })),
   };
+  return data;
+}
+
+module.exports = async function seed(page, base) {
+  await page.goto(base + '/setup'); await page.waitForTimeout(1500);
+  const data = makeData();
   await page.evaluate(async (d) => {
     const db = await new Promise((res, rej) => { const r = indexedDB.open('lab-local'); r.onsuccess = () => res(r.result); r.onerror = rej; });
     const names = [...db.objectStoreNames]; const store = names.includes('kv') ? 'kv' : names[0];
@@ -37,3 +42,4 @@ module.exports = async function seed(page, base) {
     db.close();
   }, data);
 };
+module.exports.makeData = makeData;

@@ -4,15 +4,21 @@ import { kvGet, kvSet, kvBytes } from "./kv";
 
 /** Small helpers shared by the standalone local stations (no data sharing). */
 
+/** The web portal shows the school's records from the server: reads come from this map, writes are refused. */
+let readOnlyData: Record<string, string> | null = null;
+export function setReadOnlyData(d: Record<string, string> | null) { readOnlyData = d; }
+export const isReadOnlyData = () => readOnlyData !== null;
+
 export function readLS<T>(key: string, fallback: T): T {
   try {
-    const raw = kvGet(key);
+    const raw = readOnlyData ? readOnlyData[key] ?? null : kvGet(key);
     return raw ? (JSON.parse(raw) as T) : fallback;
   } catch {
     return fallback;
   }
 }
 export function writeLS<T>(key: string, value: T): boolean {
+  if (readOnlyData) return false;
   try {
     return kvSet(key, JSON.stringify(value));
   } catch {
